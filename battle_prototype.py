@@ -5,6 +5,13 @@ ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 LETTER_FREQ = [.08167, .01492, .02782, .04253, .12702, .02228, .02015, .06094, .06966, .00153, .00772, .04025, .02406, .06749, .07507, .01929, .00095, .05987, .06327, .09056, .02758, .00978, .02361, .00150, .01974, .00074]
 POOL_SIZE = 10
 
+# generate wordlist
+f = open('cleanbest.txt', 'r+')
+wordlist = set()
+for line in f.readlines():
+    wordlist.add(line.strip())
+f.close()
+
 def weighted_choice(choices):
    total = sum(w for c, w in choices)
    r = random.uniform(0, total)
@@ -27,6 +34,9 @@ def get_damage(attack):
     return 1
 
 def process_attack(attack, pool):
+    if attack not in wordlist:
+        return False
+    
     used_pool = [[p, False] for p in pool]
 
     for letter in attack:
