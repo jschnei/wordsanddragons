@@ -84,9 +84,8 @@ class Player:
 def main():
     player = Player()
     pool = generate_pool()
-    enemy = generate_enemy()
-    enemies = [enemy]
-    dead_enemies = []
+    enemies = set()
+    enemies.add(generate_enemy())
     turn = 0
     while(True):
         turn += 1
@@ -101,15 +100,21 @@ def main():
         else:
             # resolve combat
             damage = get_damage(attack)
+            dead_enemies = set()
             for enemy in enemies:
                 enemy.take_damage(damage)
-            enemies = [enemy for enemy in enemies if enemy.alive]
+                if not enemy.alive:
+                    dead_enemies.add(enemy)
+                else:
+                    enemy.attack(player)
+            
+            enemies -= dead_enemies
 
             # update the pool
             pool = generate_pool(new_pool)
 
         if turn % 10 == 0:
-            enemies.append(generate_enemy())
+            enemies.add(generate_enemy())
 
     print('You won!')
 
