@@ -103,13 +103,7 @@ def main():
             damage = get_damage(attack)
             for enemy in enemies:
                 enemy.take_damage(damage)
-                if not enemy.alive:
-                    dead_enemies.append(enemy)
-                else:
-                    enemy.attack(player)
-            for dead in dead_enemies:
-                enemies.remove(enemy) # does this work
-            dead_enemies = []
+            enemies = [enemy for enemy in enemies if enemy.alive]
 
             # update the pool
             pool = generate_pool(new_pool)
