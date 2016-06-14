@@ -103,7 +103,7 @@ def main():
         print(player)
         for enemy in enemies:
             print(enemy)
-        attack = input('Type a word from the pool: ').upper()
+        attack = input('Type a word from the pool: ').strip().upper()
         new_pool = process_attack(attack, pool)
         if not new_pool:
             print("You dumbo!")
