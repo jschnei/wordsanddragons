@@ -48,6 +48,12 @@ class GameState:
         self.pool = util.generate_pool()
         self.turn = 0
 
+    def pretty_print(self):
+        print(self.pool)
+        print(self.player)
+        for enemy in self.enemies:
+            print(enemy)
+
     def process_attack(self, attack):
         new_pool = util.check_attack(attack, self.pool)
         if not new_pool:
@@ -63,8 +69,16 @@ class GameState:
 
             # enemies attack player
             # TODO: put on timer
-            for enemy in self.enemies:
-                enemy.attack(self.player)
+
 
             # update the pool
             self.pool = util.generate_pool(new_pool)
+
+
+    def tick(self):
+        self.turn += 1
+        for enemy in self.enemies:
+            enemy.attack(self.player)
+
+        if self.turn % 10 == 0:
+            self.enemies.add(Enemy())

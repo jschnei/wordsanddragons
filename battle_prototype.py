@@ -5,16 +5,10 @@ from models import GameState
 def main():
     gstate = GameState()
     while(True):
-        print(gstate.pool)
-        print(gstate.player)
-        for enemy in gstate.enemies:
-            print(enemy)
+        gstate.pretty_print()
 
         attack = input('Type a word from the pool: ').strip().upper()
         gstate.process_attack(attack)
-
-#        if turn % 10 == 0:
-            #enemies.add(generate_enemy())
 
 
 if __name__ == '__main__':

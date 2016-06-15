@@ -1,9 +1,17 @@
 import pygame
 
+from models import GameState
+
+GAME_FRAME = 5000
+
 TEXT_OFF_X = 0
-TEXT_OFF_Y = 150
+TEXT_OFF_Y = 210
+
+TILE_OFF_X = 0
+TILE_OFF_Y = 150
 
 TEXT_COLOR = (255, 255, 255)
+TILE_COLOR = (200, 210, 140)
 BG_COLOR = (159, 182, 205)
 
 FONT_SIZE = 50
@@ -17,44 +25,69 @@ font = pygame.font.Font(None, FONT_SIZE)
 
 enemy = pygame.image.load('art/theboss.png').convert()
 
+# Display functions
+def display_tiles(gstate):
+    text = font.render(''.join(gstate.pool), True, TILE_COLOR, BG_COLOR)
+    textRect = text.get_rect()
+    textRect.centerx = screen.get_rect().centerx + TILE_OFF_X
+    textRect.centery = screen.get_rect().centery + TILE_OFF_Y
 
-def display_enemy():
+    screen.blit(text, textRect)
+
+
+def display_enemy(gstate):
     enemyRect = enemy.get_rect()
     enemyRect.centerx = screen.get_rect().centerx
     enemyRect.centery = screen.get_rect().centery
     screen.blit(enemy, enemyRect)
 
-
-def display_text(str):
-    text = font.render(str, True, TEXT_COLOR, BG_COLOR)
+def display_text(display_str):
+    text = font.render(display_str, True, TEXT_COLOR, BG_COLOR)
     textRect = text.get_rect()
     textRect.centerx = screen.get_rect().centerx + TEXT_OFF_X
     textRect.centery = screen.get_rect().centery + TEXT_OFF_Y
 
     screen.blit(text, textRect)
 
-def display(str):
+def display(gstate, display_str):
     screen.fill(BG_COLOR)
-    display_enemy()
-    display_text(str)
+
+    display_enemy(gstate)
+    display_tiles(gstate)
+    display_text(display_str)
+
     pygame.display.update()
 
 def main():
-    num = 0
+    gstate = GameState()
+    ticks = 0
+
     done = False
     disp_str = ''
 
     letter_keys = range(pygame.K_a, pygame.K_z+1)
     alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+
+    gstate.pretty_print()
+
     while not done:
-        display(disp_str)
+        ticks += 1
+        if ticks%GAME_FRAME == 0:
+            gstate.tick()
+            gstate.pretty_print()
+
+        display(gstate, disp_str)
 
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 if event.key in letter_keys:
-                    disp_str += alphabet[event.key-pygame.K_a]
+                    disp_str += chr(event.key).upper()
                 elif event.key == pygame.K_BACKSPACE:
                     disp_str = disp_str[:-1]
+                elif event.key == pygame.K_RETURN:
+                    gstate.process_attack(disp_str)
+                    disp_str = ''
+                    gstate.pretty_print()
                 elif event.key == pygame.K_ESCAPE:
                     done = True
 
