@@ -26,13 +26,15 @@ HBACK_COLOR = (0, 0, 0)
 TEXT_COLOR = (255, 255, 255)
 TILE_COLOR = (200, 210, 140)
 
-
 FONT_SIZE = 50
 
 pygame.init()
 screen = pygame.display.set_mode( (1000,1000) )
 pygame.display.set_caption('Typing in things')
 screen.fill(BG_COLOR)
+
+CENTER_X = screen.get_rect().centerx
+CENTER_Y = screen.get_rect().centery
 
 font = pygame.font.Font(None, FONT_SIZE)
 
@@ -42,69 +44,50 @@ player_sprite = pygame.image.load('art/player.png').convert()
 # Display functions
 def display_tiles(gstate):
     text = font.render(''.join(gstate.pool), True, TILE_COLOR, BG_COLOR)
-    textRect = text.get_rect()
-    textRect.centerx = screen.get_rect().centerx + TILE_OFF_X
-    textRect.centery = screen.get_rect().centery + TILE_OFF_Y
+    text_rect = text.get_rect()
+    text_rect.centerx = CENTER_X + TILE_OFF_X
+    text_rect.centery = CENTER_Y + TILE_OFF_Y
 
-    screen.blit(text, textRect)
-
+    screen.blit(text, text_rect)
 
 def display_enemies(gstate):
     for ind, enemy in enumerate(gstate.enemies):
-        display_enemy(ind, enemy)
+        # TODO: center these dudes
+        offset_x = ind*(enemy_sprite.get_width() + ENEMY_PAD) + ENEMY_OFF_X
+        display_entity(enemy, enemy_sprite, offset_x)
 
-# TODO: center these dudes
-def display_enemy(ind, enemy):
-    enemyRect = enemy_sprite.get_rect()
-    offset_x = ind*(enemyRect.width + ENEMY_PAD) + ENEMY_OFF_X
-    enemyRect.centerx = screen.get_rect().centerx + offset_x
-    enemyRect.centery = screen.get_rect().centery
-    screen.blit(enemy_sprite, enemyRect)
+def display_entity(entity, sprite, offset_x=0, offset_y=0):
+    entity_rect = sprite.get_rect()
+
+    entity_rect.centerx = CENTER_X + offset_x
+    entity_rect.centery = CENTER_Y + offset_y
+    screen.blit(sprite, entity_rect)
 
     # display healthbar
-    hback_rect = pygame.Rect(enemyRect.left,
-                             enemyRect.bottom,
-                             enemyRect.width,
+    hback_rect = pygame.Rect(entity_rect.left,
+                             entity_rect.bottom,
+                             entity_rect.width,
                              HBAR_HEIGHT)
-    prop_fill = enemy.HP/enemy.maxHP
-    hfill_rect = pygame.Rect(enemyRect.left,
-                             enemyRect.bottom,
-                             int(enemyRect.width*prop_fill),
-                             HBAR_HEIGHT)
-    screen.fill(HBACK_COLOR, rect=hback_rect)
-    screen.fill(HFILL_COLOR, rect=hfill_rect)
-
-def display_player(gstate):
-    player = gstate.player
-    playerRect = player_sprite.get_rect()
-    playerRect.centerx = screen.get_rect().centerx + PLAYER_OFF_X
-    playerRect.centery = screen.get_rect().centerx + PLAYER_OFF_Y
-    screen.blit(player_sprite, playerRect)
-
-    hback_rect = pygame.Rect(playerRect.left,
-                             playerRect.bottom,
-                             playerRect.width,
-                             HBAR_HEIGHT)
-    prop_fill = player.HP/player.maxHP
-    hfill_rect = pygame.Rect(playerRect.left,
-                             playerRect.bottom,
-                             int(playerRect.width*prop_fill),
+    prop_fill = entity.HP/entity.maxHP
+    hfill_rect = pygame.Rect(entity_rect.left,
+                             entity_rect.bottom,
+                             int(entity_rect.width*prop_fill),
                              HBAR_HEIGHT)
     screen.fill(HBACK_COLOR, rect=hback_rect)
     screen.fill(HFILL_COLOR, rect=hfill_rect)
 
 def display_text(display_str):
     text = font.render(display_str, True, TEXT_COLOR, BG_COLOR)
-    textRect = text.get_rect()
-    textRect.centerx = screen.get_rect().centerx + TEXT_OFF_X
-    textRect.centery = screen.get_rect().centery + TEXT_OFF_Y
+    text_rect = text.get_rect()
+    text_rect.centerx = CENTER_X + TEXT_OFF_X
+    text_rect.centery = CENTER_Y + TEXT_OFF_Y
 
-    screen.blit(text, textRect)
+    screen.blit(text, text_rect)
 
 def display(gstate, display_str):
     screen.fill(BG_COLOR)
 
-    display_player(gstate)
+    display_entity(gstate.player, player_sprite, offset_x=PLAYER_OFF_X, offset_y=PLAYER_OFF_Y)
     display_enemies(gstate)
     display_tiles(gstate)
     display_text(display_str)

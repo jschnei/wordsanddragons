@@ -42,5 +42,4 @@ def check_attack(attack, pool):
 
 def get_damage(attack):
     attack_len = len(attack)
-    return (attack_len-1)*(attack_len-2)/2
-
+    return (attack_len-1)*(attack_len-2)//2
