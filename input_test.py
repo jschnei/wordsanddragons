@@ -3,7 +3,8 @@ import pygame
 
 from models import GameState
 
-GAME_FRAME = 50 # for some reason my mac runs this like 100 times slower than jon's laptop???
+# one frame = 10 ms
+GAME_FRAME = 500
 
 ENEMY_OFF_X = -200
 ENEMY_PAD = 5
@@ -122,12 +123,9 @@ def main():
 
     gstate.pretty_print()
 
-    while not done:
-        ticks += 1
-        if ticks%GAME_FRAME == 0:
-            gstate.tick()
-            gstate.pretty_print()
+    pygame.time.set_timer(pygame.USEREVENT, 10)
 
+    while not done:
         display(gstate, disp_str)
 
         for event in pygame.event.get():
@@ -142,6 +140,11 @@ def main():
                     gstate.pretty_print()
                 elif event.key == pygame.K_ESCAPE:
                     done = True
+            elif event.type == pygame.USEREVENT:
+                ticks += 1
+                if ticks%GAME_FRAME == 0:
+                    gstate.tick()
+                    gstate.pretty_print()
 
 if __name__ == '__main__':
     main()
