@@ -2,7 +2,8 @@ import util
 
 class Enemy:
     def __init__(self):
-        self.HP = 10
+        self.maxHP = 10
+        self.HP = self.maxHP
         self.name = 'standard_enemy'
         self.attack_damage = 1
         self.alive = True
@@ -44,7 +45,7 @@ class Player:
 class GameState:
     def __init__(self):
         self.player = Player()
-        self.enemies = {Enemy()}
+        self.enemies = [Enemy()]
         self.pool = util.generate_pool()
         self.turn = 0
 
@@ -65,7 +66,7 @@ class GameState:
             # player attack enemies
             for enemy in self.enemies:
                 enemy.take_damage(damage)
-            self.enemies = {enemy for enemy in self.enemies if enemy.alive}
+            self.enemies = [enemy for enemy in self.enemies if enemy.alive]
 
             # enemies attack player
             # TODO: put on timer
@@ -81,4 +82,4 @@ class GameState:
             enemy.attack(self.player)
 
         if self.turn % 10 == 0:
-            self.enemies.add(Enemy())
+            self.enemies.append(Enemy())

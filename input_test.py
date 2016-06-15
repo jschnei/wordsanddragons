@@ -2,7 +2,10 @@ import pygame
 
 from models import GameState
 
-GAME_FRAME = 5000
+GAME_FRAME = 500
+
+ENEMY_OFF_X = -200
+ENEMY_PAD = 5
 
 TEXT_OFF_X = 0
 TEXT_OFF_Y = 210
@@ -10,9 +13,14 @@ TEXT_OFF_Y = 210
 TILE_OFF_X = 0
 TILE_OFF_Y = 150
 
+HBAR_HEIGHT = 15
+
+BG_COLOR = (159, 182, 205)
+HFILL_COLOR = (255, 0, 0)
+HBACK_COLOR = (0, 0, 0)
 TEXT_COLOR = (255, 255, 255)
 TILE_COLOR = (200, 210, 140)
-BG_COLOR = (159, 182, 205)
+
 
 FONT_SIZE = 50
 
@@ -23,7 +31,7 @@ screen.fill(BG_COLOR)
 
 font = pygame.font.Font(None, FONT_SIZE)
 
-enemy = pygame.image.load('art/theboss.png').convert()
+enemy_sprite = pygame.image.load('art/smallboss.png').convert()
 
 # Display functions
 def display_tiles(gstate):
@@ -35,11 +43,32 @@ def display_tiles(gstate):
     screen.blit(text, textRect)
 
 
-def display_enemy(gstate):
-    enemyRect = enemy.get_rect()
-    enemyRect.centerx = screen.get_rect().centerx
+def display_enemies(gstate):
+    for ind, enemy in enumerate(gstate.enemies):
+        display_enemy(ind, enemy)
+
+# TODO: center these dudes
+def display_enemy(ind, enemy):
+    enemyRect = enemy_sprite.get_rect()
+    offset_x = ind*(enemyRect.width + ENEMY_PAD) + ENEMY_OFF_X
+    enemyRect.centerx = screen.get_rect().centerx + offset_x
     enemyRect.centery = screen.get_rect().centery
-    screen.blit(enemy, enemyRect)
+    screen.blit(enemy_sprite, enemyRect)
+
+    # display healthbar
+    hback_rect = pygame.Rect(enemyRect.left,
+                             enemyRect.bottom,
+                             enemyRect.width,
+                             HBAR_HEIGHT)
+    prop_fill = enemy.HP/enemy.maxHP
+    hfill_rect = pygame.Rect(enemyRect.left,
+                             enemyRect.bottom,
+                             int(enemyRect.width*prop_fill),
+                             HBAR_HEIGHT)
+    screen.fill(HBACK_COLOR, rect=hback_rect)
+    screen.fill(HFILL_COLOR, rect=hfill_rect)
+
+
 
 def display_text(display_str):
     text = font.render(display_str, True, TEXT_COLOR, BG_COLOR)
@@ -52,7 +81,7 @@ def display_text(display_str):
 def display(gstate, display_str):
     screen.fill(BG_COLOR)
 
-    display_enemy(gstate)
+    display_enemies(gstate)
     display_tiles(gstate)
     display_text(display_str)
 
