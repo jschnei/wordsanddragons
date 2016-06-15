@@ -26,6 +26,7 @@ class Enemy:
 class Player:
     def __init__(self):
         self.HP = 50
+        self.maxHP = 50
         self.name = 'player'
         self.attack_damage = 1
         self.alive = True
