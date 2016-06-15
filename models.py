@@ -1,11 +1,11 @@
 import util
 
-class Enemy:
-    def __init__(self):
-        self.maxHP = 30
+class Entity:
+    def __init__(self, maxHP, name, attack_damage):
+        self.maxHP = maxHP
         self.HP = self.maxHP
-        self.name = 'standard_enemy'
-        self.attack_damage = 1
+        self.name = name
+        self.attack_damage = attack_damage
         self.alive = True
 
     def take_damage(self, damage):
@@ -23,25 +23,15 @@ class Enemy:
     def __str__(self):
         return '['+self.name + ' ' + str(self.HP) + ']'
 
-class Player:
-    def __init__(self):
-        self.maxHP = 50
-        self.HP = self.maxHP
-        self.name = 'player'
-        self.attack_damage = 1
-        self.alive = True
+class Enemy(Entity):
+    def __init__(self, maxHP=30, name='anderson', attack_damage=1):
+        super().__init__(maxHP, name, attack_damage)
 
-    def take_damage(self, damage):
-        self.HP -= damage
-        if self.HP <=0:
-            self.die()
 
-    def die(self):
-        print("I died")
-        self.alive = False
+class Player(Entity):
+    def __init__(self, maxHP=50, name='player', attack_damage=1):
+        super().__init__(maxHP, name, attack_damage)
 
-    def __str__(self):
-        return '['+self.name + ' ' + str(self.HP) + ']'
 
 class GameState:
     def __init__(self):
@@ -69,13 +59,8 @@ class GameState:
                 enemy.take_damage(damage)
             self.enemies = [enemy for enemy in self.enemies if enemy.alive]
 
-            # enemies attack player
-            # TODO: put on timer
-
-
             # update the pool
             self.pool = util.generate_pool(new_pool)
-
 
     def tick(self):
         self.turn += 1
