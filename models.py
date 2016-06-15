@@ -2,7 +2,7 @@ import util
 
 class Enemy:
     def __init__(self):
-        self.maxHP = 10
+        self.maxHP = 30
         self.HP = self.maxHP
         self.name = 'standard_enemy'
         self.attack_damage = 1
@@ -25,8 +25,8 @@ class Enemy:
 
 class Player:
     def __init__(self):
-        self.HP = 50
         self.maxHP = 50
+        self.HP = self.maxHP
         self.name = 'player'
         self.attack_damage = 1
         self.alive = True

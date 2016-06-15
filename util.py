@@ -10,14 +10,14 @@ WORDLIST = {line.strip() for line in open(WORDLIST_FILE, 'r')}
 
 
 def weighted_choice(choices):
-   total = sum(w for c, w in choices)
-   r = random.uniform(0, total)
-   upto = 0
-   for c, w in choices:
-      if upto + w >= r:
-         return c
-      upto += w
-   assert False, "Shouldn't get here"
+    total = sum(w for c, w in choices)
+    r = random.uniform(0, total)
+    upto = 0
+    for c, w in choices:
+        if upto + w >= r:
+            return c
+        upto += w
+    assert False, "Shouldn't get here"
 
 def generate_pool(partial=[]):
     assert len(partial) <= POOL_SIZE, "Too many letters in partial pool"
@@ -41,4 +41,6 @@ def check_attack(attack, pool):
     return new_pool
 
 def get_damage(attack):
-    return 1
+    attack_len = len(attack)
+    return (attack_len-1)*(attack_len-2)/2
+
