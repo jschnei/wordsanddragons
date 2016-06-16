@@ -26,11 +26,9 @@ class GameState(object):
         if not new_pool:
             print("You dumbo!")
         else:
-            # resolve combat
-            damage = util.get_damage(attack)
-
             # player attack enemies
             for enemy in self.enemies:
+                damage = enemy.calculate_damage_taken(attack)
                 enemy.take_damage(damage)
             self.enemies = [enemy for enemy in self.enemies if enemy.alive]
 

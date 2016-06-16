@@ -8,13 +8,16 @@ class Entity(object):
         self.attack_damage = attack_damage
         self.alive = True
 
+    def calculate_damage_taken(self, attack_word):
+        return util.get_triangle_damage(attack_word)
+
     def take_damage(self, damage):
         self.HP -= damage
         if self.HP <=0:
             self.die()
 
     def die(self):
-        print("I died")
+        print(self.name + " died")
         self.alive = False
 
     def attack(self, target):

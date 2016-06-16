@@ -44,6 +44,6 @@ def check_attack(attack, pool):
     new_pool = [p[0] for p in used_pool if not p[1]]
     return new_pool
 
-def get_damage(attack):
+def get_triangle_damage(attack):
     attack_len = len(attack)
     return (attack_len-1)*(attack_len-2)//2
