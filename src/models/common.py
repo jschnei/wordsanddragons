@@ -17,7 +17,7 @@ class Entity(object):
             self.die()
 
     def die(self):
-        print("I died")
+        print(self.name + " died")
         self.alive = False
 
     def attack(self, target):
