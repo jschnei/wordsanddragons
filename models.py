@@ -32,12 +32,36 @@ class Player(Entity):
     def __init__(self, maxHP=50, name='player', attack_damage=1):
         super(Player, self).__init__(maxHP, name, attack_damage)
 
+# recycle first 3 in pool
+def skill_recycle(num=3):
+    def skill(gstate):
+        gstate.pool = gstate.pool[num:] + [util.sample_letter() for _ in range(num)]
+    return skill
+
+class Skill(object):
+    def __init__(self, skill, max_cooldown=5):
+        self.max_cooldown = max_cooldown
+        self.cooldown = 0
+        self.skill = skill
+
+    def activate(self, gstate):
+        if self.cooldown > 0:
+            print('You cooldown dummy!')
+            return
+        self.skill(gstate)
+        self.cooldown = self.max_cooldown
+
+    def tick(self):
+        if self.cooldown > 0:
+            self.cooldown -= 1
+
 
 class GameState(object):
     def __init__(self):
         self.player = Player()
         self.enemies = [Enemy()]
         self.pool = util.generate_pool()
+        self.skills = [Skill(skill_recycle())]
         self.turn = 0
 
     def pretty_print(self):
@@ -45,6 +69,10 @@ class GameState(object):
         print(self.player)
         for enemy in self.enemies:
             print(enemy)
+
+    def use_skill(self, ind):
+        assert ind < len(self.skills), "invalid skill num"
+        self.skills[ind].activate(self)
 
     def process_attack(self, attack):
         new_pool = util.check_attack(attack, self.pool)
@@ -67,8 +95,11 @@ class GameState(object):
         for enemy in self.enemies:
             enemy.attack(self.player)
 
+        for skill in self.skills:
+            skill.tick()
+
         if self.turn % 10 == 0:
             self.enemies.append(Enemy())
-    
+
     def is_game_over(self):
-        return not self.player.alive or len(self.enemies) == 0
+        return not self.player.alive

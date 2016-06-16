@@ -112,6 +112,7 @@ def main():
     disp_str = ''
 
     letter_keys = range(pygame.K_a, pygame.K_z+1)
+    skill_keys = range(pygame.K_1, pygame.K_9+1)
     alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
     gstate.pretty_print()
@@ -120,7 +121,7 @@ def main():
 
     while not done:
         display(gstate, disp_str)
-        
+
         for event in pygame.event.get():
             if gstate.is_game_over(): # Eat events so we can still interact - only exit game is allowed
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
@@ -129,6 +130,10 @@ def main():
             if event.type == pygame.KEYDOWN:
                 if event.key in letter_keys:
                     disp_str += chr(event.key).upper()
+                elif event.key in skill_keys:
+                    skill_ind = event.key - pygame.K_1
+                    if skill_ind < len(gstate.skills):
+                        gstate.use_skill(skill_ind)
                 elif event.key == pygame.K_BACKSPACE:
                     disp_str = disp_str[:-1]
                 elif event.key == pygame.K_RETURN:

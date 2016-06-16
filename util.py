@@ -19,11 +19,14 @@ def weighted_choice(choices):
         upto += w
     assert False, "Shouldn't get here"
 
+def sample_letter(freq=LETTER_FREQ):
+    assert len(freq)==26, "Freq array has size != 26"
+    return weighted_choice(list(zip(ALPHABET, freq)))
+
 def generate_pool(partial=[]):
     assert len(partial) <= POOL_SIZE, "Too many letters in partial pool"
     adj_freq = [LETTER_FREQ[i] * (1./2. ** partial.count(ALPHABET[i])) for i in range(26)] # magic number testing
-    choices = list(zip(ALPHABET, adj_freq))
-    return partial + [weighted_choice(choices) for _ in range(POOL_SIZE - len(partial))]
+    return partial + [sample_letter(adj_freq) for _ in range(POOL_SIZE - len(partial))]
 
 def check_attack(attack, pool):
     if attack not in WORDLIST:
