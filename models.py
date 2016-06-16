@@ -1,6 +1,6 @@
 import util
 
-class Entity:
+class Entity(object):
     def __init__(self, maxHP, name, attack_damage):
         self.maxHP = maxHP
         self.HP = self.maxHP
@@ -33,7 +33,7 @@ class Player(Entity):
         super(Player, self).__init__(maxHP, name, attack_damage)
 
 
-class GameState:
+class GameState(object):
     def __init__(self):
         self.player = Player()
         self.enemies = [Enemy()]
