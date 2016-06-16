@@ -120,8 +120,12 @@ def main():
 
     while not done:
         display(gstate, disp_str)
-
+        
         for event in pygame.event.get():
+            if gstate.is_game_over(): # Eat events so we can still interact - only exit game is allowed
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                    done = True
+                continue
             if event.type == pygame.KEYDOWN:
                 if event.key in letter_keys:
                     disp_str += chr(event.key).upper()

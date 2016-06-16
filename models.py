@@ -69,3 +69,6 @@ class GameState:
 
         if self.turn % 10 == 0:
             self.enemies.append(Enemy())
+    
+    def is_game_over(self):
+        return not self.player.alive
