@@ -1,12 +1,12 @@
 import util
 from models.player import Player
-from models.enemies import Enemy
+from models.enemies import Enemy, DoubleLetterEnemy
 from models.skills import skill_recycle
 
 class GameState(object):
     def __init__(self):
         self.player = Player()
-        self.enemies = [Enemy()]
+        self.enemies = [Enemy(), DoubleLetterEnemy()]
         self.pool = util.generate_pool()
         self.skills = [skill_recycle()]
         self.turn = 0
