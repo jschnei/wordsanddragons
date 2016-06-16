@@ -21,7 +21,8 @@ def weighted_choice(choices):
 
 def generate_pool(partial=[]):
     assert len(partial) <= POOL_SIZE, "Too many letters in partial pool"
-    choices = list(zip(ALPHABET, LETTER_FREQ))
+    adj_freq = [LETTER_FREQ[i] * (1./2. ** partial.count(ALPHABET[i])) for i in range(26)] # magic number testing
+    choices = list(zip(ALPHABET, adj_freq))
     return partial + [weighted_choice(choices) for _ in range(POOL_SIZE - len(partial))]
 
 def check_attack(attack, pool):
