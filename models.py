@@ -25,12 +25,12 @@ class Entity:
 
 class Enemy(Entity):
     def __init__(self, maxHP=30, name='anderson', attack_damage=1):
-        super().__init__(maxHP, name, attack_damage)
+        super(Enemy, self).__init__(maxHP, name, attack_damage)
 
 
 class Player(Entity):
     def __init__(self, maxHP=50, name='player', attack_damage=1):
-        super().__init__(maxHP, name, attack_damage)
+        super(Player, self).__init__(maxHP, name, attack_damage)
 
 
 class GameState:
