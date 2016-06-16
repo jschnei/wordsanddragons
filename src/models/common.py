@@ -1,3 +1,5 @@
+import util
+
 class Entity(object):
     def __init__(self, maxHP, name, attack_damage):
         self.maxHP = maxHP
@@ -5,6 +7,9 @@ class Entity(object):
         self.name = name
         self.attack_damage = attack_damage
         self.alive = True
+        
+    def calculate_damage_taken(self, attack_word):
+        return util.get_triangle_damage(attack_word)
 
     def take_damage(self, damage):
         self.HP -= damage
