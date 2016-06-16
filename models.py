@@ -71,4 +71,4 @@ class GameState(object):
             self.enemies.append(Enemy())
     
     def is_game_over(self):
-        return not self.player.alive
+        return not self.player.alive or len(self.enemies) == 0
