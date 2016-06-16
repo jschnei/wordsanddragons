@@ -1,7 +1,7 @@
 from __future__ import print_function, division
 import pygame
 
-from models import GameState
+from game_state import GameState
 
 # one frame = 10 ms
 GAME_FRAME = 500
