@@ -1,7 +1,7 @@
 from __future__ import print_function, division
 import pygame
 
-from models import GameState
+from models.gamestate import GameState
 
 # one frame = 10 ms
 GAME_FRAME = 500
@@ -41,8 +41,8 @@ CENTER_Y = screen.get_rect().centery
 font = pygame.font.Font(None, FONT_SIZE)
 hp_font = pygame.font.Font(None, HP_FONT_SIZE)
 
-enemy_sprite = pygame.image.load('art/smallboss.png').convert()
-player_sprite = pygame.image.load('art/player.png').convert()
+enemy_sprite = pygame.image.load('../art/smallboss.png').convert()
+player_sprite = pygame.image.load('../art/player.png').convert()
 
 # Display functions
 def display_tiles(gstate):
