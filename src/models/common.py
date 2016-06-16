@@ -7,7 +7,8 @@ class Entity(object):
         self.name = name
         self.attack_damage = attack_damage
         self.alive = True
-        
+        self.passives = []
+
     def calculate_damage_taken(self, attack_word):
         return util.get_triangle_damage(attack_word)
 

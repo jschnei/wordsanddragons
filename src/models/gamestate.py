@@ -1,14 +1,14 @@
-import util
 from models.player import Player
 from models.enemies import Enemy, DoubleLetterEnemy
-from models.skills import skill_recycle
+from models.skills import skill_recycle, skill_spawn_enemy
+import util
 
 class GameState(object):
     def __init__(self):
         self.player = Player()
         self.enemies = [Enemy(), DoubleLetterEnemy()]
         self.pool = util.generate_pool()
-        self.skills = [skill_recycle()]
+        self.passives = [skill_spawn_enemy()]
         self.turn = 0
 
     def pretty_print(self):
@@ -40,11 +40,18 @@ class GameState(object):
         for enemy in self.enemies:
             enemy.attack(self.player)
 
-        for skill in self.skills:
-            skill.tick()
+        for skill in self.player.actives:
+            skill.tick(self)
 
-        if self.turn % 10 == 0:
-            self.enemies.append(Enemy())
+        for skill in self.player.passives:
+            skill.tick(self)
+
+        for enemy in self.enemies:
+            for skill in enemy.passives:
+                skill.tick(self)
+
+        for skill in self.passives:
+            skill.tick(self)
 
     def is_game_over(self):
         return not self.player.alive or len(self.enemies) == 0
