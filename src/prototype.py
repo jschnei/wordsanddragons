@@ -81,7 +81,7 @@ def display_entity(entity, sprite, offset_x=0, offset_y=0):
                              int(entity_rect.width*prop_fill),
                              HBAR_HEIGHT)
     
-    # display enemy name
+    # display entity name
     name_text = name_font.render(entity.name, True, NAME_TEXT_COLOR)
     name_text_rect = pygame.Rect(entity_rect.left, entity_rect.top - NAMEBAR_HEIGHT, entity_rect.width, NAMEBAR_HEIGHT)
     screen.blit(name_text, name_text_rect)
