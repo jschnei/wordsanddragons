@@ -1,6 +1,8 @@
 from models.player import Player
 from models.enemies import Enemy, DoubleLetterEnemy
+from models.passive_skills import heal_skill
 from models.skills import skill_recycle, skill_spawn_enemy
+
 import util
 
 class GameState(object):
@@ -9,6 +11,7 @@ class GameState(object):
         self.enemies = [Enemy(), DoubleLetterEnemy()]
         self.pool = util.generate_pool()
         self.passives = [skill_spawn_enemy()]
+        self.passive_skills = [heal_skill]
         self.turn = 0
 
     def pretty_print(self):
@@ -26,6 +29,11 @@ class GameState(object):
         if not new_pool:
             print("You dumbo!")
         else:
+            # apply passive skills
+            for ps in self.passive_skills:
+                if ps.activated_by_func(attack, self):
+                    ps.effect(self)
+
             # player attack enemies
             for enemy in self.enemies:
                 damage = enemy.calculate_damage_taken(attack)
