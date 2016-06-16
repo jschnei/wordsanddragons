@@ -25,8 +25,10 @@ HFILL_COLOR = (255, 0, 0)
 HBACK_COLOR = (0, 0, 0)
 TEXT_COLOR = (255, 255, 255)
 TILE_COLOR = (200, 210, 140)
+HP_TEXT_COLOR = (255, 255, 255)
 
 FONT_SIZE = 50
+HP_FONT_SIZE = 20
 
 pygame.init()
 screen = pygame.display.set_mode( (1000,1000) )
@@ -37,6 +39,7 @@ CENTER_X = screen.get_rect().centerx
 CENTER_Y = screen.get_rect().centery
 
 font = pygame.font.Font(None, FONT_SIZE)
+hp_font = pygame.font.Font(None, HP_FONT_SIZE)
 
 enemy_sprite = pygame.image.load('art/smallboss.png').convert()
 player_sprite = pygame.image.load('art/player.png').convert()
@@ -73,8 +76,15 @@ def display_entity(entity, sprite, offset_x=0, offset_y=0):
                              entity_rect.bottom,
                              int(entity_rect.width*prop_fill),
                              HBAR_HEIGHT)
+
+    hp_text = hp_font.render(str(entity.HP)+'/'+str(entity.maxHP), True, HP_TEXT_COLOR)
+    hp_text_rect = hp_text.get_rect()
+    hp_text_rect.centerx = hback_rect.centerx
+    hp_text_rect.centery = hback_rect.centery
+
     screen.fill(HBACK_COLOR, rect=hback_rect)
     screen.fill(HFILL_COLOR, rect=hfill_rect)
+    screen.blit(hp_text, hp_text_rect)
 
 def display_text(display_str):
     text = font.render(display_str, True, TEXT_COLOR, BG_COLOR)
