@@ -2,7 +2,7 @@ from __future__ import print_function, division
 import pygame
 import math
 
-from models.gamestate import GameState
+from models.gamestate import GameState, GameMode
 
 # one frame = 10 ms
 PRINT_GAMESTATE_FRAME = 500
@@ -152,7 +152,8 @@ def display(gstate, display_str):
 
     display_entity(gstate.player, player_sprite, offset_x=PLAYER_OFF_X, offset_y=PLAYER_OFF_Y)
     display_enemies(gstate)
-    display_tiles(gstate)
+    if gstate.game_mode == GameMode.OFFENSE:
+        display_tiles(gstate)
     display_skills(gstate)
     display_text(display_str)
 
@@ -192,9 +193,14 @@ def main():
                 elif event.key == pygame.K_BACKSPACE:
                     disp_str = disp_str[:-1]
                 elif event.key == pygame.K_RETURN:
-                    gstate.process_attack(disp_str)
+                    if gstate.game_mode == GameMode.OFFENSE:
+                        gstate.process_attack(disp_str)
+                    elif gstate.game_mode == GameMode.DEFENSE:
+                        gstate.process_defense(disp_str)
                     disp_str = ''
                     gstate.pretty_print()
+                elif event.key == pygame.K_TAB:
+                    gstate.switch_modes()
                 elif event.key == pygame.K_ESCAPE:
                     done = True
             elif event.type == pygame.USEREVENT:

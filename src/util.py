@@ -8,6 +8,21 @@ WORDLIST_FILE = '../sowpods.txt'
 # generate wordlist
 WORDLIST = {line.strip() for line in open(WORDLIST_FILE, 'r')}
 
+# check if letters in freq1 are a subset of letters in freq2
+def contained_in(freq1, freq2):
+    return all([freq1[c] <= freq2[c] for c in ALPHABET])
+
+def get_freq(letters):
+    freq = {c: 0 for c in ALPHABET}
+    for c in letters:
+        freq[c]+=1
+    return freq
+
+def random_word(length=None):
+    if not length:
+        return random.choice(list(WORDLIST))
+    else:
+        return random.choice([word for word in WORDLIST if len(word)==length])
 
 def weighted_choice(choices):
     total = sum(w for c, w in choices)

@@ -9,9 +9,6 @@ class Entity(object):
         self.alive = True
         self.skills = []
 
-    def calculate_damage_taken(self, attack_word):
-        return util.get_triangle_damage(attack_word)
-
     def heal(self, amount):
         self.HP += amount
         if self.HP > self.maxHP:
