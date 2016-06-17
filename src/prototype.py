@@ -1,5 +1,6 @@
 from __future__ import print_function, division
 import pygame
+import math
 
 from models.gamestate import GameState
 
@@ -84,6 +85,14 @@ def display_skills(gstate):
         skill_rect.centerx = screen.get_rect().right + SKILL_OFF_X
         skill_rect.centery = skill_index*(SKILL_HEIGHT + SKILL_PAD) + SKILL_OFF_Y
         screen.blit(skill_sprite, skill_rect)
+
+        #display cooldown text
+        cooldown_seconds = int(math.ceil(skill.cooldown/100))
+        cooldown_text = font.render(str(cooldown_seconds), True, TILE_COLOR, BG_COLOR)
+        cooldown_rect = cooldown_text.get_rect()
+        cooldown_rect.centerx = skill_rect.centerx
+        cooldown_rect.centery = skill_rect.centery
+        screen.blit(cooldown_text, cooldown_rect)
 
 def display_entity(entity, sprite, offset_x=0, offset_y=0):
     entity_rect = sprite.get_rect()
