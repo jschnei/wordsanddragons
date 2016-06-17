@@ -18,6 +18,14 @@ PLAYER_OFF_Y = 280
 TILE_OFF_X = 0
 TILE_OFF_Y = 150
 
+#distance from right side of screen
+SKILL_OFF_X = -100
+#distance from top of screen
+SKILL_OFF_Y = 400
+SKILL_WIDTH = 50
+SKILL_HEIGHT = 50
+SKILL_PAD = 10
+
 HBAR_HEIGHT = 15
 NAMEBAR_HEIGHT = 15
 
@@ -47,6 +55,9 @@ name_font = pygame.font.Font(None, HP_FONT_SIZE)
 
 enemy_sprite = pygame.image.load('../art/smallboss.png').convert()
 player_sprite = pygame.image.load('../art/player.png').convert()
+recycle_sprite = pygame.image.load('../art/recycle.jpg').convert()
+
+skill_bar_sprites = [recycle_sprite]
 
 # Display functions
 def display_tiles(gstate):
@@ -62,6 +73,17 @@ def display_enemies(gstate):
         # TODO: center these dudes
         offset_x = ind*(enemy_sprite.get_width() + ENEMY_PAD) + ENEMY_OFF_X
         display_entity(enemy, enemy_sprite, offset_x)
+
+def display_skills(gstate):
+    for skill_button, skill in gstate.player.skill_bar.iteritems():
+        skill_index = int(skill_button)-1
+        skill_sprite = skill_bar_sprites[skill_index]
+        skill_sprite = pygame.transform.scale(skill_sprite, (SKILL_WIDTH, SKILL_HEIGHT))
+
+        skill_rect = skill_sprite.get_rect()
+        skill_rect.centerx = screen.get_rect().right + SKILL_OFF_X
+        skill_rect.centery = skill_index*(SKILL_HEIGHT + SKILL_PAD) + SKILL_OFF_Y
+        screen.blit(skill_sprite, skill_rect)
 
 def display_entity(entity, sprite, offset_x=0, offset_y=0):
     entity_rect = sprite.get_rect()
@@ -109,6 +131,7 @@ def display(gstate, display_str):
     display_entity(gstate.player, player_sprite, offset_x=PLAYER_OFF_X, offset_y=PLAYER_OFF_Y)
     display_enemies(gstate)
     display_tiles(gstate)
+    display_skills(gstate)
     display_text(display_str)
 
     pygame.display.update()
