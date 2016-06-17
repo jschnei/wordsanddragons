@@ -37,10 +37,12 @@ TEXT_COLOR = (255, 255, 255)
 TILE_COLOR = (200, 210, 140)
 HP_TEXT_COLOR = (255, 255, 255)
 NAME_TEXT_COLOR = (255, 255, 255)
+SKILL_COOLDOWN_COLOR = (0, 255, 0)
 
 FONT_SIZE = 50
 HP_FONT_SIZE = 20
 NAME_FONT_SIZE = 20
+SKILL_FONT_SIZE = 70
 
 pygame.init()
 screen = pygame.display.set_mode( (1000,1000) )
@@ -53,6 +55,7 @@ CENTER_Y = screen.get_rect().centery
 font = pygame.font.Font(None, FONT_SIZE)
 hp_font = pygame.font.Font(None, HP_FONT_SIZE)
 name_font = pygame.font.Font(None, HP_FONT_SIZE)
+skill_font = pygame.font.Font(None, SKILL_FONT_SIZE)
 
 enemy_sprite = pygame.image.load('../art/smallboss.png').convert()
 player_sprite = pygame.image.load('../art/player.png').convert()
@@ -88,11 +91,15 @@ def display_skills(gstate):
 
         #display cooldown text
         cooldown_seconds = int(math.ceil(skill.cooldown/100))
-        cooldown_text = font.render(str(cooldown_seconds), True, TILE_COLOR, BG_COLOR)
-        cooldown_rect = cooldown_text.get_rect()
+        cooldown_text = skill_font.render(str(cooldown_seconds), False, SKILL_COOLDOWN_COLOR)
+        cooldown_transparent = pygame.Surface(cooldown_text.get_size())
+        cooldown_transparent.blit(cooldown_text, (0,0))
+        cooldown_transparent.set_colorkey((0,0,0))
+        cooldown_transparent.set_alpha(150)
+        cooldown_rect = cooldown_transparent.get_rect()
         cooldown_rect.centerx = skill_rect.centerx
         cooldown_rect.centery = skill_rect.centery
-        screen.blit(cooldown_text, cooldown_rect)
+        screen.blit(cooldown_transparent, cooldown_rect)
 
 def display_entity(entity, sprite, offset_x=0, offset_y=0):
     entity_rect = sprite.get_rect()
