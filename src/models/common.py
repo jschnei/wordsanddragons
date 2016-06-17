@@ -26,5 +26,8 @@ class Entity(object):
     def attack(self, target):
         target.take_damage(self.attack_damage)
 
+    def disp_str(self):
+        return str(self.HP)+'/'+str(self.maxHP)
+
     def __str__(self):
         return '['+self.name + ' ' + str(self.HP) + ']'

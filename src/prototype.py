@@ -14,6 +14,7 @@ ENEMY_PAD = 5
 PROJ_BEGIN = ENEMY_OFF_Y + 100
 PROJ_DIST = 200
 PROJ_END = PROJ_BEGIN + PROJ_DIST
+PROJ_SIZE = (100, 100)
 
 TEXT_OFF_X = 0
 TEXT_OFF_Y = 210
@@ -64,7 +65,7 @@ name_font = pygame.font.Font(None, HP_FONT_SIZE)
 skill_font = pygame.font.Font(None, SKILL_FONT_SIZE)
 
 enemy_sprite = pygame.image.load('../art/smallboss.png').convert()
-proj_sprite = pygame.image.load('')
+proj_sprite = pygame.transform.scale(pygame.image.load('../art/rock.jpg').convert(), (PROJ_SIZE))
 player_sprite = pygame.image.load('../art/player.png').convert()
 recycle_sprite = pygame.image.load('../art/recycle.jpg').convert()
 
@@ -79,7 +80,7 @@ def display_tiles(gstate):
     text = font.render(''.join(gstate.pool), True, color, BG_COLOR)
     text_rect = text.get_rect()
     text_rect.centerx = CENTER_X + TILE_OFF_X
-    text_rect.centery = CENTER_Y + TILE_OFF_Y
+    text_rect.centery = CENTER_Y + TILE_OFF_Y   
 
     screen.blit(text, text_rect)
 
@@ -90,9 +91,10 @@ def display_enemies(gstate):
         display_entity(enemy, enemy_sprite, offset_x, ENEMY_OFF_Y)
 
 def display_projectiles(gstate):
+    print(len(gstate.projectiles))
     for ind, proj in enumerate(gstate.projectiles):
-        yfrac = proj.time / proj.max_time
-        y = PROJ_DIST * yfrac + PROJ_BEGIN
+        yfrac = 1-proj.time / proj.max_time
+        y = PROJ_BEGIN + PROJ_DIST * yfrac
         x = ind*(enemy_sprite.get_width() + ENEMY_PAD) + ENEMY_OFF_X
         display_entity(proj, proj_sprite, x, y)
 
@@ -148,7 +150,7 @@ def display_entity(entity, sprite, offset_x=0, offset_y=0):
     name_text_rect = pygame.Rect(entity_rect.left, entity_rect.top - NAMEBAR_HEIGHT, entity_rect.width, NAMEBAR_HEIGHT)
     screen.blit(name_text, name_text_rect)
 
-    hp_text = hp_font.render(str(entity.HP)+'/'+str(entity.maxHP), True, HP_TEXT_COLOR)
+    hp_text = hp_font.render(entity.disp_str(), True, HP_TEXT_COLOR)
     hp_text_rect = hp_text.get_rect()
     hp_text_rect.centerx = hback_rect.centerx
     hp_text_rect.centery = hback_rect.centery
@@ -171,11 +173,7 @@ def display(gstate, display_str):
     display_entity(gstate.player, player_sprite, offset_x=PLAYER_OFF_X, offset_y=PLAYER_OFF_Y)
     display_enemies(gstate)
     display_tiles(gstate)
-    display_rocks(gstate)
-    # if gstate.game_mode == GameMode.OFFENSE:
-    #     display_tiles(gstate)
-    # else:
-    #     display_tiles(gstate)    
+    display_projectiles(gstate)
     display_skills(gstate)
     display_text(display_str)
 

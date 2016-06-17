@@ -68,5 +68,8 @@ class RockProjectile(Projectile):
         gstate.player.take_damage(self.attack_damage - len(attack))
         self.die()
 
+    def disp_str(self):
+        return ''.join(self.letters)
+
     def __str__(self):
         return '['+self.name + ' ' + str(self.HP) + ' ' + str(self.letters) + ']'
