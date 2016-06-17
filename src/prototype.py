@@ -80,7 +80,7 @@ def display_entity(entity, sprite, offset_x=0, offset_y=0):
                              entity_rect.bottom,
                              int(entity_rect.width*prop_fill),
                              HBAR_HEIGHT)
-    
+
     # display entity name
     name_text = name_font.render(entity.name, True, NAME_TEXT_COLOR)
     name_text_rect = pygame.Rect(entity_rect.left, entity_rect.top - NAMEBAR_HEIGHT, entity_rect.width, NAMEBAR_HEIGHT)
@@ -140,9 +140,10 @@ def main():
                 if event.key in letter_keys:
                     disp_str += chr(event.key).upper()
                 elif event.key in skill_keys:
-                    skill_ind = event.key - pygame.K_1
-                    if skill_ind < len(gstate.skills):
-                        gstate.use_skill(skill_ind)
+                    skill_key = chr(event.key)
+                    skill = gstate.player.skill_bar.get(skill_key, None)
+                    if skill:
+                        skill.activate(gstate)
                 elif event.key == pygame.K_BACKSPACE:
                     disp_str = disp_str[:-1]
                 elif event.key == pygame.K_RETURN:

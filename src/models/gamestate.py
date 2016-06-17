@@ -1,6 +1,5 @@
 from models.player import Player
 from models.enemies import Enemy, DoubleLetterEnemy
-from models.passive_skills import heal_skill
 from models.skills import skill_recycle, skill_spawn_enemy
 
 import util
@@ -10,8 +9,7 @@ class GameState(object):
         self.player = Player()
         self.enemies = [Enemy(), DoubleLetterEnemy()]
         self.pool = util.generate_pool()
-        self.passives = [skill_spawn_enemy()]
-        self.passive_skills = [heal_skill]
+        self.skills = [skill_spawn_enemy()]
         self.turn = 0
 
     def pretty_print(self):
@@ -20,19 +18,15 @@ class GameState(object):
         for enemy in self.enemies:
             print(enemy)
 
-    def use_skill(self, ind):
-        assert ind < len(self.skills), "invalid skill num"
-        self.skills[ind].activate(self)
-
     def process_attack(self, attack):
         new_pool = util.check_attack(attack, self.pool)
         if not new_pool:
             print("You dumbo!")
         else:
             # apply passive skills
-            for ps in self.passive_skills:
-                if ps.activated_by_func(attack, self):
-                    ps.effect(self)
+            for skill in self.player.skills:
+                if skill.trigger=='attack':
+                    skill.activate(self, word=attack)
 
             # player attack enemies
             for enemy in self.enemies:
@@ -48,18 +42,18 @@ class GameState(object):
         for enemy in self.enemies:
             enemy.attack(self.player)
 
-        for skill in self.player.actives:
-            skill.tick(self)
-
-        for skill in self.player.passives:
-            skill.tick(self)
-
-        for enemy in self.enemies:
-            for skill in enemy.passives:
+        for skill in self.player.skills:
+            if skill.trigger=='tick':
                 skill.tick(self)
 
-        for skill in self.passives:
-            skill.tick(self)
+        for enemy in self.enemies:
+            for skill in enemy.skills:
+                if skill.trigger=='tick':
+                    skill.tick(self)
+
+        for skill in self.skills:
+            if skill.trigger=='tick':
+                skill.tick(self)
 
     def is_game_over(self):
         return not self.player.alive or len(self.enemies) == 0
