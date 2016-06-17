@@ -8,7 +8,12 @@ from models.gamestate import GameState, GameMode
 PRINT_GAMESTATE_FRAME = 500
 
 ENEMY_OFF_X = -200
+ENEMY_OFF_Y = -300
 ENEMY_PAD = 5
+
+PROJ_BEGIN = ENEMY_OFF_Y + 100
+PROJ_DIST = 200
+PROJ_END = PROJ_BEGIN + PROJ_DIST
 
 TEXT_OFF_X = 0
 TEXT_OFF_Y = 210
@@ -35,6 +40,7 @@ HFILL_COLOR = (255, 0, 0)
 HBACK_COLOR = (0, 0, 0)
 TEXT_COLOR = (255, 255, 255)
 TILE_COLOR = (200, 210, 140)
+TILE_COLOR_DEFENSE = (100, 100, 100)
 HP_TEXT_COLOR = (255, 255, 255)
 NAME_TEXT_COLOR = (255, 255, 255)
 SKILL_COOLDOWN_COLOR = (0, 255, 0)
@@ -58,6 +64,7 @@ name_font = pygame.font.Font(None, HP_FONT_SIZE)
 skill_font = pygame.font.Font(None, SKILL_FONT_SIZE)
 
 enemy_sprite = pygame.image.load('../art/smallboss.png').convert()
+proj_sprite = pygame.image.load('')
 player_sprite = pygame.image.load('../art/player.png').convert()
 recycle_sprite = pygame.image.load('../art/recycle.jpg').convert()
 
@@ -65,7 +72,11 @@ skill_bar_sprites = [recycle_sprite]
 
 # Display functions
 def display_tiles(gstate):
-    text = font.render(''.join(gstate.pool), True, TILE_COLOR, BG_COLOR)
+    if gstate.game_mode == GameMode.OFFENSE:
+        color = TILE_COLOR
+    else:
+        color = TILE_COLOR_DEFENSE
+    text = font.render(''.join(gstate.pool), True, color, BG_COLOR)
     text_rect = text.get_rect()
     text_rect.centerx = CENTER_X + TILE_OFF_X
     text_rect.centery = CENTER_Y + TILE_OFF_Y
@@ -76,7 +87,14 @@ def display_enemies(gstate):
     for ind, enemy in enumerate(gstate.enemies):
         # TODO: center these dudes
         offset_x = ind*(enemy_sprite.get_width() + ENEMY_PAD) + ENEMY_OFF_X
-        display_entity(enemy, enemy_sprite, offset_x)
+        display_entity(enemy, enemy_sprite, offset_x, ENEMY_OFF_Y)
+
+def display_projectiles(gstate):
+    for ind, proj in enumerate(gstate.projectiles):
+        yfrac = proj.time / proj.max_time
+        y = PROJ_DIST * yfrac + PROJ_BEGIN
+        x = ind*(enemy_sprite.get_width() + ENEMY_PAD) + ENEMY_OFF_X
+        display_entity(proj, proj_sprite, x, y)
 
 def display_skills(gstate):
     for skill_button, skill in gstate.player.skill_bar.items():
@@ -152,8 +170,12 @@ def display(gstate, display_str):
 
     display_entity(gstate.player, player_sprite, offset_x=PLAYER_OFF_X, offset_y=PLAYER_OFF_Y)
     display_enemies(gstate)
-    if gstate.game_mode == GameMode.OFFENSE:
-        display_tiles(gstate)
+    display_tiles(gstate)
+    display_rocks(gstate)
+    # if gstate.game_mode == GameMode.OFFENSE:
+    #     display_tiles(gstate)
+    # else:
+    #     display_tiles(gstate)    
     display_skills(gstate)
     display_text(display_str)
 
