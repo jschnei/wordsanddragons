@@ -80,7 +80,7 @@ def display_tiles(gstate):
     text = font.render(''.join(gstate.pool), True, color, BG_COLOR)
     text_rect = text.get_rect()
     text_rect.centerx = CENTER_X + TILE_OFF_X
-    text_rect.centery = CENTER_Y + TILE_OFF_Y   
+    text_rect.centery = CENTER_Y + TILE_OFF_Y
 
     screen.blit(text, text_rect)
 
@@ -91,7 +91,6 @@ def display_enemies(gstate):
         display_entity(enemy, enemy_sprite, offset_x, ENEMY_OFF_Y)
 
 def display_projectiles(gstate):
-    print(len(gstate.projectiles))
     for ind, proj in enumerate(gstate.projectiles):
         yfrac = 1-proj.time / proj.max_time
         y = PROJ_BEGIN + PROJ_DIST * yfrac
