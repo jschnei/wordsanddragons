@@ -101,6 +101,12 @@ def display_skills(gstate):
         cooldown_rect.centery = skill_rect.centery
         screen.blit(cooldown_transparent, cooldown_rect)
 
+        cooldown_proportion = skill.cooldown/skill.max_cooldown
+        cooldown_background_width = int(cooldown_proportion*SKILL_WIDTH)
+        cooldown_background = pygame.Surface((cooldown_background_width, SKILL_HEIGHT))
+        cooldown_background.set_alpha(60)
+        screen.blit(cooldown_background, skill_rect)
+
 def display_entity(entity, sprite, offset_x=0, offset_y=0):
     entity_rect = sprite.get_rect()
 
