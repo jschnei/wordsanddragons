@@ -38,13 +38,13 @@ class GameState(object):
             self.pool = util.generate_pool(new_pool)
 
     def tick(self):
-        self.turn += 1
-        for enemy in self.enemies:
-            enemy.attack(self.player)
-
         for skill in self.player.skills:
             if skill.trigger=='tick':
                 skill.tick(self)
+
+        # assuming here that all skill bar skills are actives
+        for skill in self.player.skill_bar.values():
+            skill.tick(self)
 
         for enemy in self.enemies:
             for skill in enemy.skills:

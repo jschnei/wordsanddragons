@@ -4,7 +4,7 @@ import pygame
 from models.gamestate import GameState
 
 # one frame = 10 ms
-GAME_FRAME = 500
+PRINT_GAMESTATE_FRAME = 500
 
 ENEMY_OFF_X = -200
 ENEMY_PAD = 5
@@ -154,8 +154,8 @@ def main():
                     done = True
             elif event.type == pygame.USEREVENT:
                 ticks += 1
-                if ticks%GAME_FRAME == 0:
-                    gstate.tick()
+                gstate.tick()
+                if ticks%PRINT_GAMESTATE_FRAME == 0:
                     gstate.pretty_print()
 
 if __name__ == '__main__':

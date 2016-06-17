@@ -4,7 +4,10 @@ import util
 class Skill(object):
     def __init__(self, skill, trigger=None, max_cooldown=0):
         self.max_cooldown = max_cooldown
-        self.cooldown = 0
+        if trigger == 'tick':
+            self.cooldown = max_cooldown
+        else:
+            self.cooldown = 0
         self.skill = skill
         self.trigger = trigger
 
@@ -15,13 +18,12 @@ class Skill(object):
         self.skill(gstate, **kwargs)
         self.cooldown = self.max_cooldown
 
-    def tick(self, gstate, passive=False):
+    def tick(self, gstate):
         if self.cooldown > 0:
             self.cooldown -= 1
         else:
-            if passive:
-                self.activate()
-
+            if self.trigger == 'tick':
+                self.activate(gstate)
 
 
 
@@ -54,7 +56,7 @@ def skill_attack_player(attack_damage=1):
 def skill_spawn_enemy():
     def skill(gstate):
         gstate.enemies.append(models.enemies.Enemy())
-    return Skill(skill, trigger='tick', max_cooldown=1000)
+    return Skill(skill, trigger='tick', max_cooldown=5000)
 
 ### 'skillbar' skills
 # recycle first num letters in pool
