@@ -79,7 +79,7 @@ def display_enemies(gstate):
         display_entity(enemy, enemy_sprite, offset_x)
 
 def display_skills(gstate):
-    for skill_button, skill in gstate.player.skill_bar.iteritems():
+    for skill_button, skill in gstate.player.skill_bar.items():
         skill_index = int(skill_button)-1
         skill_sprite = skill_bar_sprites[skill_index]
         skill_sprite = pygame.transform.scale(skill_sprite, (SKILL_WIDTH, SKILL_HEIGHT))

@@ -23,7 +23,7 @@ class GameState(object):
         if not new_pool:
             print("You dumbo!")
         else:
-            # apply passive skills
+            # apply attack skills
             for skill in self.player.skills:
                 if skill.trigger=='attack':
                     skill.activate(self, word=attack)
