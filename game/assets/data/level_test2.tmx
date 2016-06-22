@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="16" height="16" tilewidth="64" tileheight="64" nextobjectid="6">
+ <tileset firstgid="1" name="tileset" tilewidth="64" tileheight="64">
+  <image source="../images/tileset.png" width="1088" height="768"/>
+ </tileset>
+ <layer name="background" width="16" height="16">
+  <data encoding="base64" compression="zlib">
+   eJwLZ2BgCB/Fo3gUj0gMALwyVwE=
+  </data>
+ </layer>
+ <layer name="surface" width="16" height="16">
+  <data encoding="base64" compression="zlib">
+   eJxjYMAE4kAsAcSSWOSIAaTqZwNidiQsDdUvhSaOjDmw2EcKlhwk+pH9i4w5gVgTirnw6Cckj8t9tJZHjjts/hss4Q8CGgyIsEbHoLDlxCKuxUAcEGcgPx/RQz8Az04POQ==
+  </data>
+ </layer>
+ <layer name="obstacles" width="16" height="16">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgeIJ9GamGgkQw9Aw0MoBgGSPUDun5iAC3DCZ/ZtI7/4QoAOO8EgQ==
+  </data>
+ </layer>
+ <objectgroup name="actors">
+  <object id="2" name="spawn1" type="spawn" x="557" y="899" width="41" height="46"/>
+  <object id="4" name="door1" type="door" x="511" y="961" width="131" height="66">
+   <properties>
+    <property name="destMap" value="level_test"/>
+    <property name="destObject" value="spawn1"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>

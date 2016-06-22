@@ -32,6 +32,7 @@ class PlayerSprite extends FlxSprite
         var _left:Bool = false;
         var _right:Bool = false;
 
+
         _up = FlxG.keys.anyPressed([UP, W]);
         _down = FlxG.keys.anyPressed([DOWN, S]);
         _left = FlxG.keys.anyPressed([LEFT, A]);

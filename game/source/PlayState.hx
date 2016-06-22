@@ -17,92 +17,74 @@ import flixel.ui.FlxButton;
 
 class PlayState extends FlxState
 {
-    private var _player:PlayerSprite;
-    private var _bob:FlxSprite;
+    private var _level:Level;
+    private var _loading:Bool = false;
 
-    private var _mBG:FlxTilemap;
-    private var _mSurface:FlxTilemap;
-    private var _mObstacles:FlxTilemap;
 	override public function create():Void
 	{
-        var tiledLevel:TiledMap = new TiledMap("assets/data/level_test.tmx");
+        _level = new Level("level_test");
 
-        var tileSize = tiledLevel.tileWidth;
-        var mapW = tiledLevel.width;
-        var mapH = tiledLevel.height;
-        /*trace(mapW + " " + mapH + " " + tileSize);*/
-
-        var layerBG:TiledTileLayer = cast tiledLevel.getLayer("background");
-        var layerSurface:TiledTileLayer = cast tiledLevel.getLayer("surface");
-        var layerObstacles:TiledTileLayer = cast tiledLevel.getLayer("obstacles");
-        var layerActors:TiledObjectLayer = cast tiledLevel.getLayer("actors");
-
-        _mBG = drawTileLayer(layerBG, tileSize, mapW, mapH);
-        _mSurface = drawTileLayer(layerSurface, tileSize, mapW, mapH);
-        _mObstacles = drawTileLayer(layerObstacles, tileSize, mapW, mapH);
-
-        _mSurface.setTileProperties(0, FlxObject.ANY);
-        _mSurface.setTileProperties(1, FlxObject.NONE, 200);
-
-        //trace(_mObstacles.getData());
-        //trace(_mObstacles.getBounds());
-
-        /*trace(_mSurface.getData());
-        trace(_mSurface.getTileCollisions(0));
-        trace(_mSurface.getTileCollisions(96));
-        trace(FlxObject.ANY);
-        trace(FlxObject.NONE);*/
-
-        add(_mBG);
-        add(_mSurface);
-        add(_mObstacles);
-
-        drawObjectLayer(layerActors);
-
-
-
+        initialize();
 
 		super.create();
 	}
 
-    private function drawTileLayer(layer:TiledTileLayer,
-                                    tileSize:Int,
-                                    mapW:Int,
-                                    mapH:Int):FlxTilemap
+    private function deinitialize():Void
     {
-        var layerData:Array<Int> = layer.tileArray;
-        var tilesheetPath:String = "assets/images/tileset.png";
+        remove(_level.mBG);
+        remove(_level.mSurface);
+        remove(_level.mObstacles);
 
-        var tilemap:FlxTilemap = new FlxTilemap();
-        tilemap.loadMapFromArray(layerData, mapW, mapH, tilesheetPath, tileSize, tileSize, OFF, 1);
-        return tilemap;
+        remove(_level.grpNPCs);
+        remove(_level.player);
+        _level = null;
     }
 
-    private function drawObjectLayer(layer:TiledObjectLayer)
+    private function initialize():Void
     {
-        for(o in layer.objects)
-        {
-            var x:Int = o.x;
-            var y:Int = o.y;
-            y-= o.height;
-            switch(o.name)
-            {
-                case "player":
-                    _player = new PlayerSprite(x, y);
-                    FlxG.camera.follow(_player);
-                    add(_player);
-                case "bob":
-                    _bob = new FlxSprite(x, y, "assets/images/bob.png");
-                    add(_bob);
-            }
-        }
+        add(_level.mBG);
+        add(_level.mSurface);
+        add(_level.mObstacles);
+
+        add(_level.grpNPCs);
+
+        FlxG.camera.follow(_level.player);
+        add(_level.player);
+    }
+
+    private function playerUseDoor(player:PlayerSprite, door:Door):Void
+    {
+        _loading = true;
+        deinitialize();
+        trace(door.destMap + " " + door.destObject);
+        _level = new Level(door.destMap, door.destObject);
+        initialize();
+        _loading = false;
     }
 
 	override public function update(elapsed:Float):Void
 	{
-		super.update(elapsed);
-        _mObstacles.overlapsWithCallback(_player, FlxObject.separate);
-        _mSurface.overlapsWithCallback(_player, FlxObject.separate);
-        //FlxG.collide(_mObstacles, _player);
+        if(!_loading)
+        {
+            super.update(elapsed);
+            _level.mObstacles.overlapsWithCallback(_level.player, FlxObject.separate);
+            _level.mSurface.overlapsWithCallback(_level.player, FlxObject.separate);
+            for(door in _level.grpDoors)
+            {
+                if(_level.player.overlaps(door)){
+                    playerUseDoor(_level.player, door);
+                }
+            }
+            /*FlxG.overlap(_level.player, _level.grpDoors, playerUseDoor);
+
+            if(FlxG.keys.anyPressed([L])){
+                trace("Player: " + _level.player);
+                for(door in _level.grpDoors){
+                    trace(_level.player.overlaps(door));
+                    trace("Door: " + door);
+                }
+            }*/
+
+        }
 	}
 }
