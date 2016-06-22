@@ -13,10 +13,10 @@ class PlayerSprite extends FlxSprite
     public function new(?X:Float=0, ?Y:Float=0)
     {
         super(X, Y);
-        makeGraphic(64, 64, FlxColor.BLUE);
+        makeGraphic(16, 16, FlxColor.BLUE);
         drag.x = 3000;
         drag.y = 3000;
-        setSize(64, 64);
+        setSize(16, 16);
     }
 
     override public function update(elapsed:Float):Void

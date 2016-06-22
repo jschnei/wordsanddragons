@@ -41,6 +41,12 @@ class PlayState extends FlxState
         _mSurface = drawTileLayer(layerSurface, tileSize, mapW, mapH);
         _mObstacles = drawTileLayer(layerObstacles, tileSize, mapW, mapH);
 
+        _mSurface.setTileProperties(0, FlxObject.ANY);
+        _mSurface.setTileProperties(1, FlxObject.NONE, 200);
+
+        //trace(_mObstacles.getData());
+        //trace(_mObstacles.getBounds());
+
         /*trace(_mSurface.getData());
         trace(_mSurface.getTileCollisions(0));
         trace(_mSurface.getTileCollisions(96));
@@ -95,6 +101,8 @@ class PlayState extends FlxState
 	override public function update(elapsed:Float):Void
 	{
 		super.update(elapsed);
-        FlxG.overlap(_mObstacles, _player, FlxObject.separate);
+        _mObstacles.overlapsWithCallback(_player, FlxObject.separate);
+        _mSurface.overlapsWithCallback(_player, FlxObject.separate);
+        //FlxG.collide(_mObstacles, _player);
 	}
 }
