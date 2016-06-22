@@ -114,7 +114,7 @@ class Level extends TiledMap
         {
             var x:Int = o.x;
             var y:Int = o.y;
-            y-= o.height;
+            /*y-= o.height;*/
             // get upper-left corner of Tiled box
 
             switch(o.type)
