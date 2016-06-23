@@ -20,7 +20,6 @@ class PlayState extends FlxState
     private var _level:Level;
     private var _dialogueHUD:DialogueHUD;
 
-    private var _inDialogue:Bool = false;
     private var _loading:Bool = false;
 
 	override public function create():Void
@@ -31,11 +30,6 @@ class PlayState extends FlxState
 
         _dialogueHUD = new DialogueHUD();
         add(_dialogueHUD);
-
-        /*var blah = new FlxText(0, 0, 0, "blarghalakhfdl", 20);
-        blah.screenCenter();
-        blah.scrollFactor.set(0, 0);
-        add(blah);*/
 
 		super.create();
 	}
@@ -56,10 +50,11 @@ class PlayState extends FlxState
         add(_level.mBG);
         add(_level.mSurface);
         add(_level.mObstacles);
+        FlxG.worldBounds.set(-10, -10, _level.fullWidth+20, _level.fullHeight+20);
 
         add(_level.grpNPCs);
 
-        FlxG.camera.follow(_level.player);
+        FlxG.camera.follow(_level.player, TOPDOWN, 1);
         add(_level.player);
     }
 
@@ -75,28 +70,21 @@ class PlayState extends FlxState
 
     public function startDialogue():DialogueHUD
     {
-        _inDialogue = true;
+        _dialogueHUD.revive();
         return _dialogueHUD;
     }
 
 	override public function update(elapsed:Float):Void
 	{
-        if(!_loading && !_inDialogue)
+        super.update(elapsed);
+        /*trace(_dialogueHUD.alive);*/
+        if(_loading)
+            return;
+
+
+
+        if(!_dialogueHUD.alive)
         {
-            _level.player.movement();
-
-            _level.mObstacles.overlapsWithCallback(_level.player, FlxObject.separate);
-            _level.mSurface.overlapsWithCallback(_level.player, FlxObject.separate);
-            FlxG.overlap(_level.player, _level.grpNPCs, FlxObject.separate);
-
-
-            for(door in _level.grpDoors)
-            {
-                if(_level.player.overlaps(door)){
-                    playerUseDoor(_level.player, door);
-                }
-            }
-
             if(FlxG.keys.justPressed.Z)
             {
                 var interactBox:FlxObject = _level.player.interactBox();
@@ -104,12 +92,34 @@ class PlayState extends FlxState
                 {
                     if(interactBox.overlaps(npc)){
                         npc.onInteract(this);
+                        _level.player.active = false;
+                        return;
                     }
                 }
             }
 
+            if(_level.player.active)
+            {
+                _level.player.movement();
 
+                FlxG.collide(_level.mObstacles, _level.player);
+                FlxG.collide(_level.mSurface, _level.player);
+                FlxG.collide(_level.player, _level.grpNPCs);
+
+                FlxG.overlap(_level.player, _level.grpDoors, playerUseDoor);
+            }
         }
-        super.update(elapsed);
+        else
+        {
+            if(FlxG.keys.justPressed.Z)
+            {
+
+                if(!_dialogueHUD.advanceDialogue())
+                {
+                    _level.player.active = true;
+                }
+            }
+        }
+
 	}
 }

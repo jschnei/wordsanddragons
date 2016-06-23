@@ -1,5 +1,6 @@
 package;
 
+import flixel.addons.text.FlxTypeText;
 import flixel.FlxG;
 import flixel.group.FlxGroup;
 import flixel.FlxObject;
@@ -13,41 +14,53 @@ class DialogueHUD extends FlxTypedGroup<FlxSprite>
 {
     public static inline var FONT_SIZE = 20;
 
+    private var _lines:Array<String>;
+    private var _lineInd:Int = 0;
+
     private var _dialogueBox:FlxSprite;
-    private var _dialogueText:FlxText;
+    private var _dialogueText:FlxTypeText;
     public function new()
     {
         super();
 
-        _dialogueBox = new FlxSprite().makeGraphic(FlxG.width, 50, FlxColor.BLACK);
+        _dialogueBox = new FlxSprite(0, FlxG.height-50).makeGraphic(FlxG.width, 50, FlxColor.BLACK);
         add(_dialogueBox);
 
-        _dialogueText = new FlxText(0, 0, 0, "blarghalakhfdl", FONT_SIZE);
-        _dialogueText.screenCenter();
+        _dialogueText = new FlxTypeText(_dialogueBox.x + 30, _dialogueBox.y + 15, 0, "", FONT_SIZE);
         add(_dialogueText);
+
+        _lines = new Array<String>();
 
         forEach(function(spr:FlxSprite){
             spr.scrollFactor.set(0, 0);
         });
-        /*visible = false;*/
+
+        kill();
     }
 
-    public function setDialogue(dialogue:String):Void
+    public function addLine(line:String):Void
     {
-        trace("setting dialogue text to: " + dialogue);
-        _dialogueText.text = dialogue;
-        _dialogueText.screenCenter();
+        _lines.push(line);
+    }
 
-        visible = true;
+    public function advanceDialogue():Bool
+    {
+        if(_lineInd < _lines.length)
+        {
+            _dialogueText.resetText(_lines[_lineInd]);
+            _dialogueText.start();
+            _lineInd++;
+            return true;
+        }
+        else
+        {
+            kill();
+            return false;
+        }
     }
 
     override public function update(elapsed:Float):Void
     {
-        if(FlxG.keys.justPressed.Z){
-            // stop the dialogue
-            /*visible = false;*/
-        }
-
         super.update(elapsed);
     }
 

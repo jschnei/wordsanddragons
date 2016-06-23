@@ -27,7 +27,9 @@ class NPCSprite extends FlxSprite
     public static function interactBob(playState:PlayState):Void
     {
         var dialogueHUD:DialogueHUD = playState.startDialogue();
-        dialogueHUD.setDialogue("Yo, I'm Bob!");
+        dialogueHUD.addLine("Yo, I'm Bob!");
+        dialogueHUD.addLine("Who are you?");
+        dialogueHUD.advanceDialogue();
     }
 
 }

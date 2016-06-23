@@ -87,7 +87,6 @@ class Level extends TiledMap
                                       mapW:Int,
                                       mapH:Int):FlxTilemap
     {
-        trace(layer.encoding);
         var layerData:Array<Int> = layer.tileArray;
         var tilesheetFile:String = layer.properties.get("tileset");
         var tilesheetPath:String = "assets/images/" + tilesheetFile;
@@ -111,6 +110,7 @@ class Level extends TiledMap
                     var imageFile = o.properties.get("image");
                     var npc = new NPCSprite(x, y, "assets/images/" + imageFile, o.name);
                     npc.onInteract = NPCSprite.interactBob;
+                    //npc.onInteract = NPCScripts.getInteraction()
                     grpNPCs.add(npc);
 
                 case "spawn":
