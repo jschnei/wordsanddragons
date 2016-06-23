@@ -20,7 +20,7 @@ class TriangleEnemy(Enemy):
         return util.get_triangle_damage(attack_word)
 
 class DoubleLetterEnemy(Enemy):
-    def __init__(self, maxHP=10,
+    def __init__(self, maxHP=20,
                        name='phillip',
                        attack_damage=1):
         super(DoubleLetterEnemy, self).__init__(maxHP, name, attack_damage)
@@ -33,6 +33,6 @@ class DoubleLetterEnemy(Enemy):
                 has_double_letter = True
 
         if has_double_letter:
-            return len(attack_word)
+            return 2*len(attack_word)
         else:
             return 1

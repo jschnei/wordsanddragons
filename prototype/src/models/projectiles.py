@@ -34,7 +34,7 @@ class RockProjectile(Projectile):
     def __init__(self, maxHP=1,
                        name='rock',
                        attack_damage=6,
-                       time=1000,
+                       time=1500,
                        length=6):
         super(RockProjectile, self).__init__(maxHP, name, attack_damage, time)
 

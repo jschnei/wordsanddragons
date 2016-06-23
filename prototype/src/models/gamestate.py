@@ -15,7 +15,8 @@ class GameState(object):
         self.enemies = [TriangleEnemy(), DoubleLetterEnemy()]
         self.projectiles = []
         self.pool = util.generate_pool()
-        self.skills = [skill_spawn_enemy()]
+        # self.skills = [skill_spawn_enemy()]
+        self.skills = []
         self.game_mode = GameMode.OFFENSE
         self.turn = 0
 
