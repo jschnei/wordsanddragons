@@ -25,7 +25,7 @@ class Level extends TiledMap
     public var mObstacles:FlxTilemap;
 
     public var grpDoors:FlxTypedGroup<Door>;
-    public var grpNPCs:FlxTypedGroup<FlxSprite>;
+    public var grpNPCs:FlxTypedGroup<NPCSprite>;
     public var grpSpawns:FlxTypedGroup<Spawn>;
 
     public var player:PlayerSprite;
@@ -40,7 +40,7 @@ class Level extends TiledMap
         var mapH = height;
 
         grpDoors = new FlxTypedGroup<Door>();
-        grpNPCs = new FlxTypedGroup<FlxSprite>();
+        grpNPCs = new FlxTypedGroup<NPCSprite>();
         grpSpawns = new FlxTypedGroup<Spawn>();
 
         var layerBG:TiledTileLayer = cast getLayer("background");
@@ -56,18 +56,6 @@ class Level extends TiledMap
         mSurface.setTileProperties(1, FlxObject.NONE, 200);
 
         processObjectLayer(layerActors);
-
-        trace("Spawns:");
-        for(s in grpSpawns)
-        {
-            trace(s.name);
-        }
-
-        trace("Doors:");
-        for(d in grpDoors)
-        {
-            trace(d.destMap + " " + d.destObject + " " + d.x + " " + d.y + " " + d.width + " " + d.height);
-        }
 
         var spawn = getSpawnByName(spawnObj);
         if(spawn!=null)
@@ -88,7 +76,6 @@ class Level extends TiledMap
         {
             if(spawn.name==name)
             {
-                trace("woo found it");
                 return spawn;
             }
         }
@@ -100,8 +87,10 @@ class Level extends TiledMap
                                       mapW:Int,
                                       mapH:Int):FlxTilemap
     {
+        trace(layer.encoding);
         var layerData:Array<Int> = layer.tileArray;
-        var tilesheetPath:String = "assets/images/tileset.png";
+        var tilesheetFile:String = layer.properties.get("tileset");
+        var tilesheetPath:String = "assets/images/" + tilesheetFile;
 
         var tilemap:FlxTilemap = new FlxTilemap();
         tilemap.loadMapFromArray(layerData, mapW, mapH, tilesheetPath, tileSize, tileSize, OFF, 1);
@@ -114,13 +103,14 @@ class Level extends TiledMap
         {
             var x:Int = o.x;
             var y:Int = o.y;
-            /*y-= o.height;*/
             // get upper-left corner of Tiled box
 
             switch(o.type)
             {
                 case "npc":
-                    var npc = new FlxSprite(x, y, "assets/images/bob.png");
+                    var imageFile = o.properties.get("image");
+                    var npc = new NPCSprite(x, y, "assets/images/" + imageFile, o.name);
+                    npc.onInteract = NPCSprite.interactBob;
                     grpNPCs.add(npc);
 
                 case "spawn":
@@ -129,8 +119,8 @@ class Level extends TiledMap
 
                 case "door":
                     var bounds = new FlxRect(x, y, o.width, o.height);
-                    var destMap = o.properties.get("destMap");
-                    var destObject = o.properties.get("destObject");
+                    var destMap:String = o.properties.get("destMap");
+                    var destObject:String = o.properties.get("destObject");
                     var door = new Door(bounds, destMap, destObject);
                     grpDoors.add(door);
 

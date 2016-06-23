@@ -10,6 +10,9 @@ import flixel.util.FlxColor;
 class PlayerSprite extends FlxSprite
 {
     public var speed:Float = 200;
+
+    private var _marginInteract:Int = 5;
+
     public function new(?X:Float=0, ?Y:Float=0)
     {
         super(X, Y);
@@ -19,13 +22,17 @@ class PlayerSprite extends FlxSprite
         setSize(16, 16);
     }
 
+    public function interactBox():FlxObject
+    {
+        return new FlxObject(x-_marginInteract, y-_marginInteract, width+2*_marginInteract, height+2*_marginInteract);
+    }
+
     override public function update(elapsed:Float):Void
     {
-        movement();
         super.update(elapsed);
     }
 
-    private function movement():Void
+    public function movement():Void
     {
         var _up:Bool = false;
         var _down:Bool = false;

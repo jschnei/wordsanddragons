@@ -4,16 +4,25 @@
   <image source="../images/tileset.png" width="1088" height="768"/>
  </tileset>
  <layer name="background" width="16" height="16">
+  <properties>
+   <property name="tileset" value="tileset.png"/>
+  </properties>
   <data encoding="base64" compression="zlib">
    eJw7zcDAcHoUj+JRPCIxALHZywE=
   </data>
  </layer>
  <layer name="surface" width="16" height="16">
+  <properties>
+   <property name="tileset" value="tileset.png"/>
+  </properties>
   <data encoding="base64" compression="zlib">
    eJxjYMAPEoA4iYCagdbvD8QBSDiQRP0gNYlIOAlNbqjpT2ZAhEUKGh89fLDpJ4TR3TOY9QcBcREabiFBPzFpl1L9TUDcjAOju5XaAACPrS9P
   </data>
  </layer>
  <layer name="obstacles" width="16" height="16">
+  <properties>
+   <property name="tileset" value="tileset.png"/>
+  </properties>
   <data encoding="base64" compression="zlib">
    eJxjYBgF1ALmA+0AGgOdYWy/OQ483AEAVnYB2g==
   </data>
@@ -26,7 +35,11 @@
    </properties>
   </object>
   <object id="33" name="spawn1" type="spawn" x="549" y="82" width="50" height="44"/>
-  <object id="38" name="bob" type="npc" x="193" y="385" width="64" height="65"/>
+  <object id="38" name="bob" type="npc" x="193" y="385" width="64" height="65">
+   <properties>
+    <property name="image" value="bob.png"/>
+   </properties>
+  </object>
   <object id="40" name="start" type="spawn" x="285" y="679.5" width="64" height="65"/>
  </objectgroup>
 </map>

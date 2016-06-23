@@ -18,18 +18,29 @@ import flixel.ui.FlxButton;
 class PlayState extends FlxState
 {
     private var _level:Level;
+    private var _dialogueHUD:DialogueHUD;
+
+    private var _inDialogue:Bool = false;
     private var _loading:Bool = false;
 
 	override public function create():Void
 	{
         _level = new Level("level_test");
 
-        initialize();
+        initializeLevel();
+
+        _dialogueHUD = new DialogueHUD();
+        add(_dialogueHUD);
+
+        /*var blah = new FlxText(0, 0, 0, "blarghalakhfdl", 20);
+        blah.screenCenter();
+        blah.scrollFactor.set(0, 0);
+        add(blah);*/
 
 		super.create();
 	}
 
-    private function deinitialize():Void
+    private function deinitializeLevel():Void
     {
         remove(_level.mBG);
         remove(_level.mSurface);
@@ -40,7 +51,7 @@ class PlayState extends FlxState
         _level = null;
     }
 
-    private function initialize():Void
+    private function initializeLevel():Void
     {
         add(_level.mBG);
         add(_level.mSurface);
@@ -55,36 +66,50 @@ class PlayState extends FlxState
     private function playerUseDoor(player:PlayerSprite, door:Door):Void
     {
         _loading = true;
-        deinitialize();
+        deinitializeLevel();
         trace(door.destMap + " " + door.destObject);
         _level = new Level(door.destMap, door.destObject);
-        initialize();
+        initializeLevel();
         _loading = false;
+    }
+
+    public function startDialogue():DialogueHUD
+    {
+        _inDialogue = true;
+        return _dialogueHUD;
     }
 
 	override public function update(elapsed:Float):Void
 	{
-        if(!_loading)
+        if(!_loading && !_inDialogue)
         {
-            super.update(elapsed);
+            _level.player.movement();
+
             _level.mObstacles.overlapsWithCallback(_level.player, FlxObject.separate);
             _level.mSurface.overlapsWithCallback(_level.player, FlxObject.separate);
+            FlxG.overlap(_level.player, _level.grpNPCs, FlxObject.separate);
+
+
             for(door in _level.grpDoors)
             {
                 if(_level.player.overlaps(door)){
                     playerUseDoor(_level.player, door);
                 }
             }
-            /*FlxG.overlap(_level.player, _level.grpDoors, playerUseDoor);
 
-            if(FlxG.keys.anyPressed([L])){
-                trace("Player: " + _level.player);
-                for(door in _level.grpDoors){
-                    trace(_level.player.overlaps(door));
-                    trace("Door: " + door);
+            if(FlxG.keys.justPressed.Z)
+            {
+                var interactBox:FlxObject = _level.player.interactBox();
+                for(npc in _level.grpNPCs)
+                {
+                    if(interactBox.overlaps(npc)){
+                        npc.onInteract(this);
+                    }
                 }
-            }*/
+            }
+
 
         }
+        super.update(elapsed);
 	}
 }
