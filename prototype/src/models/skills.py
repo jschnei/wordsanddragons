@@ -48,7 +48,7 @@ def skill_heal(heal_amount=5):
 
 ### 'tick' skills
 # throw a rock
-def skill_throw_rock(trigger='tick', cd=2000):
+def skill_throw_rock(trigger='tick', cd=3000):
     def skill(gstate):
         gstate.projectiles.append(models.projectiles.RockProjectile())
     return Skill(skill, trigger='tick', max_cooldown=cd)
