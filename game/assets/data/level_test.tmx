@@ -38,6 +38,7 @@
   <object id="38" name="bob" type="npc" x="193" y="385" width="64" height="65">
    <properties>
     <property name="image" value="bob.png"/>
+    <property name="onInteract" value="interactBob"/>
    </properties>
   </object>
   <object id="40" name="start" type="spawn" x="285" y="679.5" width="64" height="65"/>
