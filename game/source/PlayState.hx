@@ -17,18 +17,18 @@ import flixel.ui.FlxButton;
 
 class PlayState extends FlxState
 {
-    private var _level:Level;
-    private var _dialogueHUD:DialogueHUD;
-    private var _speechUI:SpeechUI;
+    public var _level:Level;
+    public var _dialogueHUD:DialogueHUD;
+    public var _speechUI:SpeechUI;
 
-    private var _loading:Bool = false;
+    public var _loading:Bool = false;
 
 	override public function create():Void
 	{
         _dialogueHUD = new DialogueHUD();
         _speechUI = new SpeechUI();
 
-        _level = new Level("level_test");
+        _level = new Level("level_trivial_puzzle");
 
         initializeLevel();
         add(_dialogueHUD);

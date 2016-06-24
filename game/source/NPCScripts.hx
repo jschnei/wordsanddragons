@@ -9,6 +9,42 @@ import flixel.util.FlxColor;
 
 class NPCScripts
 {
+    public static function interactGuard(npc:NPCSprite, playState:PlayState):Void
+    {
+        var dialogueHUD:DialogueHUD = playState.startDialogue();
+        dialogueHUD.addLine("I AM THE GUARD!");
+        dialogueHUD.addLine("WHAT IS THE PASSWORD?");
+        dialogueHUD.addLine("ANSWER INCORRECTLY, AND DIE!");
+        dialogueHUD.advanceDialogue();
+    }
+
+    public static function speakGuard(npc:NPCSprite, playState:PlayState, speech:String)
+    {
+        var dialogueHUD:DialogueHUD = playState.startDialogue();
+        dialogueHUD.addLine("YOU SAID " + speech + ".");
+        if(speech=="SWORDFISH")
+        {
+            dialogueHUD.addLine("THAT IS THE PASSWORD.");
+            dialogueHUD.addLine("YOU MAY PROCEED.");
+            npc.immovable = false;
+        }
+        else
+        {
+            dialogueHUD.addLine("INCORRECT!");
+            playState._level.player.kill();
+        }
+        dialogueHUD.advanceDialogue();
+    }
+
+    public static function interactTeller(npc:NPCSprite, playState:PlayState):Void
+    {
+        var dialogueHUD:DialogueHUD = playState.startDialogue();
+        dialogueHUD.addLine("psst.");
+        dialogueHUD.addLine("the password is");
+        dialogueHUD.addLine("SWORDFISH");
+        dialogueHUD.advanceDialogue();
+    }
+
     public static function speakBob(npc:NPCSprite, playState:PlayState, speech:String)
     {
         var dialogueHUD:DialogueHUD = playState.startDialogue();
