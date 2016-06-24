@@ -31,15 +31,15 @@
   </data>
  </layer>
  <objectgroup name="actors">
-  <object id="2" name="spawn1" type="spawn" x="557" y="899" width="41" height="46"/>
+  <object id="2" name="spawn1" type="spawn" x="544" y="882" width="64" height="64"/>
   <object id="4" name="door1" type="door" x="510" y="962" width="131" height="66">
    <properties>
     <property name="destMap" value="level_test"/>
     <property name="destObject" value="spawn1"/>
    </properties>
   </object>
-  <object id="6" name="spawn2" type="spawn" x="393.5" y="67" width="41" height="46"/>
-  <object id="7" name="spawn3" type="spawn" x="71.5" y="417" width="41" height="46"/>
+  <object id="6" name="spawn2" type="spawn" x="393.5" y="67" width="64" height="64"/>
+  <object id="7" name="spawn3" type="spawn" x="71.5" y="417" width="64" height="64"/>
   <object id="8" name="door2" type="door" x="313" y="-8" width="206" height="66">
    <properties>
     <property name="destMap" value="level_test2"/>
