@@ -54,6 +54,7 @@ class PlayState extends FlxState
         add(_level.mSurface);
         add(_level.mObstacles);
         FlxG.worldBounds.set(-10, -10, _level.fullWidth+20, _level.fullHeight+20);
+        FlxG.camera.setScrollBoundsRect(0, 0, _level.fullWidth, _level.fullHeight);
 
         add(_level.grpNPCs);
 
