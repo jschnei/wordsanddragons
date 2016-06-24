@@ -10,7 +10,9 @@ import flixel.util.FlxColor;
 class NPCSprite extends FlxSprite
 {
     public var name:String;
-    public var onInteract:PlayState->Void;
+
+    public var onInteract:NPCSprite->PlayState->Void;
+    public var onSpeak:NPCSprite->PlayState->String->Void;
 
     public function new(?X:Float=0, ?Y:Float=0, filePath:String, name:String)
     {
@@ -24,12 +26,18 @@ class NPCSprite extends FlxSprite
         super.update(elapsed);
     }
 
-    public static function interactBob(playState:PlayState):Void
+    public function interact(playState:PlayState)
     {
-        var dialogueHUD:DialogueHUD = playState.startDialogue();
-        dialogueHUD.addLine("Yo, I'm Bob!");
-        dialogueHUD.addLine("Who are you?");
-        dialogueHUD.advanceDialogue();
+        if(onInteract==null)
+            return;
+        onInteract(this, playState);
+    }
+
+    public function speak(playState:PlayState, speech:String)
+    {
+        if(onSpeak==null)
+            return;
+        onSpeak(this, playState, speech);
     }
 
 }

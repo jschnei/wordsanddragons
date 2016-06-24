@@ -19,17 +19,20 @@ class PlayState extends FlxState
 {
     private var _level:Level;
     private var _dialogueHUD:DialogueHUD;
+    private var _speechUI:SpeechUI;
 
     private var _loading:Bool = false;
 
 	override public function create():Void
 	{
+        _dialogueHUD = new DialogueHUD();
+        _speechUI = new SpeechUI();
+
         _level = new Level("level_test");
 
         initializeLevel();
-
-        _dialogueHUD = new DialogueHUD();
         add(_dialogueHUD);
+        add(_speechUI);
 
 		super.create();
 	}
@@ -56,6 +59,8 @@ class PlayState extends FlxState
 
         FlxG.camera.follow(_level.player, TOPDOWN, 1);
         add(_level.player);
+
+        _speechUI.setSpeaker(_level.player);
     }
 
     private function playerUseDoor(player:PlayerSprite, door:Door):Void
@@ -71,6 +76,7 @@ class PlayState extends FlxState
     public function startDialogue():DialogueHUD
     {
         _dialogueHUD.revive();
+        _level.player.active = false;
         return _dialogueHUD;
     }
 
@@ -81,45 +87,69 @@ class PlayState extends FlxState
         if(_loading)
             return;
 
-
-
-        if(!_dialogueHUD.alive)
+        if(_dialogueHUD.alive)
         {
             if(FlxG.keys.justPressed.Z)
             {
-                var interactBox:FlxObject = _level.player.interactBox();
-                for(npc in _level.grpNPCs)
-                {
-                    if(interactBox.overlaps(npc)){
-                        npc.onInteract(this);
-                        _level.player.active = false;
-                        return;
-                    }
-                }
-            }
-
-            if(_level.player.active)
-            {
-                _level.player.movement();
-
-                FlxG.collide(_level.mObstacles, _level.player);
-                FlxG.collide(_level.mSurface, _level.player);
-                FlxG.collide(_level.player, _level.grpNPCs);
-
-                FlxG.overlap(_level.player, _level.grpDoors, playerUseDoor);
-            }
-        }
-        else
-        {
-            if(FlxG.keys.justPressed.Z)
-            {
-
                 if(!_dialogueHUD.advanceDialogue())
                 {
                     _level.player.active = true;
                 }
             }
+            return;
         }
+
+        if(_speechUI.alive)
+        {
+            if(!_speechUI.processKey(FlxG.keys.firstJustPressed()))
+            {
+                _level.player.active = true;
+
+                var interactBox:FlxObject = _level.player.interactBox();
+                var speech = _speechUI.lastSaid;
+                for(npc in _level.grpNPCs)
+                {
+                    if(interactBox.overlaps(npc)){
+                        npc.speak(this, speech);
+                        return;
+                    }
+                }
+            }
+
+            return;
+        }
+
+        if(FlxG.keys.justPressed.ENTER)
+        {
+            _speechUI.revive();
+            _speechUI.updateSpeech();
+            _level.player.active = false;
+            return;
+        }
+
+        if(FlxG.keys.justPressed.Z)
+        {
+            var interactBox:FlxObject = _level.player.interactBox();
+            for(npc in _level.grpNPCs)
+            {
+                if(interactBox.overlaps(npc)){
+                    npc.interact(this);
+                    return;
+                }
+            }
+        }
+
+        if(_level.player.active)
+        {
+            _level.player.movement();
+
+            FlxG.collide(_level.mObstacles, _level.player);
+            FlxG.collide(_level.mSurface, _level.player);
+            FlxG.collide(_level.player, _level.grpNPCs);
+
+            FlxG.overlap(_level.player, _level.grpDoors, playerUseDoor);
+        }
+
 
 	}
 }

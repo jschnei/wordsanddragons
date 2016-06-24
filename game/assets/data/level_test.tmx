@@ -39,6 +39,7 @@
    <properties>
     <property name="image" value="bob.png"/>
     <property name="onInteract" value="interactBob"/>
+    <property name="onSpeak" value="speakBob"/>
    </properties>
   </object>
   <object id="40" name="start" type="spawn" x="285" y="679.5" width="64" height="64"/>

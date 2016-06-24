@@ -109,8 +109,15 @@ class Level extends TiledMap
                 case "npc":
                     var imageFile = o.properties.get("image");
                     var npc = new NPCSprite(x, y, "assets/images/" + imageFile, o.name);
-                    npc.onInteract = NPCSprite.interactBob;
-                    //npc.onInteract = NPCScripts.getInteraction()
+
+                    var interactFunc = o.properties.get("onInteract");
+                    var speakFunc = o.properties.get("onSpeak");
+
+                    if(interactFunc!=null)
+                        npc.onInteract = Reflect.field(NPCScripts, interactFunc);
+                    if(speakFunc!=null)
+                        npc.onSpeak = Reflect.field(NPCScripts, speakFunc);
+
                     grpNPCs.add(npc);
 
                 case "spawn":
