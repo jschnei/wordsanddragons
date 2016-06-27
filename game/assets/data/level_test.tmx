@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" renderorder="right-down" width="16" height="16" tilewidth="64" tileheight="64" nextobjectid="41">
- <tileset firstgid="1" name="tileset" tilewidth="64" tileheight="64">
+ <tileset firstgid="1" name="tileset" tilewidth="64" tileheight="64" tilecount="204" columns="17">
   <image source="../images/tileset.png" width="1088" height="768"/>
  </tileset>
  <layer name="background" width="16" height="16">
@@ -37,7 +37,7 @@
   <object id="33" name="spawn1" type="spawn" x="549" y="82" width="64" height="64"/>
   <object id="38" name="bob" type="npc" x="193" y="385" width="64" height="65">
    <properties>
-    <property name="image" value="bob.png"/>
+    <property name="image" value="alphabob.png"/>
     <property name="onInteract" value="interactBob"/>
     <property name="onSpeak" value="speakBob"/>
    </properties>
