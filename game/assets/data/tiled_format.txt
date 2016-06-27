@@ -1,10 +1,9 @@
 4 layers description
 
-background - tiles in the background
-surface - exactly the set of tiles that you can walk on (make sure you leave unreachable tiles empty)
-obstacles - other collidable objects
 actors - things that you can interact with
-
+obstacles - other collidable objects
+surface - exactly the set of tiles that you can walk on (make sure you leave unreachable tiles empty)
+background - tiles in the background
 
 
 properties list
