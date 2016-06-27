@@ -1,0 +1,21 @@
+4 layers description
+
+background - tiles in the background
+surface - exactly the set of tiles that you can walk on (make sure you leave unreachable tiles empty)
+obstacles - other collidable objects
+actors - things that you can interact with
+
+
+
+properties list
+
+background, surface, obstacles - tileset: tileset file (e.g. "tileset.png"), this is mandatory
+
+actors
+doors - type:door, destMap: name of level to spawn to (without the .tmx extension), destObject: name of object to spawn to on that level
+spawns - type:spawn, right now these are only used as spawn points for doors
+start - type:spawn, name:start, if you spawn on this map without being sent from a door, this is where you spawn
+npcs - type:npc, image: image file (e.g. "bob.png"), onInteract: name of script in NPCScripts that should be run when pressing Z, onSpeak: name of script that should be run when you "say" something to the NPC, onInteract and onSpeak are not mandatory and if you leave them out then nothing will happen if you try to interact
+
+Note: onInteract and onSpeak are kind of poorly named, in that onInteract is used for dialogue and onSpeak is used for other interactions
+Note 2: the npc type is probably going to be used for items and other things that are not necessarily characters oops
