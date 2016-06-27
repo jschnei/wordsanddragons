@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="20" height="40" tilewidth="32" tileheight="32" nextobjectid="15">
+ <tileset firstgid="1" name="tileset2" tilewidth="32" tileheight="32" tilecount="900" columns="30">
+  <image source="../images/tileset2.png" width="960" height="960"/>
+ </tileset>
+ <layer name="background" width="20" height="40">
+  <properties>
+   <property name="tileset" value="tileset2.png"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJyTZWJgkB3Fo3gUj+JRPIpH8Sge4VgBisnViy5mC8SKZJoXg0UsehCEES3DnprmYQu/UTx4MADARGHN
+  </data>
+ </layer>
+ <layer name="surface" width="20" height="40">
+  <properties>
+   <property name="tileset" value="tileset2.png"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2Dwgq1MDAzbgHg7E3XMuww05woQXx01b9S8UfNGzRvm5sHKTxi+CDXvEpo4seUrzD2EMLHuHTVvcJr3AYg/AfF7KpkHU4/LvaSaB0u/F7GYBXL7ZyqFHylmEWMeqfn4IzQecGFS3DYYAQDJL52O
+  </data>
+ </layer>
+ <layer name="obstacles" width="20" height="40">
+  <properties>
+   <property name="tileset" value="tileset2.png"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2AUjIJRMAoYGNKhdAaVzIOZk45XFfFg1H2jYDgALzrapUNHu0gB9AyDUTA4AQBUIwWb
+  </data>
+ </layer>
+ <objectgroup name="actors">
+  <object id="1" name="bob1" type="npc" x="156" y="863" width="29" height="30"/>
+  <object id="2" name="bob2" type="npc" x="194.5" y="862" width="29" height="30"/>
+  <object id="3" name="bob3" type="npc" x="233.5" y="864" width="29" height="30"/>
+  <object id="4" name="bob4" type="npc" x="359.5" y="864" width="29" height="30"/>
+  <object id="5" name="bob5" type="npc" x="398.5" y="865" width="29" height="30"/>
+  <object id="6" name="bob6" type="npc" x="436.5" y="864" width="29" height="30"/>
+  <object id="7" name="gatekeeper" type="npc" x="275" y="424" width="58" height="61"/>
+  <object id="14" name="start" type="spawn" x="282" y="1132" width="33" height="33"/>
+ </objectgroup>
+</map>
