@@ -43,6 +43,7 @@ class DialogueHUD extends FlxTypedGroup<FlxSprite>
         _lines.push(line);
     }
 
+    //returns true if dialogue is still active afterwards
     public function advanceDialogue():Bool
     {
         if(_lineInd < _lines.length)

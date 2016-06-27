@@ -20,6 +20,7 @@ class PlayState extends FlxState
     public var _level:Level;
     public var _dialogueHUD:DialogueHUD;
     public var _speechUI:SpeechUI;
+    public var inventoryHUD:InventoryHUD;
 
     public var _loading:Bool = false;
 
@@ -27,12 +28,14 @@ class PlayState extends FlxState
 	{
         _dialogueHUD = new DialogueHUD();
         _speechUI = new SpeechUI();
+        inventoryHUD = new InventoryHUD();
 
         _level = new Level("level_trivial_puzzle");
 
         initializeLevel();
         add(_dialogueHUD);
         add(_speechUI);
+        add(inventoryHUD);
 
 		super.create();
 	}
@@ -100,6 +103,16 @@ class PlayState extends FlxState
             return;
         }
 
+        if (inventoryHUD.alive)
+        {
+            if(FlxG.keys.justPressed.I)
+            {
+                inventoryHUD.kill();
+                _level.player.active = true;
+            }
+            return;
+        }
+
         if(_speechUI.alive)
         {
             if(!_speechUI.processKey(FlxG.keys.firstJustPressed()))
@@ -124,6 +137,14 @@ class PlayState extends FlxState
         {
             _speechUI.revive();
             _speechUI.updateSpeech();
+            _level.player.active = false;
+            return;
+        }
+
+        if(FlxG.keys.justPressed.I)
+        {
+            inventoryHUD.updateText();
+            inventoryHUD.revive();
             _level.player.active = false;
             return;
         }

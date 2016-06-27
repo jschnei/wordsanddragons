@@ -43,6 +43,7 @@ class SpeechUI extends FlxTypedGroup<FlxSprite>
         _speaker = speaker;
     }
 
+    //returns true if speech is still active afterwards
     public function processKey(key:Int):Bool
     {
         if((key >= cast FlxKey.A) && (key <= cast FlxKey.Z))
