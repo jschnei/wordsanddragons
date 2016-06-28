@@ -30,7 +30,7 @@ class PlayState extends FlxState
         _speechUI = new SpeechUI();
         inventoryHUD = new InventoryHUD();
 
-        _level = new Level("level_trivial_puzzle");
+        _level = new Level("level_itempuzzle");
 
         initializeLevel();
         add(_dialogueHUD);
@@ -121,6 +121,8 @@ class PlayState extends FlxState
 
                 var interactBox:FlxObject = _level.player.interactBox();
                 var speech = _speechUI.lastSaid;
+                if (speech=="")
+                    return;
                 for(npc in _level.grpNPCs)
                 {
                     if(interactBox.overlaps(npc)){

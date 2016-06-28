@@ -28,8 +28,12 @@ class InventoryHUD extends FlxTypedGroup<FlxSprite>
         add(_itemText);
 
         inventory = new FlxTypedGroup<Item>();
-        inventory.add(new Item("clue"));
-        inventory.add(new Item("shoe"));
+        inventory.add(new Item("ABBOTT"));
+        inventory.add(new Item("BEAR"));
+        inventory.add(new Item("DOODAD"));
+        inventory.add(new Item("ENTREE"));
+        inventory.add(new Item("LOLLIPOP"));
+        inventory.add(new Item("SPOONS"));
         
         forEach(function(spr:FlxSprite){
             spr.scrollFactor.set(0, 0);

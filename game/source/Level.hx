@@ -53,7 +53,7 @@ class Level extends TiledMap
         mObstacles = processTileLayer(layerObstacles, tileSize, mapW, mapH);
 
         mSurface.setTileProperties(0, FlxObject.ANY);
-        mSurface.setTileProperties(1, FlxObject.NONE, 200);
+        mSurface.setTileProperties(1, FlxObject.NONE, 900);
 
         processObjectLayer(layerActors);
 
@@ -108,7 +108,16 @@ class Level extends TiledMap
             {
                 case "npc":
                     var imageFile = o.properties.get("image");
+
                     var npc = new NPCSprite(x, y, "assets/images/" + imageFile, o.name);
+                    if (o.properties.contains("customWidth") && o.properties.contains("customHeight"))
+                    {
+                        var customHeight:Int = Std.parseInt(o.properties.get("customHeight"));
+                        var customWidth:Int = Std.parseInt(o.properties.get("customWidth"));
+
+                        npc.setGraphicSize(customWidth, customHeight);
+                        npc.updateHitbox();
+                    }
 
                     var interactFunc = o.properties.get("onInteract");
                     var speakFunc = o.properties.get("onSpeak");

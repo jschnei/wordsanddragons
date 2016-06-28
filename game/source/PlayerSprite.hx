@@ -16,10 +16,11 @@ class PlayerSprite extends FlxSprite
     public function new(?X:Float=0, ?Y:Float=0)
     {
         super(X, Y);
-        makeGraphic(64, 64, FlxColor.BLUE);
+        makeGraphic(32, 32, FlxColor.BLUE);
         drag.x = 3000;
         drag.y = 3000;
-        setSize(64, 64);
+        setSize(30, 30);
+        offset.set(1, 1);
     }
 
     public function interactBox():FlxObject
