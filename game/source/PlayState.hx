@@ -17,24 +17,23 @@ import flixel.ui.FlxButton;
 
 class PlayState extends FlxState
 {
-    public var _level:Level;
-    public var _dialogueHUD:DialogueHUD;
-    public var _speechUI:SpeechUI;
+    public var level:Level;
+    public var dialogueHUD:DialogueHUD;
+    public var speechUI:SpeechUI;
     public var inventoryHUD:InventoryHUD;
 
-    public var _loading:Bool = false;
+    public var loading:Bool = false;
 
 	override public function create():Void
 	{
-        _dialogueHUD = new DialogueHUD();
-        _speechUI = new SpeechUI();
+        dialogueHUD = new DialogueHUD();
+        speechUI = new SpeechUI();
         inventoryHUD = new InventoryHUD();
 
-        _level = new Level("level_itempuzzle");
-
+        level = new Level("level_itempuzzle");
         initializeLevel();
-        add(_dialogueHUD);
-        add(_speechUI);
+        add(dialogueHUD);
+        add(speechUI);
         add(inventoryHUD);
 
 		super.create();
@@ -42,62 +41,64 @@ class PlayState extends FlxState
 
     private function deinitializeLevel():Void
     {
-        remove(_level.mBG);
-        remove(_level.mSurface);
-        remove(_level.mObstacles);
+        remove(level.mBG);
+        remove(level.mSurface);
+        remove(level.mObstacles);
 
-        remove(_level.grpNPCs);
-        remove(_level.player);
-        _level = null;
+        remove(level.grpNPCs);
+        remove(level.player);
+        level = null;
     }
 
     private function initializeLevel():Void
     {
-        add(_level.mBG);
-        add(_level.mSurface);
-        add(_level.mObstacles);
-        FlxG.worldBounds.set(-10, -10, _level.fullWidth+20, _level.fullHeight+20);
-        FlxG.camera.setScrollBoundsRect(0, 0, _level.fullWidth, _level.fullHeight);
+        add(level.mBG);
+        add(level.mSurface);
+        add(level.mObstacles);
+        FlxG.worldBounds.set(-10, -10, level.fullWidth+20, level.fullHeight+20);
+        FlxG.camera.setScrollBoundsRect(0, 0, level.fullWidth, level.fullHeight);
 
-        add(_level.grpNPCs);
+        add(level.grpNPCs);
 
-        FlxG.camera.follow(_level.player, TOPDOWN, 1);
-        add(_level.player);
+        FlxG.camera.follow(level.player, TOPDOWN, 1);
+        add(level.player);
 
-        _speechUI.setSpeaker(_level.player);
+        speechUI.setSpeaker(level.player);
     }
 
     private function playerUseDoor(player:PlayerSprite, door:Door):Void
     {
-        _loading = true;
+        loading = true;
         deinitializeLevel();
         trace(door.destMap + " " + door.destObject);
-        _level = new Level(door.destMap, door.destObject);
+        level = new Level(door.destMap, door.destObject);
         initializeLevel();
-        _loading = false;
+        loading = false;
     }
 
-    public function startDialogue():DialogueHUD
+
+    public function startDialogue(?callback:Void->Void):Void
     {
-        _dialogueHUD.revive();
-        _level.player.active = false;
-        return _dialogueHUD;
+        dialogueHUD.revive();
+        dialogueHUD.setCallback(callback);
+        level.player.active = false;
+        dialogueHUD.advanceDialogue();
     }
 
 	override public function update(elapsed:Float):Void
 	{
         super.update(elapsed);
         /*trace(_dialogueHUD.alive);*/
-        if(_loading)
+        if(loading)
             return;
 
-        if(_dialogueHUD.alive)
+        if(dialogueHUD.alive)
         {
             if(FlxG.keys.justPressed.Z)
             {
-                if(!_dialogueHUD.advanceDialogue())
+                if(!dialogueHUD.advanceDialogue())
                 {
-                    _level.player.active = true;
+                    level.player.active = true;
                 }
             }
             return;
@@ -108,22 +109,22 @@ class PlayState extends FlxState
             if(FlxG.keys.justPressed.I)
             {
                 inventoryHUD.kill();
-                _level.player.active = true;
+                level.player.active = true;
             }
             return;
         }
 
-        if(_speechUI.alive)
+        if(speechUI.alive)
         {
-            if(!_speechUI.processKey(FlxG.keys.firstJustPressed()))
+            if(!speechUI.processKey(FlxG.keys.firstJustPressed()))
             {
-                _level.player.active = true;
+                level.player.active = true;
 
-                var interactBox:FlxObject = _level.player.interactBox();
-                var speech = _speechUI.lastSaid;
+                var interactBox:FlxObject = level.player.interactBox();
+                var speech = speechUI.lastSaid;
                 if (speech=="")
                     return;
-                for(npc in _level.grpNPCs)
+                for(npc in level.grpNPCs)
                 {
                     if(interactBox.overlaps(npc)){
                         npc.speak(this, speech);
@@ -137,9 +138,9 @@ class PlayState extends FlxState
 
         if(FlxG.keys.justPressed.ENTER)
         {
-            _speechUI.revive();
-            _speechUI.updateSpeech();
-            _level.player.active = false;
+            speechUI.revive();
+            speechUI.updateSpeech();
+            level.player.active = false;
             return;
         }
 
@@ -147,14 +148,14 @@ class PlayState extends FlxState
         {
             inventoryHUD.updateText();
             inventoryHUD.revive();
-            _level.player.active = false;
+            level.player.active = false;
             return;
         }
 
         if(FlxG.keys.justPressed.Z)
         {
-            var interactBox:FlxObject = _level.player.interactBox();
-            for(npc in _level.grpNPCs)
+            var interactBox:FlxObject = level.player.interactBox();
+            for(npc in level.grpNPCs)
             {
                 if(interactBox.overlaps(npc)){
                     npc.interact(this);
@@ -163,15 +164,15 @@ class PlayState extends FlxState
             }
         }
 
-        if(_level.player.active)
+        if(level.player.active)
         {
-            _level.player.movement();
+            level.player.movement();
 
-            FlxG.collide(_level.mObstacles, _level.player);
-            FlxG.collide(_level.mSurface, _level.player);
-            FlxG.collide(_level.player, _level.grpNPCs);
+            FlxG.collide(level.mObstacles, level.player);
+            FlxG.collide(level.mSurface, level.player);
+            FlxG.collide(level.player, level.grpNPCs);
 
-            FlxG.overlap(_level.player, _level.grpDoors, playerUseDoor);
+            FlxG.overlap(level.player, level.grpDoors, playerUseDoor);
         }
 
 

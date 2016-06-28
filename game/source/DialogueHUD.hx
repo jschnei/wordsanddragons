@@ -19,6 +19,9 @@ class DialogueHUD extends FlxTypedGroup<FlxSprite>
 
     private var _dialogueBox:FlxSprite;
     private var _dialogueText:FlxTypeText;
+
+    private var _callback:Void->Void;
+
     public function new()
     {
         super();
@@ -36,6 +39,11 @@ class DialogueHUD extends FlxTypedGroup<FlxSprite>
         });
 
         kill();
+    }
+
+    public function setCallback(callback:Void->Void)
+    {
+        _callback = callback;
     }
 
     public function addLine(line:String):Void
@@ -56,6 +64,9 @@ class DialogueHUD extends FlxTypedGroup<FlxSprite>
         else
         {
             kill();
+            if(_callback!=null)
+                _callback();
+                setCallback(null);
             return false;
         }
     }

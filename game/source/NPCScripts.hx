@@ -13,7 +13,7 @@ class NPCScripts
 {
     public static function interactItemNPC(npc:NPCSprite, playState:PlayState):Void
     {
-        var dialogueHUD:DialogueHUD = playState.startDialogue();
+        var dialogueHUD:DialogueHUD = playState.dialogueHUD;
         dialogueHUD.addLine("Hello, my name is " + npc.name + "!");
         dialogueHUD.addLine("I can open a gate, but you have to give me something I like.");
         switch(npc.name)
@@ -21,7 +21,7 @@ class NPCScripts
             case "bob1":
                 dialogueHUD.addLine("I like literally everything!");
             case "bob2":
-                dialogueHUD.addLine("I like words that have double letters!");  
+                dialogueHUD.addLine("I like words that have double letters!");
             case "bob3":
                 dialogueHUD.addLine("I like words that are 6 letters long!");
             case "bob4":
@@ -29,76 +29,79 @@ class NPCScripts
             case "bob5":
                 dialogueHUD.addLine("I like words that only contain one unique vowel!");
             case "bob6":
-                dialogueHUD.addLine("I like words that are also words backwards!");              
+                dialogueHUD.addLine("I like words that are also words backwards!");
         }
         dialogueHUD.addLine("What do you want to give me?");
-        dialogueHUD.advanceDialogue();
+        playState.startDialogue();
     }
 
     public static function speakItemNPC(npc:NPCSprite, playState:PlayState, speech:String):Void
     {
-        var dialogueHUD:DialogueHUD = playState.startDialogue();
-        var inventory:FlxTypedGroup<Item> = playState.inventoryHUD.inventory;
-        if (!inventory.members.exists(function(item) return item.name==speech))
-        {
-            dialogueHUD.addLine("You don't have " + speech + ", silly!");
-        }
-        else
-        {
-            var npcLikes = false;
-            var npcNum = 0;
-            switch(npc.name)
+        var actionQueue:ActionQueue = new ActionQueue();
+        actionQueue.addAction(
+            function()
             {
-                case "bob1":
-                    npcLikes = true;
-                    npcNum = 1;
-                case "bob2":
-                    npcLikes = hasDoubleLetter(speech);
-                    npcNum = 2;
-                case "bob3":
-                    npcLikes = (speech.length==6);
-                    npcNum = 3;
-                case "bob4":
-                    npcLikes = (speech.charAt(0)==speech.charAt(speech.length-1));
-                    npcNum = 4;
-                case "bob5":
-                    npcLikes = hasUniqueVowel(speech);
-                    npcNum = 5;
-                case "bob6":
-                    npcLikes = (speech=="SPOONS"); // only word in the english language which satisfies this property  
-                    npcNum = 6;            
-            }
-            if (npcLikes)
-            {
-                var givenItem:Item = inventory.members.find(function(item) return item.name==speech);
-                inventory.remove(givenItem, true);
-                dialogueHUD.addLine("Thanks, I really like " + speech + "!");
-                dialogueHUD.addLine("I will open the gate now!");
-                var gate:NPCSprite = playState._level.grpNPCs.members.find(function(npc) return npc.name==("gate"+npcNum));
-                trace(gate);
-                gate.kill();
-            }
-            else
-            {
-                dialogueHUD.addLine("I don't like " + speech + "!");
-            }
+                var dialogueHUD:DialogueHUD = playState.dialogueHUD;
+                var inventory:FlxTypedGroup<Item> = playState.inventoryHUD.inventory;
+                if (!inventory.members.exists(function(item) return item.name==speech))
+                {
+                    dialogueHUD.addLine("You don't have " + speech + ", silly!");
+                }
+                else
+                {
+                    var npcLikes = false;
+                    var npcNum = 0;
+                    switch(npc.name)
+                    {
+                        case "bob1":
+                            npcLikes = true;
+                            npcNum = 1;
+                        case "bob2":
+                            npcLikes = hasDoubleLetter(speech);
+                            npcNum = 2;
+                        case "bob3":
+                            npcLikes = (speech.length==6);
+                            npcNum = 3;
+                        case "bob4":
+                            npcLikes = (speech.charAt(0)==speech.charAt(speech.length-1));
+                            npcNum = 4;
+                        case "bob5":
+                            npcLikes = hasUniqueVowel(speech);
+                            npcNum = 5;
+                        case "bob6":
+                            npcLikes = (speech=="SPOONS"); // only word in the english language which satisfies this property
+                            npcNum = 6;
+                    }
+                    if (npcLikes)
+                    {
+                        var givenItem:Item = inventory.members.find(function(item) return item.name==speech);
+                        inventory.remove(givenItem, true);
+                        dialogueHUD.addLine("Thanks, I really like " + speech + "!");
+                        dialogueHUD.addLine("I will open the gate now!");
+                        var gate:NPCSprite = playState.level.grpNPCs.members.find(function(npc) return npc.name==("gate"+npcNum));
+                        actionQueue.addAction(NPCActions.killSprite(gate, actionQueue));
+                    }
+                    else
+                    {
+                        dialogueHUD.addLine("I don't like " + speech + "!");
+                    }
 
-        }
-        dialogueHUD.advanceDialogue();
-    }    
+                }
+                playState.startDialogue(actionQueue.next);
+            });
+
+        actionQueue.next();
+    }
 
     private static function hasDoubleLetter(string:String):Bool
     {
-        trace("checking "+string);
         for (i in 0...string.length-1)
         {
             if (string.charAt(i)==string.charAt(i+1))
             {
-                trace("true");
                 return true;
             }
         }
-        trace("false");
         return false;
     }
 
@@ -120,68 +123,93 @@ class NPCScripts
         }
         return (vowelCounts.count(function(i) return i==0)>=4);
     }
+
     public static function interactGate(npc:NPCSprite, playState:PlayState):Void
     {
-        var dialogueHUD:DialogueHUD = playState.startDialogue();
+        var dialogueHUD:DialogueHUD = playState.dialogueHUD;
         dialogueHUD.addLine("It's a gate. You can't get past it.");
         dialogueHUD.addLine("I know it looks like a trashcan, but pretend it's a gate.");
-        dialogueHUD.advanceDialogue();
+        playState.startDialogue();
     }
 
     public static function interactGuard(npc:NPCSprite, playState:PlayState):Void
     {
-        var dialogueHUD:DialogueHUD = playState.startDialogue();
+        var dialogueHUD:DialogueHUD = playState.dialogueHUD;
         dialogueHUD.addLine("I AM THE GUARD!");
         dialogueHUD.addLine("WHAT IS THE PASSWORD?");
         dialogueHUD.addLine("ANSWER INCORRECTLY, AND DIE!");
-        dialogueHUD.advanceDialogue();
+        playState.startDialogue();
     }
 
     public static function speakGuard(npc:NPCSprite, playState:PlayState, speech:String)
     {
-        var dialogueHUD:DialogueHUD = playState.startDialogue();
-        dialogueHUD.addLine("YOU SAID " + speech + ".");
-        if(speech=="SWORDFISH")
-        {
-            dialogueHUD.addLine("THAT IS THE PASSWORD.");
-            dialogueHUD.addLine("YOU MAY PROCEED.");
-            npc.immovable = false;
-        }
-        else
-        {
-            dialogueHUD.addLine("INCORRECT!");
-            playState._level.player.kill();
-        }
-        dialogueHUD.advanceDialogue();
+        var actionQueue:ActionQueue = new ActionQueue();
+        actionQueue.addAction(
+            function()
+            {
+                var dialogueHUD:DialogueHUD = playState.dialogueHUD;
+                dialogueHUD.addLine("YOU SAID " + speech + ".");
+                if(speech=="SWORDFISH")
+                {
+                    dialogueHUD.addLine("THAT IS THE PASSWORD.");
+                    dialogueHUD.addLine("YOU MAY PROCEED.");
+                    actionQueue.addAction(
+                        function()
+                        {
+                            npc.immovable=false;
+                            actionQueue.next();
+                        });
+                }
+                else
+                {
+                    dialogueHUD.addLine("INCORRECT!");
+                    actionQueue.addAction(NPCActions.killSprite(playState.level.player, actionQueue));
+                }
+                playState.startDialogue(actionQueue.next);
+            });
+
+        actionQueue.next();
     }
 
     public static function interactTeller(npc:NPCSprite, playState:PlayState):Void
     {
-        var dialogueHUD:DialogueHUD = playState.startDialogue();
+        var dialogueHUD:DialogueHUD = playState.dialogueHUD;
         dialogueHUD.addLine("psst.");
         dialogueHUD.addLine("the password is");
         dialogueHUD.addLine("SWORDFISH");
-        dialogueHUD.advanceDialogue();
+        playState.startDialogue();
     }
 
     public static function speakBob(npc:NPCSprite, playState:PlayState, speech:String)
     {
-        var dialogueHUD:DialogueHUD = playState.startDialogue();
-        dialogueHUD.addLine("You said " + speech);
-        dialogueHUD.addLine("I like " + speech + "!");
-        if(speech=="SWORDFISH")
-        {
-            dialogueHUD.addLine("You solved the puzzle!");
-        }
-        dialogueHUD.advanceDialogue();
+        var actionQueue:ActionQueue = new ActionQueue();
+        actionQueue.addAction(
+            function()
+            {
+                var dialogueHUD:DialogueHUD = playState.dialogueHUD;
+                dialogueHUD.addLine("You said " + speech);
+                dialogueHUD.addLine("I like " + speech + "!");
+                if(speech=="SWORDFISH")
+                {
+                    dialogueHUD.addLine("You solved the puzzle!");
+                    actionQueue.addAction(NPCActions.killSprite(npc, actionQueue));
+                }
+                else
+                {
+                    actionQueue.addAction(NPCActions.oneLiner("I'm not dead yet!", playState, actionQueue));
+                }
+                playState.startDialogue(actionQueue.next);
+            });
+
+        actionQueue.next();
     }
 
     public static function interactBob(npc:NPCSprite, playState:PlayState):Void
     {
-        var dialogueHUD:DialogueHUD = playState.startDialogue();
+        var dialogueHUD:DialogueHUD = playState.dialogueHUD;
         dialogueHUD.addLine("Yo, I'm " + npc.name + "!");
         dialogueHUD.addLine("Who are you?");
-        dialogueHUD.advanceDialogue();
+        playState.startDialogue();
     }
 
 }
