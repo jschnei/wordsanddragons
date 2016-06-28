@@ -26,18 +26,28 @@ class NPCSprite extends FlxSprite
         super.update(elapsed);
     }
 
-    public function interact(playState:PlayState)
+    public function interact(playState:PlayState):Void
     {
         if(onInteract==null)
             return;
         onInteract(this, playState);
     }
 
-    public function speak(playState:PlayState, speech:String)
+    public function speak(playState:PlayState, speech:String):Void
     {
         if(onSpeak==null)
             return;
         onSpeak(this, playState, speech);
+    }
+
+    public function canInteract():Bool
+    {
+        return (onInteract!=null);
+    }
+
+    public function canSpeak():Bool
+    {
+        return (onSpeak!=null);
     }
 
 }

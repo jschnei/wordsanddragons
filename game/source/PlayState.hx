@@ -14,6 +14,8 @@ import flixel.text.FlxText;
 import flixel.tile.FlxTilemap;
 import flixel.ui.FlxButton;
 
+using Lambda;
+
 
 class PlayState extends FlxState
 {
@@ -85,6 +87,13 @@ class PlayState extends FlxState
         dialogueHUD.advanceDialogue();
     }
 
+    public static inline function sqDist(spr1:FlxSprite, spr2:FlxSprite):Float
+    {
+        var dx = (spr1.x - spr2.x) + (spr1.width - spr2.width)/2;
+        var dy = (spr1.y - spr2.y) + (spr1.height - spr2.height)/2;
+        return dx*dx + dy*dy;
+    }
+
 	override public function update(elapsed:Float):Void
 	{
         super.update(elapsed);
@@ -124,13 +133,33 @@ class PlayState extends FlxState
                 var speech = speechUI.lastSaid;
                 if (speech=="")
                     return;
-                for(npc in level.grpNPCs)
-                {
-                    if(interactBox.overlaps(npc)){
-                        npc.speak(this, speech);
-                        return;
-                    }
-                }
+
+
+                var canSpeakNPCs = level.grpNPCs.members.filter(
+                    function(npc:NPCSprite){
+                        return (npc.alive && npc.canSpeak() && interactBox.overlaps(npc));
+                    });
+                if (canSpeakNPCs.length == 0)
+                    return;
+
+                var npc:NPCSprite = canSpeakNPCs.fold(
+                    function(npc1:NPCSprite, npc2:NPCSprite):NPCSprite
+                    {
+                        var dist1:Float = sqDist(npc1, level.player);
+                        var dist2:Float = sqDist(npc2, level.player);
+                        if(dist1 < dist2)
+                        {
+                            return npc1;
+                        }
+                        else
+                        {
+                            return npc2;
+                        }
+                    }, canSpeakNPCs[0]);
+
+                npc.speak(this, speech);
+                return;
+
             }
 
             return;
@@ -155,13 +184,31 @@ class PlayState extends FlxState
         if(FlxG.keys.justPressed.Z)
         {
             var interactBox:FlxObject = level.player.interactBox();
-            for(npc in level.grpNPCs)
-            {
-                if(interactBox.overlaps(npc)){
-                    npc.interact(this);
-                    return;
-                }
-            }
+
+            var canInteractNPCs = level.grpNPCs.members.filter(
+                function(npc:NPCSprite){
+                    return (npc.alive && npc.canInteract() && interactBox.overlaps(npc));
+                });
+            if (canInteractNPCs.length == 0)
+                return;
+
+            var npc:NPCSprite = canInteractNPCs.fold(
+                function(npc1:NPCSprite, npc2:NPCSprite):NPCSprite
+                {
+                    var dist1:Float = sqDist(npc1, level.player);
+                    var dist2:Float = sqDist(npc2, level.player);
+                    if(dist1 < dist2)
+                    {
+                        return npc1;
+                    }
+                    else
+                    {
+                        return npc2;
+                    }
+                }, canInteractNPCs[0]);
+
+            npc.interact(this);
+            return;
         }
 
         if(level.player.active)
@@ -174,7 +221,6 @@ class PlayState extends FlxState
 
             FlxG.overlap(level.player, level.grpDoors, playerUseDoor);
         }
-
 
 	}
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" renderorder="right-down" width="20" height="40" tilewidth="32" tileheight="32" nextobjectid="27">
- <tileset firstgid="1" name="tileset2" tilewidth="32" tileheight="32" tilecount="900" columns="30">
+ <tileset firstgid="1" name="tileset2" tilewidth="32" tileheight="32">
   <image source="../images/tileset2.png" width="960" height="960"/>
  </tileset>
  <layer name="background" width="20" height="40">
@@ -28,55 +28,55 @@
   </data>
  </layer>
  <objectgroup name="actors">
-  <object id="1" name="bob1" type="npc" x="152" y="827" width="29" height="30">
+  <object id="1" name="bob1" type="npc" x="152" y="830" width="29" height="30">
    <properties>
-    <property name="customHeight" type="int" value="32"/>
-    <property name="customWidth" type="int" value="32"/>
+    <property name="customHeight" value="32"/>
+    <property name="customWidth" value="32"/>
     <property name="image" value="alphabob.png"/>
     <property name="onInteract" value="interactItemNPC"/>
     <property name="onSpeak" value="speakItemNPC"/>
    </properties>
   </object>
-  <object id="2" name="bob2" type="npc" x="190.5" y="826" width="29" height="30">
+  <object id="2" name="bob2" type="npc" x="190.5" y="830" width="29" height="30">
    <properties>
-    <property name="customHeight" type="int" value="32"/>
-    <property name="customWidth" type="int" value="32"/>
+    <property name="customHeight" value="32"/>
+    <property name="customWidth" value="32"/>
     <property name="image" value="alphabob.png"/>
     <property name="onInteract" value="interactItemNPC"/>
     <property name="onSpeak" value="speakItemNPC"/>
    </properties>
   </object>
-  <object id="3" name="bob3" type="npc" x="229.5" y="828" width="29" height="30">
+  <object id="3" name="bob3" type="npc" x="229.5" y="830" width="29" height="30">
    <properties>
-    <property name="customHeight" type="int" value="32"/>
-    <property name="customWidth" type="int" value="32"/>
+    <property name="customHeight" value="32"/>
+    <property name="customWidth" value="32"/>
     <property name="image" value="alphabob.png"/>
     <property name="onInteract" value="interactItemNPC"/>
     <property name="onSpeak" value="speakItemNPC"/>
    </properties>
   </object>
-  <object id="4" name="bob4" type="npc" x="355.5" y="828" width="29" height="30">
+  <object id="4" name="bob4" type="npc" x="355.5" y="830" width="29" height="30">
    <properties>
-    <property name="customHeight" type="int" value="32"/>
-    <property name="customWidth" type="int" value="32"/>
+    <property name="customHeight" value="32"/>
+    <property name="customWidth" value="32"/>
     <property name="image" value="alphabob.png"/>
     <property name="onInteract" value="interactItemNPC"/>
     <property name="onSpeak" value="speakItemNPC"/>
    </properties>
   </object>
-  <object id="5" name="bob5" type="npc" x="394.5" y="829" width="29" height="30">
+  <object id="5" name="bob5" type="npc" x="394.5" y="830" width="29" height="30">
    <properties>
-    <property name="customHeight" type="int" value="32"/>
-    <property name="customWidth" type="int" value="32"/>
+    <property name="customHeight" value="32"/>
+    <property name="customWidth" value="32"/>
     <property name="image" value="alphabob.png"/>
     <property name="onInteract" value="interactItemNPC"/>
     <property name="onSpeak" value="speakItemNPC"/>
    </properties>
   </object>
-  <object id="6" name="bob6" type="npc" x="432.5" y="828" width="29" height="30">
+  <object id="6" name="bob6" type="npc" x="432.5" y="830" width="29" height="30">
    <properties>
-    <property name="customHeight" type="int" value="32"/>
-    <property name="customWidth" type="int" value="32"/>
+    <property name="customHeight" value="32"/>
+    <property name="customWidth" value="32"/>
     <property name="image" value="alphabob.png"/>
     <property name="onInteract" value="interactItemNPC"/>
     <property name="onSpeak" value="speakItemNPC"/>
@@ -84,8 +84,8 @@
   </object>
   <object id="7" name="gatekeeper" type="npc" x="275" y="424" width="58" height="61">
    <properties>
-    <property name="customHeight" type="int" value="64"/>
-    <property name="customWidth" type="int" value="64"/>
+    <property name="customHeight" value="64"/>
+    <property name="customWidth" value="64"/>
     <property name="image" value="alphabob.png"/>
    </properties>
   </object>
