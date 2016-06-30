@@ -6,11 +6,46 @@ import flixel.FlxSprite;
 import flixel.group.FlxGroup;
 import flixel.math.FlxPoint;
 import flixel.system.FlxAssets.FlxGraphicAsset;
+import flixel.tweens.FlxEase;
+import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 using Lambda;
 
 class NPCScripts
 {
+    public static function interactItemGate(npc:NPCSprite, playState:PlayState):Void
+    {
+        var dialogueHUD:DialogueHUD = playState.dialogueHUD;
+        dialogueHUD.addLine("You may have gotten past the gates...");
+        dialogueHUD.addLine("but I have one final question:");
+        dialogueHUD.addLine("What is the answer to the puzzle?");
+        //FlxTween.tween(npc, { x: 50}, .33, { ease: FlxEase.circOut});
+        playState.startDialogue();
+    }
+
+    public static function speakItemGate(npc:NPCSprite, playState:PlayState, speech:String):Void
+    {
+        var actionQueue:ActionQueue = new ActionQueue();
+        actionQueue.addAction(
+            function()
+            {
+                var dialogueHUD:DialogueHUD = playState.dialogueHUD;
+                if (speech=="BLADES")
+                {
+                    dialogueHUD.addLine("No, anything but the BLADES! Don't kill me!");
+                    dialogueHUD.addLine("I'll let you through now!");
+                    actionQueue.addAction(NPCActions.moveSprite(npc, actionQueue));
+                }
+                else
+                {
+                    dialogueHUD.addLine(speech + " is correct!!!!");
+                    dialogueHUD.addLine("Just kidding.");
+                }
+                playState.startDialogue(actionQueue.next);
+            });
+        actionQueue.next();
+    }
+
     public static function interactItemNPC(npc:NPCSprite, playState:PlayState):Void
     {
         var dialogueHUD:DialogueHUD = playState.dialogueHUD;
