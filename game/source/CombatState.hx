@@ -14,6 +14,9 @@ class CombatState extends FlxState
         CombatUtil.initialize();
         trace(CombatUtil.generatePool());
         trace(CombatUtil.randomWord(6));
+        var attackWordSample = "HELLO";
+        var poolSample = ["A", "E", "L", "L", "I", "O", "U", "H", "E", "H"];
+        trace(CombatUtil.processAttack(attackWordSample, poolSample));
 		super.create();
 	}
 

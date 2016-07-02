@@ -31,12 +31,6 @@ class CombatUtil
         }
     }
 
-    public static function getTriangleDamage(attack:String):Int
-    {
-        var attackLen:Int = attack.length;
-        return cast (attackLen-1)*(attackLen-2)/2;
-    }
-
     public static function sampleLetter(letter_freq:Array<Float>):String
     {
         if (letter_freq.length!=ALPHABET.length)
@@ -70,5 +64,44 @@ class CombatUtil
         var letter_weights = [for (i in 0...ALPHABET.length) Math.pow(.5, partialPool.count(function(c) return c==ALPHABET.charAt(i)))];
         var adj_freqs = [for (i in 0...LETTER_FREQ.length) LETTER_FREQ[i]*letter_weights[i]];
         return partialPool.concat([for (_ in 0...POOL_SIZE-partialPool.length) sampleLetter(adj_freqs)]);
+    }
+
+    public static function generateFreqTable(word:Array<String>):Array<Int>
+    {
+        return [for (i in 0...ALPHABET.length) word.count(function(letter) return letter==ALPHABET.charAt(i))];
+    }
+
+    public static function checkAttack(attackWord:String, pool:Array<String>):Bool
+    {
+        if (!WORDLIST.exists(function(w) return w==attackWord))
+            return false;
+
+        var attackWordArray = [for (i in 0...attackWord.length) attackWord.charAt(i)];
+        var attackFreqTable = generateFreqTable(attackWordArray);
+        var poolFreqTable = generateFreqTable(pool);
+        for (i in 0...attackFreqTable.length)
+        {
+            if (poolFreqTable[i]<attackFreqTable[i])
+                return false;
+        }
+        return true;
+    }
+
+    //precondition: attack must be valid!
+    public static function processAttack(attackWord:String, pool:Array<String>):Array<String>
+    {
+        var poolCopy = pool.copy();
+        for (i in 0...attackWord.length)
+        {
+            if (!poolCopy.remove(attackWord.charAt(i)))
+                throw("You didn't read the precondition!!!!");
+        }
+        return generatePool(poolCopy);
+    }
+
+    public static function getTriangleDamage(attack:String):Int
+    {
+        var attackLen:Int = attack.length;
+        return cast (attackLen-1)*(attackLen-2)/2;
     }
 }
