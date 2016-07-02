@@ -11,6 +11,9 @@ class CombatState extends FlxState
 {
 	override public function create():Void
 	{
+        CombatUtil.initialize();
+        trace(CombatUtil.generatePool());
+        trace(CombatUtil.randomWord(6));
 		super.create();
 	}
 
