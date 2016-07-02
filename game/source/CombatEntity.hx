@@ -5,17 +5,17 @@ class CombatEntity
     var maxHP:Int;
     var HP:Int;
     var name:String;
-    var attack_damage:Int;
-    var alive:Bool;
+    var attackDamage:Int;
+    public var alive:Bool;
 
 	public function new(maxHP:Int,
                         name:String,
-                        attack_damage:Int)
+                        attackDamage:Int)
     {
         this.maxHP = maxHP;
         this.HP = this.maxHP;
         this.name = name;
-        this.attack_damage = attack_damage;
+        this.attackDamage = attackDamage;
         this.alive = true;
     }
 
@@ -26,7 +26,7 @@ class CombatEntity
             HP = maxHP;
     }
 
-    public function take_damage(amount):Void
+    public function takeDamage(amount):Void
     {
         HP -= amount;
         if(HP <= 0)
@@ -36,15 +36,15 @@ class CombatEntity
     public function die():Void
     {
         trace(name + " died.");
-        alive = False;
+        alive = false;
     }
 
     public function attack(target:CombatEntity)
     {
-        target.take_damage(attack_damage);
+        target.takeDamage(attackDamage);
     }
 
-    public function disp_str():String
+    public function dispStr():String
     {
         return (HP + '/' + maxHP);
     }

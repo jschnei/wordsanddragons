@@ -19,10 +19,12 @@ class TriangleEnemy extends CombatEnemy
 {
     public function new(maxHP:Int=30,
                         name:String='anderson',
-                        attackDamage:Int=1):
+                        attackDamage:Int=1)
+    {
         super(maxHP, name, attackDamage);
+    }
 
-    public function calculateDamageTaken(attackWord:String):Int
+    public override function calculateDamageTaken(attackWord:String):Int
     {
         return CombatUtil.getTriangleDamage(attackWord);
     }

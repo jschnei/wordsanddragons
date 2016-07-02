@@ -96,7 +96,7 @@ class CombatUtil
             if (!poolCopy.remove(attackWord.charAt(i)))
                 throw("You didn't read the precondition!!!!");
         }
-        return generatePool(poolCopy);
+        return poolCopy;
     }
 
     public static function getTriangleDamage(attack:String):Int
