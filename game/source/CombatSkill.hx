@@ -2,9 +2,9 @@ package;
 
 class CombatSkill
 {
-    var cooldown:Int;
-    var maxCooldown:Int;
-    var trigger:String;
+    public var cooldown:Int;
+    public var maxCooldown:Int;
+    public var trigger:String;
 
     public function new(trigger:String,
                         maxCooldown:Int=0)
@@ -22,19 +22,19 @@ class CombatSkill
         this.trigger = trigger;
     }
 
-    public function skill(handler:CombatHandler, ?params:Dynamic):Void
+    public function skill(handler:CombatHandler, ?params:Map<String, String>):Void
     {
         throw "must instantiate subclass of CombatSkill";
     }
 
-    public function activate(handler:CombatHandler):Void
+    public function activate(handler:CombatHandler, ?params:Map<String, String>):Void
     {
         if (cooldown > 0)
         {
             trace("You cooldown dummy!");
             return;
         }
-        skill(handler);
+        skill(handler, params);
         cooldown = maxCooldown;
     }
 
@@ -60,7 +60,7 @@ class SkillAttackPlayer extends CombatSkill
         this.attackDamage = attackDamage;
     }
 
-    public override function skill(handler:CombatHandler, ?params:Dynamic):Void
+    public override function skill(handler:CombatHandler, ?params:Map<String, String>):Void
     {
         handler.player.takeDamage(attackDamage);
     }
@@ -77,11 +77,11 @@ class SkillHealPlayer extends CombatSkill
         this.healAmount = healAmount;
     }
 
-    public override function skill(handler:CombatHandler, ?params:Dynamic):Void
+    public override function skill(handler:CombatHandler, ?params:Map<String, String>):Void
     {
-        var attackWord:String = params.attackWord;
+        var attackWord:String = params.get('attackWord');
 
-        if(params.attackWord.length>0 && params.attackWord[0]=='H')
+        if(attackWord.length>0 && attackWord.charAt(0)=='H')
         {
             handler.player.heal(healAmount);
         }
@@ -100,9 +100,9 @@ class SkillRecycle extends CombatSkill
         this.numLetters = numLetters;
     }
 
-    public override function skill(handler:CombatHandler, ?params:Dynamic):Void
+    public override function skill(handler:CombatHandler, ?params:Map<String, String>):Void
     {
-        handler.pool = generatePool(handler.pool.slice(numLetters));
+        handler.pool = CombatUtil.generatePool(handler.pool.slice(numLetters));
     }
 }
 
@@ -114,7 +114,7 @@ class SkillSpawnEnemy extends CombatSkill
         super(trigger, maxCooldown);
     }
 
-    public override function skill(handler:CombatHandler, ?params:Dynamic):Void
+    public override function skill(handler:CombatHandler, ?params:Map<String, String>):Void
     {
         handler.enemies.push(new CombatEnemy.TriangleEnemy());
     }
@@ -128,7 +128,7 @@ class SkillThrowRock extends CombatSkill
         super(trigger, maxCooldown);
     }
 
-    public override function skill(handler:CombatHandler, ?params:Dynamic):Void
+    public override function skill(handler:CombatHandler, ?params:Map<String, String>):Void
     {
         handler.projectiles.push(new CombatProjectile.RockProjectile());
     }

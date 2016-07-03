@@ -37,6 +37,24 @@ class CombatProjectile extends CombatEntity
         handler.player.takeDamage(attackDamage);
         die();
     }
+
+    // returns true if priority1 > priority2
+    public static function comparePriority(priority1:Vector<Int>, priority2:Vector<Int>):Bool
+    {
+        for(i in 0...priority1.length)
+        {
+            if(i>=priority2.length)
+                return true;
+
+            if(priority1[i]>priority2[i])
+                return true;
+
+            if(priority1[i]<priority2[i])
+                return false;
+        }
+
+        return false;
+    }
 }
 
 class RockProjectile extends CombatProjectile
@@ -62,8 +80,8 @@ class RockProjectile extends CombatProjectile
             return new Vector<Int>(1);
         }
 
-        var defenseFreq = CombatUtil.generateFreqTable(defenseWord);
-        var lettersFreq = CombitUtil.generateFreqTable(letters);
+        var defenseFreq = CombatUtil.generateFreqTable(CombatUtil.stringToArray(defenseWord));
+        var lettersFreq = CombatUtil.generateFreqTable(letters);
 
         if (!CombatUtil.containedIn(defenseFreq, lettersFreq))
         {

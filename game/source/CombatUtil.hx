@@ -71,6 +71,11 @@ class CombatUtil
         return [for (i in 0...ALPHABET.length) word.count(function(letter) return letter==ALPHABET.charAt(i))];
     }
 
+    public static inline function stringToArray(str:String):Array<String>
+    {
+        return [for (i in 0...str.length) str.charAt(i)];
+    }
+
     public static function containedIn(freq1:Array<Int>, freq2:Array<Int>):Bool
     {
         for (i in 0...freq1.length)
@@ -86,8 +91,7 @@ class CombatUtil
         if (!WORDLIST.exists(function(w) return w==attackWord))
             return false;
 
-        var attackWordArray = [for (i in 0...attackWord.length) attackWord.charAt(i)];
-        var attackFreqTable = generateFreqTable(attackWordArray);
+        var attackFreqTable = generateFreqTable(stringToArray(attackWord));
         var poolFreqTable = generateFreqTable(pool);
         return containedIn(attackFreqTable, poolFreqTable);
     }

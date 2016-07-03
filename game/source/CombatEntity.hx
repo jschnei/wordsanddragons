@@ -2,11 +2,13 @@ package;
 
 class CombatEntity
 {
-    var maxHP:Int;
-    var HP:Int;
-    var name:String;
-    var attackDamage:Int;
+    public var maxHP:Int;
+    public var HP:Int;
+    public var name:String;
+    public var attackDamage:Int;
+    public var skills:Array<CombatSkill>;
     public var alive:Bool;
+
 
 	public function new(maxHP:Int,
                         name:String,
@@ -17,6 +19,7 @@ class CombatEntity
         this.name = name;
         this.attackDamage = attackDamage;
         this.alive = true;
+        this.skills = new Array<CombatSkill>();
     }
 
     public function heal(amount):Void
