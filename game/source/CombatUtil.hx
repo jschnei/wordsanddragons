@@ -71,6 +71,16 @@ class CombatUtil
         return [for (i in 0...ALPHABET.length) word.count(function(letter) return letter==ALPHABET.charAt(i))];
     }
 
+    public static function containedIn(freq1:Array<Int>, freq2:Array<Int>):Bool
+    {
+        for (i in 0...freq1.length)
+        {
+            if (freq2[i]<freq1[i])
+                return false;
+        }
+        return true;
+    }
+
     public static function checkAttack(attackWord:String, pool:Array<String>):Bool
     {
         if (!WORDLIST.exists(function(w) return w==attackWord))
@@ -79,12 +89,7 @@ class CombatUtil
         var attackWordArray = [for (i in 0...attackWord.length) attackWord.charAt(i)];
         var attackFreqTable = generateFreqTable(attackWordArray);
         var poolFreqTable = generateFreqTable(pool);
-        for (i in 0...attackFreqTable.length)
-        {
-            if (poolFreqTable[i]<attackFreqTable[i])
-                return false;
-        }
-        return true;
+        return containedIn(attackFreqTable, poolFreqTable);
     }
 
     //precondition: attack must be valid!
@@ -97,6 +102,21 @@ class CombatUtil
                 throw("You didn't read the precondition!!!!");
         }
         return poolCopy;
+    }
+
+    //using Fisher-Yates
+    public static function shuffleLetters(letters:Array<String>):Array<String>
+    {
+        var backwardsInts:Array<Int> = [for (i in 0...letters.length-1) letters.length-i-1];
+        var lettersCopy:Array<String> = letters.copy();
+        for (i in backwardsInts)
+        {
+            var randIndex:Int = Std.random(i+1);
+            var switchLtr:String = lettersCopy[i];
+            lettersCopy[i] = lettersCopy[randIndex];
+            lettersCopy[randIndex] = switchLtr;
+        }
+        return lettersCopy;
     }
 
     public static function getTriangleDamage(attack:String):Int

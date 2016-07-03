@@ -10,7 +10,7 @@ enum CombatMode
 
 class CombatHandler
 {
-    var player:CombatPlayer;
+    public var player:CombatPlayer;
     var enemies:Array<CombatEnemy>;
     var pool:Array<String>;
     var combatMode:CombatMode;
