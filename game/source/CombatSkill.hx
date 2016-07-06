@@ -109,7 +109,7 @@ class SkillRecycle extends CombatSkill
 class SkillSpawnEnemy extends CombatSkill
 {
     public function new(trigger:String='tick',
-                        maxCooldown:Int=500)
+                        maxCooldown:Int=1200)
     {
         super(trigger, maxCooldown);
     }
@@ -123,7 +123,7 @@ class SkillSpawnEnemy extends CombatSkill
 class SkillThrowRock extends CombatSkill
 {
     public function new(trigger:String='tick',
-                        maxCooldown:Int=3000)
+                        maxCooldown:Int=1400)
     {
         super(trigger, maxCooldown);
     }

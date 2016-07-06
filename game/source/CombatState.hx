@@ -57,12 +57,21 @@ class CombatState extends FlxState
         }
         else if(key == FlxKey.ENTER)
         {
-            handler.processAttack(attackString);
+            if (handler.combatMode == CombatHandler.CombatMode.OFFENSE)
+                handler.processAttack(attackString);
+            else if (handler.combatMode == CombatHandler.CombatMode.DEFENSE)
+                handler.processDefense(attackString);
             attackString = "";
             handler.prettyPrint();
+        }
+        else if(key == FlxKey.TAB)
+        {
+            handler.switchModes();
         }
 
         attackText.text = attackString;
         attackText.screenCenter();
+
+        handler.tick();
 	}
 }

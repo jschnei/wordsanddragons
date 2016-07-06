@@ -17,7 +17,7 @@ class CombatHandler
     public var enemies:Array<CombatEnemy>;
     public var projectiles:Array<CombatProjectile>;
     public var pool:Array<String>;
-    public var skills:Array<CombatSkill>;
+    public var handlerSkills:Array<CombatSkill>;
 
     public var combatMode:CombatMode;
     public var turn:Int;
@@ -33,8 +33,8 @@ class CombatHandler
         enemies = new Array<CombatEnemy>();
         enemies.push(new CombatEnemy.TriangleEnemy());
 
-        skills = new Array<CombatSkill>();
-        skills.push(new CombatSkill.SkillSpawnEnemy());
+        handlerSkills = new Array<CombatSkill>();
+        handlerSkills.push(new CombatSkill.SkillSpawnEnemy());
 
         projectiles = new Array<CombatProjectile>();
 
@@ -143,7 +143,7 @@ class CombatHandler
         }
         projectiles = projectiles.filter(function(pr) return pr.alive);
 
-        for(skill in skills)
+        for(skill in handlerSkills)
         {
             if(skill.trigger=="tick")
                 skill.tick(this);

@@ -22,6 +22,7 @@ class TriangleEnemy extends CombatEnemy
                         attackDamage:Int=1)
     {
         super(maxHP, name, attackDamage);
+        skills.push(new CombatSkill.SkillThrowRock());
     }
 
     public override function calculateDamageTaken(attackWord:String):Int
