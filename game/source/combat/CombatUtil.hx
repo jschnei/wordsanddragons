@@ -1,4 +1,4 @@
-package;
+package combat;
 
 import sys.io.File;
 using Lambda;

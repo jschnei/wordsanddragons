@@ -1,4 +1,4 @@
-package;
+package combat;
 
 class CombatSkill
 {

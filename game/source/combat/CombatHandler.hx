@@ -1,4 +1,4 @@
-package;
+package combat;
 
 import flixel.input.keyboard.FlxKey;
 import haxe.ds.Vector;

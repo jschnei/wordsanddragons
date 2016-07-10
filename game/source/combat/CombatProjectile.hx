@@ -1,4 +1,4 @@
-package;
+package combat;
 
 import haxe.ds.Vector;
 using Lambda;

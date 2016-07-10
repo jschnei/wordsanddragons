@@ -1,4 +1,5 @@
 package;
+import combat.CombatState;
 
 import flixel.FlxGame;
 import openfl.display.Sprite;
