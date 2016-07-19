@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="20" height="15" tilewidth="32" tileheight="32" nextobjectid="7">
+ <objectgroup name="playerSprites">
+  <object id="3" name="player" x="295.5" y="364" width="103" height="104"/>
+  <object id="4" name="pool" x="215" y="248" width="261" height="35"/>
+  <object id="5" name="input" x="219" y="313" width="258" height="32"/>
+  <object id="6" name="skillbar" x="573" y="256" width="52" height="211"/>
+ </objectgroup>
+ <objectgroup name="enemySprites">
+  <object id="1" name="location" x="298" y="23" width="103" height="104"/>
+ </objectgroup>
+</map>

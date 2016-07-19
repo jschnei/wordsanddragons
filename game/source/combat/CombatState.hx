@@ -6,17 +6,16 @@ import flixel.FlxState;
 import flixel.input.keyboard.FlxKey;
 import flixel.text.FlxText;
 import flixel.ui.FlxButton;
+import flixel.util.FlxColor;
 import flixel.math.FlxMath;
 
 class CombatState extends FlxState
 {
     var handler:CombatHandler;
-    var enemyText:FlxText;
-    var playerText:FlxText;
-    var poolText:FlxText;
-    var attackText:FlxText;
     var attackString:String;
     var gameOver:Bool;
+
+    var playerHUD:PlayerHUD;
 
 	override public function create():Void
 	{
@@ -29,11 +28,12 @@ class CombatState extends FlxState
         trace(CombatUtil.processAttack(attackWordSample, poolSample));*/
         handler = new CombatHandler();
 
-        attackText = new FlxText(0,0,0,"",20);
-        attackText.screenCenter();
-        add(attackText);
         attackString = "";
         gameOver = false;
+
+        playerHUD = new PlayerHUD();
+        add(playerHUD);
+
         handler.prettyPrint();
 		super.create();
 	}
@@ -67,10 +67,14 @@ class CombatState extends FlxState
         else if(key == FlxKey.TAB)
         {
             handler.switchModes();
+            if (handler.combatMode==OFFENSE)
+                playerHUD.setPoolColor(FlxColor.WHITE);
+            else if (handler.combatMode==DEFENSE)
+                playerHUD.setPoolColor(FlxColor.GRAY);
         }
 
-        attackText.text = attackString;
-        attackText.screenCenter();
+        playerHUD.setPoolText(handler.pool.join(""));
+        playerHUD.setInputText(attackString);
 
         handler.tick();
 	}
