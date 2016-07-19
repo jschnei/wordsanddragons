@@ -13,6 +13,9 @@ class PlayerHUD extends FlxTypedGroup<FlxSprite>
     private var _pool:FlxText;
     private var _input:FlxText;
     private var _skillbar:FlxTypedGroup<FlxSprite>;
+
+    private static inline var fontPath:String = "assets/Inconsolata.otf";
+    private static inline var fontSize:Int = 30;
     
     public function new()
     {
@@ -34,9 +37,11 @@ class PlayerHUD extends FlxTypedGroup<FlxSprite>
                     add(_sprite);
                 case "pool":
                     _pool = new FlxText(x, y, 0, "", 20);
+                    _pool.setFormat(fontPath, fontSize, FlxColor.WHITE);
                     add(_pool);
                 case "input":
                     _input = new FlxText(x, y, 0, "", 20);
+                    _input.setFormat(fontPath, fontSize, FlxColor.WHITE);
                     add(_input);
                 case "skillbar":
                     //not implemented yet, probably want a skillbar class to make displays easier
@@ -59,6 +64,6 @@ class PlayerHUD extends FlxTypedGroup<FlxSprite>
 
     public function setPoolColor(color:FlxColor):Void
     {
-        _pool.setFormat(null, 20, color);
+        _pool.setFormat(fontPath, fontSize, color);
     }
 }
