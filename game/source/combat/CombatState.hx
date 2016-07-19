@@ -31,7 +31,7 @@ class CombatState extends FlxState
         attackString = "";
         gameOver = false;
 
-        playerHUD = new PlayerHUD();
+        playerHUD = new PlayerHUD(handler.player);
         add(playerHUD);
 
         handler.prettyPrint();
@@ -75,6 +75,8 @@ class CombatState extends FlxState
 
         playerHUD.setPoolText(handler.pool.join(""));
         playerHUD.setInputText(attackString);
+
+        playerHUD.updateEntities();
 
         handler.tick();
 	}

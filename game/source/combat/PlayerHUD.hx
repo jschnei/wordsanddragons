@@ -9,17 +9,21 @@ import flixel.util.FlxColor;
 
 class PlayerHUD extends FlxTypedGroup<FlxSprite>
 {
-    private var _sprite:FlxSprite;
+    private var _player:CombatPlayer;
+
+    private var _playerSprite:CombatEntitySprite;
     private var _pool:FlxText;
     private var _input:FlxText;
     private var _skillbar:FlxTypedGroup<FlxSprite>;
 
     private static inline var fontPath:String = "assets/Inconsolata.otf";
     private static inline var fontSize:Int = 30;
-    
-    public function new()
+
+    public function new(player:CombatPlayer)
     {
         super();
+
+        _player = player;
 
         //may want to pass in the .tmx file
         var hudObjects:TiledMap = new TiledMap("assets/data/combatscreen.tmx");
@@ -33,8 +37,9 @@ class PlayerHUD extends FlxTypedGroup<FlxSprite>
             switch(o.name)
             {
                 case "player":
-                    _sprite = new FlxSprite(x, y, "assets/images/alphabob.png");
-                    add(_sprite);
+                    _playerSprite = new CombatEntitySprite(x, y, _player, "assets/images/alphabob.png", true);
+                    for (sprite in _playerSprite)
+                        add(sprite);
                 case "pool":
                     _pool = new FlxText(x, y, 0, "", 20);
                     _pool.setFormat(fontPath, fontSize, FlxColor.WHITE);
@@ -52,6 +57,11 @@ class PlayerHUD extends FlxTypedGroup<FlxSprite>
         }
     }
 
+    public function updateEntities():Void
+    {
+        _playerSprite.updateHealthBar();
+    }
+
     public function setPoolText(poolText:String):Void
     {
         _pool.text = poolText;
@@ -66,4 +76,5 @@ class PlayerHUD extends FlxTypedGroup<FlxSprite>
     {
         _pool.setFormat(fontPath, fontSize, color);
     }
+
 }
