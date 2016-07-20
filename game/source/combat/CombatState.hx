@@ -16,6 +16,7 @@ class CombatState extends FlxState
     var gameOver:Bool;
 
     var playerHUD:PlayerHUD;
+    var enemyHUD:EnemyHUD;
 
 	override public function create():Void
 	{
@@ -33,6 +34,9 @@ class CombatState extends FlxState
 
         playerHUD = new PlayerHUD(handler.player);
         add(playerHUD);
+
+        enemyHUD = new EnemyHUD(handler);
+        add(enemyHUD);
 
         handler.prettyPrint();
 		super.create();
@@ -77,6 +81,7 @@ class CombatState extends FlxState
         playerHUD.setInputText(attackString);
 
         playerHUD.updateEntities();
+        enemyHUD.updateEntities();
 
         handler.tick();
 	}

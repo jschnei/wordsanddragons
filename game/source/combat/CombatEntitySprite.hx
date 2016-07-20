@@ -51,6 +51,17 @@ class CombatEntitySprite extends FlxTypedGroup<FlxSprite>
         }
     }
 
+    public function getWidth():Float
+    {
+        return _sprite.width;
+    }
+
+    public function setPosition(X:Float, Y:Float):Void
+    {
+        _sprite.x = X;
+        _sprite.y = Y;
+    }
+
     public function updateHealthBar():Void
     {
         _maxHealthBar.makeGraphic(cast _sprite.width, HP_BAR_HEIGHT, MAX_HP_COLOR);

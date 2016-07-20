@@ -9,6 +9,9 @@ import flixel.util.FlxColor;
 
 class PlayerHUD extends FlxTypedGroup<FlxSprite>
 {
+    private static inline var FONT_PATH:String = "assets/Inconsolata.otf";
+    private static inline var FONT_SIZE:Int = 30;
+
     private var _player:CombatPlayer;
 
     private var _playerSprite:CombatEntitySprite;
@@ -16,8 +19,6 @@ class PlayerHUD extends FlxTypedGroup<FlxSprite>
     private var _input:FlxText;
     private var _skillbar:FlxTypedGroup<FlxSprite>;
 
-    private static inline var fontPath:String = "assets/Inconsolata.otf";
-    private static inline var fontSize:Int = 30;
 
     public function new(player:CombatPlayer)
     {
@@ -41,12 +42,12 @@ class PlayerHUD extends FlxTypedGroup<FlxSprite>
                     for (sprite in _playerSprite)
                         add(sprite);
                 case "pool":
-                    _pool = new FlxText(x, y, 0, "", 20);
-                    _pool.setFormat(fontPath, fontSize, FlxColor.WHITE);
+                    _pool = new FlxText(x, y, 0, "", FONT_SIZE);
+                    _pool.setFormat(FONT_PATH, FONT_SIZE, FlxColor.WHITE);
                     add(_pool);
                 case "input":
-                    _input = new FlxText(x, y, 0, "", 20);
-                    _input.setFormat(fontPath, fontSize, FlxColor.WHITE);
+                    _input = new FlxText(x, y, 0, "", FONT_SIZE);
+                    _input.setFormat(FONT_PATH, FONT_SIZE, FlxColor.WHITE);
                     add(_input);
                 case "skillbar":
                     //not implemented yet, probably want a skillbar class to make displays easier
@@ -74,7 +75,7 @@ class PlayerHUD extends FlxTypedGroup<FlxSprite>
 
     public function setPoolColor(color:FlxColor):Void
     {
-        _pool.setFormat(fontPath, fontSize, color);
+        _pool.setFormat(FONT_PATH, FONT_SIZE, color);
     }
 
 }

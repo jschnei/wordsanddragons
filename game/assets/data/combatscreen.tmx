@@ -7,6 +7,6 @@
   <object id="6" name="skillbar" x="573" y="256" width="52" height="211"/>
  </objectgroup>
  <objectgroup name="enemySprites">
-  <object id="1" name="location" x="298" y="23" width="103" height="104"/>
+  <object id="1" name="enemy" x="10" y="23" width="620" height="100"/>
  </objectgroup>
 </map>
