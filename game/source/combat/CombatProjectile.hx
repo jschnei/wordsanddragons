@@ -5,13 +5,16 @@ using Lambda;
 
 class CombatProjectile extends CombatEntity
 {
-    var timeToCollide:Int;
+    public var maxTimeToCollide:Int;
+    public var timeToCollide:Int;
+
     public function new(maxHP:Int,
                         name:String,
                         attackDamage:Int,
                         time:Int)
     {
         super(maxHP, name, attackDamage);
+        maxTimeToCollide = time;
         timeToCollide = time;
     }
 
@@ -59,7 +62,8 @@ class CombatProjectile extends CombatEntity
 
 class RockProjectile extends CombatProjectile
 {
-    var letters:Array<String>;
+    public var letters:Array<String>;
+    
     public function new(maxHP:Int=1,
                         name:String="rock",
                         attackDamage:Int=6,

@@ -15,10 +15,15 @@ class EnemyHUD extends FlxTypedGroup<FlxSprite>
 
     private var _handler:CombatHandler;
     private var _enemySprites:Map<CombatEnemy, CombatEntitySprite>;
+    private var _projectiles:Map<CombatProjectile, CombatProjectileSprite>;
 
     private var _enemiesLeft:Float;
     private var _enemiesRight:Float;
     private var _enemiesY:Float;
+
+    private var _projectileStartX:Float;
+    private var _projectileStartY:Float;
+    private var _projectileEndX:Float;
 
 
     public function new(handler:CombatHandler)
@@ -28,9 +33,15 @@ class EnemyHUD extends FlxTypedGroup<FlxSprite>
         _handler = handler;
 
         _enemySprites = new Map<CombatEnemy, CombatEntitySprite>();
+        _projectiles = new Map<CombatProjectile, CombatProjectileSprite>();
+
         for(enemy in _handler.enemies)
         {
             addEnemySprite(enemy);
+        }
+        for(proj in _handler.projectiles)
+        {
+            addProjSprite(proj);
         }
 
         //may want to pass in the .tmx file
@@ -45,6 +56,10 @@ class EnemyHUD extends FlxTypedGroup<FlxSprite>
                     _enemiesY = o.y;
                     _enemiesLeft = o.x;
                     _enemiesRight = o.x+o.width;
+                case "projectile":
+                    _projectileStartX = o.x;
+                    _projectileStartY = o.y;
+                    _projectileEndX = o.x+o.width;
             }
         }
 
@@ -70,6 +85,23 @@ class EnemyHUD extends FlxTypedGroup<FlxSprite>
         enemySprite.destroy();
     }
 
+    public function addProjSprite(proj:CombatProjectile):Void
+    {
+        var projSprite = new CombatProjectileSprite(proj, "assets/images/trashcan.png");
+        _projectiles.set(proj, projSprite);
+        for(sprite in projSprite)
+            add(sprite);
+    }
+
+    public function destroyProjSprite(proj:CombatProjectile):Void
+    {
+        var projSprite:CombatProjectileSprite = _projectiles.get(proj);
+        _projectiles.remove(proj);
+        for(sprite in projSprite)
+            remove(sprite);
+        projSprite.destroy();
+    }
+
     public function updateEntities():Void
     {
         var curX:Float = _enemiesLeft;
@@ -90,10 +122,22 @@ class EnemyHUD extends FlxTypedGroup<FlxSprite>
         }
 
         var shift:Float = (_enemiesRight - curX)/2;
-        
+
+        //center enemies
         forEach(function(spr:FlxSprite){
             spr.x = spr.x + shift;
         });
+
+        for(proj in _handler.projectiles)
+        {
+            if (!_projectiles.exists(proj))
+            {
+                addProjSprite(proj);
+            }
+
+            var projSprite:CombatProjectileSprite = _projectiles.get(proj);
+            projSprite.updatePosition(_projectileStartX, _projectileStartY, _projectileEndX);
+        }
 
         // garbage collection
         for(enemy in _enemySprites.keys())
@@ -101,6 +145,14 @@ class EnemyHUD extends FlxTypedGroup<FlxSprite>
             if(!_handler.enemies.exists(function(e) return e==enemy))
             {
                 destroyEnemySprite(enemy);
+            }
+        }
+
+        for(proj in _projectiles.keys())
+        {
+            if(!_handler.projectiles.exists(function(p) return p==proj))
+            {
+                destroyProjSprite(proj);
             }
         }
     }

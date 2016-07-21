@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="20" height="15" tilewidth="32" tileheight="32" nextobjectid="7">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="20" height="15" tilewidth="32" tileheight="32" nextobjectid="9">
  <objectgroup name="playerSprites">
   <object id="3" name="player" x="295.5" y="364" width="103" height="104"/>
   <object id="4" name="pool" x="215" y="248" width="261" height="35"/>
@@ -8,5 +8,6 @@
  </objectgroup>
  <objectgroup name="enemySprites">
   <object id="1" name="enemy" x="10" y="23" width="620" height="100"/>
+  <object id="7" name="projectile" x="6" y="365" width="280" height="97"/>
  </objectgroup>
 </map>
