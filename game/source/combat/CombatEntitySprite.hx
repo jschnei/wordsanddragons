@@ -9,8 +9,8 @@ class CombatEntitySprite extends FlxTypedGroup<FlxSprite>
 {
     public static inline var HP_FONT_SIZE = 10;
     public static inline var HP_BAR_HEIGHT = 20;
-    public static inline var MAX_HP_COLOR = new FlxColor(0xFF440000);
-    public static inline var CUR_HP_COLOR = new FlxColor(0xFFDD0000);
+    public static var MAX_HP_COLOR = new FlxColor(0xFF440000);
+    public static var CUR_HP_COLOR = new FlxColor(0xFFDD0000);
 
 
     public var entity:CombatEntity;

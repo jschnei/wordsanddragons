@@ -89,6 +89,12 @@ class EnemyHUD extends FlxTypedGroup<FlxSprite>
             curX += enemySprite.getWidth() + ENEMY_MARGIN;
         }
 
+        var shift:Float = (_enemiesRight - curX)/2;
+        
+        forEach(function(spr:FlxSprite){
+            spr.x = spr.x + shift;
+        });
+
         // garbage collection
         for(enemy in _enemySprites.keys())
         {
