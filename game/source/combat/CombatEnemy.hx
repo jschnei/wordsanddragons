@@ -30,3 +30,19 @@ class TriangleEnemy extends CombatEnemy
         return CombatUtil.getTriangleDamage(attackWord);
     }
 }
+
+class BombEnemy extends CombatEnemy
+{
+    public function new(maxHP:Int=8,
+                        name:String="bob",
+                        attackDamage:Int=0)
+    {
+        super(maxHP, name, attackDamage);
+        skills.push(new CombatSkill.SkillMakeBomb());
+    }
+
+    public override function calculateDamageTaken(attackWord:String):Int
+    {
+        return CombatUtil.getTriangleDamage(attackWord);
+    }  
+}

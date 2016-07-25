@@ -127,7 +127,9 @@ class EnemyHUD extends FlxTypedGroup<FlxSprite>
         forEach(function(spr:FlxSprite){
             spr.x = spr.x + shift;
         });
-
+        //this is kind of hacky, the above statement needs to come before we update projectiles
+        //otherwise the projectiles also get shifted oops
+        
         for(proj in _handler.projectiles)
         {
             if (!_projectiles.exists(proj))

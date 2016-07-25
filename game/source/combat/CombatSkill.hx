@@ -4,6 +4,11 @@ class CombatSkill
 {
     public var cooldown:Int;
     public var maxCooldown:Int;
+    public var owner:CombatEntity;
+
+    //note:trigger is "tick" for passive skills that get activated every x seconds
+    //trigger is "attack" for passive skills that activate every attack
+    //trigger is "skillbar" for active skills on the player's skillbar
     public var trigger:String;
 
     public function new(trigger:String,
@@ -45,6 +50,12 @@ class CombatSkill
         else
             if (trigger=="tick")
                 activate(handler);
+    }
+
+    //yeah I know it's a public variable but this is still probably good form
+    public function setOwner(owner:CombatEntity):Void
+    {
+        this.owner = owner;
     }
 }
 
@@ -131,5 +142,19 @@ class SkillThrowRock extends CombatSkill
     public override function skill(handler:CombatHandler, ?params:Map<String, String>):Void
     {
         handler.projectiles.push(new CombatProjectile.RockProjectile());
+    }
+}
+
+class SkillMakeBomb extends CombatSkill
+{
+    public function new(trigger:String='tick',
+                        maxCooldown:Int=600)
+    {
+        super(trigger, maxCooldown);
+    }
+
+    public override function skill(handler:CombatHandler, ?params:Map<String, String>):Void
+    {
+
     }
 }

@@ -6,7 +6,7 @@ class CombatEntity
     public var HP:Int;
     public var name:String;
     public var attackDamage:Int;
-    public var skills:Array<CombatSkill>;
+    public var skills:CombatSkillList;
     public var alive:Bool;
 
 
@@ -19,7 +19,7 @@ class CombatEntity
         this.name = name;
         this.attackDamage = attackDamage;
         this.alive = true;
-        this.skills = new Array<CombatSkill>();
+        this.skills = new CombatSkillList(this);
     }
 
     public function heal(amount):Void
@@ -50,5 +50,10 @@ class CombatEntity
     public function dispStr():String
     {
         return (HP + '/' + maxHP);
+    }
+
+    public function toString():String
+    {
+        return("name: " + name + ", hp: " + HP + "/" + maxHP);
     }
 }
