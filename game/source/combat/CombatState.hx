@@ -18,6 +18,8 @@ class CombatState extends FlxState
     var playerHUD:PlayerHUD;
     var enemyHUD:EnemyHUD;
 
+    var callback:Void->Void;
+
 	override public function create():Void
 	{
         CombatUtil.initialize();
@@ -45,6 +47,14 @@ class CombatState extends FlxState
 	override public function update(elapsed:Float):Void
 	{
 		super.update(elapsed);
+
+        if(handler.isGameOver())
+        {
+            callback();
+            trace("going back to playstate");
+            trace(GameGlobals.playState);
+            FlxG.switchState(GameGlobals.playState);
+        }
 
         var key = FlxG.keys.firstJustPressed();
         if((key >= cast FlxKey.A) && (key <= cast FlxKey.Z))
@@ -85,4 +95,9 @@ class CombatState extends FlxState
 
         handler.tick();
 	}
+
+    public function setCallback(callback:Void->Void)
+    {
+        this.callback = callback;
+    }
 }

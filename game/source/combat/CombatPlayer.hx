@@ -6,7 +6,7 @@ class CombatPlayer extends CombatEntity
 {
     public var skillBar:Map<FlxKey, CombatSkill>;
 
-	public function new(maxHP:Int=50,
+	public function new(maxHP:Int=10,
                         name:String='player',
                         attack_damage:Int=1)
     {

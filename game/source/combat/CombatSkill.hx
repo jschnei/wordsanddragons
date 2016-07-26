@@ -6,7 +6,7 @@ class CombatSkill
     public var maxCooldown:Int;
     public var owner:CombatEntity;
 
-    //note:trigger is "tick" for passive skills that get activated every x seconds
+    //note: trigger is "tick" for passive skills that get activated every x seconds
     //trigger is "attack" for passive skills that activate every attack
     //trigger is "skillbar" for active skills on the player's skillbar
     public var trigger:String;

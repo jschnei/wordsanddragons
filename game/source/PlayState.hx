@@ -31,6 +31,9 @@ class PlayState extends FlxState
 
 	override public function create():Void
 	{
+        trace("making a playstate");
+        GameGlobals.playState = this;
+
         dialogueHUD = new DialogueHUD();
         speechUI = new SpeechUI();
         inventoryHUD = new InventoryHUD();
@@ -73,7 +76,7 @@ class PlayState extends FlxState
 
     private function playerUseDoor(player:PlayerSprite, door:Door):Void
     {
-        startCombat();
+        startCombat(function(){ trace("combat is over");});
         loading = true;
         deinitializeLevel();
         trace(door.destMap + " " + door.destObject);
@@ -84,7 +87,10 @@ class PlayState extends FlxState
 
     public function startCombat(?callback:Void->Void):Void
     {
-        FlxG.camera.fade(FlxColor.BLACK, 0.1, false, function() {FlxG.switchState(new CombatState());});
+        trace("leaving playstate");
+        trace(GameGlobals.playState);
+        GameGlobals.combatState.setCallback(callback);
+        FlxG.switchState(GameGlobals.combatState);
     }
 
     public function startDialogue(?callback:Void->Void):Void
