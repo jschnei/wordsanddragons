@@ -1,5 +1,6 @@
 package combat;
 
+//I would just extend Array<CombatSkill> but apparently it's a basic type?
 class CombatSkillList
 {
     public var owner:CombatEntity;

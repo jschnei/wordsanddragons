@@ -31,7 +31,7 @@ class CombatHandler
         pool = CombatUtil.generatePool();
 
         enemies = new Array<CombatEnemy>();
-        enemies.push(new CombatEnemy.TriangleEnemy());
+        enemies.push(new CombatEnemy.BombEnemy());
 
         handlerSkills = new Array<CombatSkill>();
         handlerSkills.push(new CombatSkill.SkillSpawnEnemy());

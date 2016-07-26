@@ -147,14 +147,19 @@ class SkillThrowRock extends CombatSkill
 
 class SkillMakeBomb extends CombatSkill
 {
+    var bombDamage:Int;
     public function new(trigger:String='tick',
-                        maxCooldown:Int=600)
+                        maxCooldown:Int=600,
+                        bombDamage:Int=10)
     {
         super(trigger, maxCooldown);
+        this.bombDamage = bombDamage;
     }
 
     public override function skill(handler:CombatHandler, ?params:Map<String, String>):Void
     {
-
+        owner.die();
+        handler.enemies.remove(cast owner);
+        handler.player.takeDamage(bombDamage);
     }
 }
