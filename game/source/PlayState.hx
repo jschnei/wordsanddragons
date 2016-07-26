@@ -1,5 +1,7 @@
 package;
 
+import combat.CombatState;
+
 import flixel.addons.editors.tiled.TiledMap;
 import flixel.addons.editors.tiled.TiledLayer;
 import flixel.addons.editors.tiled.TiledLayer.TiledLayerType;
@@ -13,6 +15,7 @@ import flixel.math.FlxMath;
 import flixel.text.FlxText;
 import flixel.tile.FlxTilemap;
 import flixel.ui.FlxButton;
+import flixel.util.FlxColor;
 
 using Lambda;
 
@@ -32,7 +35,7 @@ class PlayState extends FlxState
         speechUI = new SpeechUI();
         inventoryHUD = new InventoryHUD();
 
-        level = new Level("level_itempuzzle");
+        level = new Level("level_test");
         initializeLevel();
         add(dialogueHUD);
         add(speechUI);
@@ -70,6 +73,7 @@ class PlayState extends FlxState
 
     private function playerUseDoor(player:PlayerSprite, door:Door):Void
     {
+        startCombat();
         loading = true;
         deinitializeLevel();
         trace(door.destMap + " " + door.destObject);
@@ -78,6 +82,10 @@ class PlayState extends FlxState
         loading = false;
     }
 
+    public function startCombat(?callback:Void->Void):Void
+    {
+        FlxG.camera.fade(FlxColor.BLACK, 0.1, false, function() {FlxG.switchState(new CombatState());});
+    }
 
     public function startDialogue(?callback:Void->Void):Void
     {

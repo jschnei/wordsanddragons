@@ -126,6 +126,8 @@ class CombatUtil
     public static function getTriangleDamage(attack:String):Int
     {
         var attackLen:Int = attack.length;
+        if(attackLen < 3)
+            return 0;
         return cast (attackLen-1)*(attackLen-2)/2;
     }
 }

@@ -53,7 +53,7 @@ class Level extends TiledMap
         mObstacles = processTileLayer(layerObstacles, tileSize, mapW, mapH);
 
         mSurface.setTileProperties(0, FlxObject.ANY);
-        mSurface.setTileProperties(1, FlxObject.NONE, 900);
+        mSurface.setTileProperties(1, FlxObject.NONE, 204);
 
         processObjectLayer(layerActors);
 
