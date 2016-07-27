@@ -12,6 +12,7 @@ import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.math.FlxMath;
+import flixel.math.FlxPoint;
 import flixel.text.FlxText;
 import flixel.tile.FlxTilemap;
 import flixel.ui.FlxButton;
@@ -32,13 +33,21 @@ class PlayState extends FlxState
 	override public function create():Void
 	{
         trace("making a playstate");
-        GameGlobals.playState = this;
 
         dialogueHUD = new DialogueHUD();
         speechUI = new SpeechUI();
         inventoryHUD = new InventoryHUD();
 
-        level = new Level("level_test");
+        if(Registry.playStateData==null)
+        {
+            level = new Level("level_test");
+            Registry.playStateData = new PlayStateData();
+        }
+        else
+        {
+            loadPlayState();
+        }
+
         initializeLevel();
         add(dialogueHUD);
         add(speechUI);
@@ -46,6 +55,32 @@ class PlayState extends FlxState
 
 		super.create();
 	}
+
+    private function loadPlayState():Void
+    {
+        var psData:PlayStateData = Registry.playStateData;
+        level = new Level(psData.levelName);
+        level.player.setPosition(psData.playerLocation.x, psData.playerLocation.y);
+        for(npc in level.grpNPCs)
+        {
+            if(psData.npcLocations.exists(npc.name))
+            {
+                var npcLocation = psData.npcLocations.get(npc.name);
+                npc.setPosition(npcLocation.x, npcLocation.y);
+            }
+        }
+    }
+
+    private function savePlayState():Void
+    {
+        var psData:PlayStateData = Registry.playStateData;
+        psData.levelName = level.levelName;
+        psData.playerLocation = level.player.getPosition();
+        for(npc in level.grpNPCs)
+        {
+            psData.npcLocations.set(npc.name, npc.getPosition());
+        }
+    }
 
     private function deinitializeLevel():Void
     {
@@ -76,7 +111,6 @@ class PlayState extends FlxState
 
     private function playerUseDoor(player:PlayerSprite, door:Door):Void
     {
-        startCombat(function(){ trace("combat is over");});
         loading = true;
         deinitializeLevel();
         trace(door.destMap + " " + door.destObject);
@@ -87,10 +121,12 @@ class PlayState extends FlxState
 
     public function startCombat(?callback:Void->Void):Void
     {
+        loading = true;
         trace("leaving playstate");
-        trace(GameGlobals.playState);
-        GameGlobals.combatState.setCallback(callback);
-        FlxG.switchState(GameGlobals.combatState);
+        savePlayState();
+        var combatState = new CombatState();
+        combatState.setCallback(callback);
+        FlxG.switchState(combatState);
     }
 
     public function startDialogue(?callback:Void->Void):Void
@@ -187,6 +223,12 @@ class PlayState extends FlxState
             return;
         }
 
+        if(FlxG.keys.justPressed.C)
+        {
+            startCombat(function(){ trace("combat is over");});
+            return;
+        }
+
         if(FlxG.keys.justPressed.I)
         {
             inventoryHUD.updateText();
@@ -237,4 +279,18 @@ class PlayState extends FlxState
         }
 
 	}
+}
+
+class PlayStateData
+{
+    public var levelName:String;
+    public var playerLocation:FlxPoint;
+    public var npcLocations:Map<String,FlxPoint>;
+
+    public function new()
+    {
+        levelName = "";
+        playerLocation = new FlxPoint();
+        npcLocations = new Map<String,FlxPoint>();
+    }
 }

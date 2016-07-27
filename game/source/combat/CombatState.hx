@@ -52,8 +52,7 @@ class CombatState extends FlxState
         {
             callback();
             trace("going back to playstate");
-            trace(GameGlobals.playState);
-            FlxG.switchState(GameGlobals.playState);
+            FlxG.switchState(new PlayState());
         }
 
         var key = FlxG.keys.firstJustPressed();
@@ -81,6 +80,7 @@ class CombatState extends FlxState
         else if(key == FlxKey.TAB)
         {
             handler.switchModes();
+            trace(callback);
             if (handler.combatMode==OFFENSE)
                 playerHUD.setPoolColor(FlxColor.WHITE);
             else if (handler.combatMode==DEFENSE)

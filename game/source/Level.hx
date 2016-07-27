@@ -20,6 +20,8 @@ import flixel.ui.FlxButton;
 
 class Level extends TiledMap
 {
+    public var levelName:String;
+
     public var mBG:FlxTilemap;
     public var mSurface:FlxTilemap;
     public var mObstacles:FlxTilemap;
@@ -34,6 +36,8 @@ class Level extends TiledMap
 	public function new(levelName:String, ?spawnObj:String="start"):Void
 	{
         super("assets/data/"+levelName+".tmx");
+
+        this.levelName=levelName;
 
         var tileSize = tileWidth;
         var mapW = width;

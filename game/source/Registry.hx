@@ -9,8 +9,7 @@ import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.math.FlxMath;
 
-class GameGlobals
+class Registry
 {
-    public static var playState:PlayState;
-    public static var combatState:CombatState = new CombatState();
+    public static var playStateData:Null<PlayState.PlayStateData>;
 }
