@@ -1,4 +1,5 @@
 package;
+import combat.CombatHandler;
 
 import flixel.FlxG;
 import flixel.FlxObject;
@@ -248,7 +249,17 @@ class NPCScripts
         var actionQueue:ActionQueue = new ActionQueue();
 
         actionQueue.addAction(NPCActions.oneLiner("Prepare to die!", actionQueue));
-        actionQueue.addAction(NPCActions.doCombat(npc, actionQueue));
+        
+        var combatAction = function(outcome:CombatOutcome) {
+            if (outcome == CombatOutcome.WIN)
+                return NPCActions.oneLiner("You won! You're so strong!", actionQueue);
+            else if (outcome == CombatOutcome.LOSS)
+                return NPCActions.oneLiner("You lost! You're so weak!", actionQueue);
+            else
+                return NPCActions.oneLiner("how did you get here", actionQueue);
+        };
+
+        actionQueue.addAction(NPCActions.doCombat(npc, actionQueue, combatAction));
         actionQueue.addAction(
             function(){
                 var playState:PlayState = Registry.currPlayState;

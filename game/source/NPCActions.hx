@@ -1,4 +1,5 @@
 package;
+import combat.CombatHandler;
 
 import flixel.FlxG;
 import flixel.FlxObject;
@@ -28,22 +29,27 @@ class NPCActions
         };
     }
 
-    public static function oneLiner(line:String, actionQueue:ActionQueue)
+    public static function oneLiner(line:String, actionQueue:ActionQueue):Void->Void
     {
         return function(){
-            trace("can anyone hear me?");
+            //trace("can anyone hear me?");
             var playState:PlayState = Registry.currPlayState;
             playState.dialogueHUD.addLine(line);
             playState.startDialogue(actionQueue.next);
         }
     }
 
-    public static function doCombat(sprite:FlxSprite, actionQueue:ActionQueue)
+    public static function doCombat(sprite:FlxSprite, actionQueue:ActionQueue, ?resultToAction:CombatOutcome->(Void->Void))
     {
+        if (resultToAction==null)
+        {
+            resultToAction = function(result:CombatOutcome){
+                return actionQueue.next;
+            };
+        }
+
         return function(){
-            Registry.currPlayState.startCombat(function(){ 
-                actionQueue.next();
-            });
+            Registry.currPlayState.startCombat(resultToAction);
         };
     }
 }

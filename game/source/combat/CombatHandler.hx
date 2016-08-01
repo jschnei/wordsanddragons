@@ -11,6 +11,12 @@ enum CombatMode
 	DEFENSE;
 }
 
+enum CombatOutcome
+{
+    WIN;
+    LOSS;
+}
+
 class CombatHandler
 {
     public var player:CombatPlayer;
@@ -155,6 +161,15 @@ class CombatHandler
     public function isGameOver():Bool
     {
         return (!player.alive || enemies.length==0);
+    }
+
+    //some hacky thing for now, eventually we might have situations where combatoutcome cannot be deduced from end state
+    public function getOutcome():CombatOutcome
+    {
+        if (player.alive)
+            return WIN;
+        else
+            return LOSS;
     }
 
 }

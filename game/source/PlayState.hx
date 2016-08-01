@@ -1,5 +1,6 @@
 package;
 
+import combat.CombatHandler;
 import combat.CombatState;
 
 import flixel.addons.editors.tiled.TiledMap;
@@ -130,7 +131,7 @@ class PlayState extends FlxState
         loading = false;
     }
 
-    public function startCombat(?callback:Void->Void):Void
+    public function startCombat(?callback:CombatOutcome->(Void->Void)):Void
     {
         loading = true;
         trace("leaving playstate");
@@ -236,11 +237,11 @@ class PlayState extends FlxState
             return;
         }
 
-        if(FlxG.keys.justPressed.C)
+        /*if(FlxG.keys.justPressed.C)
         {
             startCombat(function(){ trace("combat is over");});
             return;
-        }
+        }*/
 
         if(FlxG.keys.justPressed.I)
         {

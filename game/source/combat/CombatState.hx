@@ -18,7 +18,7 @@ class CombatState extends FlxState
     var playerHUD:PlayerHUD;
     var enemyHUD:EnemyHUD;
 
-    var callback:Void->Void;
+    var callback:CombatHandler.CombatOutcome->(Void->Void);
 
 	override public function create():Void
 	{
@@ -50,11 +50,12 @@ class CombatState extends FlxState
 
         if(handler.isGameOver())
         {
-            trace("making the playstate");
+            var outcome:CombatHandler.CombatOutcome = handler.getOutcome();
+
             var ps:PlayState = new PlayState();
-            ps.onCreate = callback;
+            ps.onCreate = callback(outcome);
             Registry.currPlayState = ps;
-            trace("going back to playstate");
+            //trace("going back to playstate");
             FlxG.switchState(ps);
         }
 
@@ -99,7 +100,7 @@ class CombatState extends FlxState
         handler.tick();
 	}
 
-    public function setCallback(callback:Void->Void)
+    public function setCallback(callback:CombatHandler.CombatOutcome->(Void->Void))
     {
         this.callback = callback;
     }
