@@ -74,6 +74,16 @@ class Level extends TiledMap
         }
 	}
 
+    public function getNPCByName(name:String):NPCSprite
+    {
+        for (npc in grpNPCs)
+        {
+            if (npc.name==name)
+                return npc;
+        }
+        return null;
+    }
+
     private function getSpawnByName(name:String):Spawn
     {
         for(spawn in grpSpawns)

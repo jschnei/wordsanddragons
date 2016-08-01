@@ -215,8 +215,11 @@ class NPCScripts
         playState.startDialogue();
     }
 
-    public static function speakBob(npc:NPCSprite, playState:PlayState, speech:String)
+    public static function speakBob(npcStr:String, speech:String)
     {
+        var playState:PlayState = Registry.currPlayState;
+        var npc:NPCSprite = playState.level.getNPCByName(npcStr);
+
         var actionQueue:ActionQueue = new ActionQueue();
         actionQueue.addAction(
             function()
@@ -239,8 +242,11 @@ class NPCScripts
         actionQueue.next();
     }
 
-    public static function interactBob(npc:NPCSprite, playState:PlayState):Void
+    public static function interactBob(npcStr:String):Void
     {
+        var playState:PlayState = Registry.currPlayState;
+        var npc:NPCSprite = playState.level.getNPCByName(npcStr);
+
         var dialogueHUD:DialogueHUD = playState.dialogueHUD;
         dialogueHUD.addLine("Yo, I'm " + npc.name + "!");
         dialogueHUD.addLine("Who are you?");

@@ -53,6 +53,8 @@ class PlayState extends FlxState
         add(speechUI);
         add(inventoryHUD);
 
+        Registry.currPlayState = this;
+
 		super.create();
 	}
 
@@ -68,6 +70,10 @@ class PlayState extends FlxState
                 var npcLocation = psData.npcLocations.get(npc.name);
                 npc.setPosition(npcLocation.x, npcLocation.y);
             }
+            else
+            {
+                npc.kill();
+            }
         }
     }
 
@@ -78,7 +84,8 @@ class PlayState extends FlxState
         psData.playerLocation = level.player.getPosition();
         for(npc in level.grpNPCs)
         {
-            psData.npcLocations.set(npc.name, npc.getPosition());
+            if (npc.exists)
+                psData.npcLocations.set(npc.name, npc.getPosition());
         }
     }
 
@@ -207,7 +214,7 @@ class PlayState extends FlxState
                         }
                     }, canSpeakNPCs[0]);
 
-                npc.speak(this, speech);
+                npc.speak(speech);
                 return;
 
             }
@@ -263,7 +270,7 @@ class PlayState extends FlxState
                     }
                 }, canInteractNPCs[0]);
 
-            npc.interact(this);
+            npc.interact();
             return;
         }
 
