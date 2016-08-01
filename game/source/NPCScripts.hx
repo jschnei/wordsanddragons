@@ -234,7 +234,7 @@ class NPCScripts
                 }
                 else
                 {
-                    actionQueue.addAction(NPCActions.oneLiner("I'm not dead yet!", playState, actionQueue));
+                    actionQueue.addAction(NPCActions.oneLiner("I'm not dead yet!", actionQueue));
                 }
                 playState.startDialogue(actionQueue.next);
             });
@@ -244,13 +244,21 @@ class NPCScripts
 
     public static function interactBob(npcStr:String):Void
     {
-        var playState:PlayState = Registry.currPlayState;
-        var npc:NPCSprite = playState.level.getNPCByName(npcStr);
+        var npc:NPCSprite = Registry.currPlayState.level.getNPCByName(npcStr);
+        var actionQueue:ActionQueue = new ActionQueue();
 
-        var dialogueHUD:DialogueHUD = playState.dialogueHUD;
-        dialogueHUD.addLine("Yo, I'm " + npc.name + "!");
-        dialogueHUD.addLine("Who are you?");
-        playState.startDialogue();
+        actionQueue.addAction(NPCActions.oneLiner("Prepare to die!", actionQueue));
+        actionQueue.addAction(NPCActions.doCombat(npc, actionQueue));
+        actionQueue.addAction(
+            function(){
+                var playState:PlayState = Registry.currPlayState;
+                var npc:NPCSprite = playState.level.getNPCByName(npcStr);
+                var dialogueHUD:DialogueHUD = playState.dialogueHUD;
+                dialogueHUD.addLine("Yo, I'm " + npc.name + "!");
+                dialogueHUD.addLine("Who are you?");
+                playState.startDialogue(actionQueue.next);
+            });
+        actionQueue.next();
     }
 
 }

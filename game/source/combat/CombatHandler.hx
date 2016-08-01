@@ -34,7 +34,7 @@ class CombatHandler
         enemies.push(new CombatEnemy.BombEnemy());
 
         handlerSkills = new Array<CombatSkill>();
-        handlerSkills.push(new CombatSkill.SkillSpawnEnemy());
+        //handlerSkills.push(new CombatSkill.SkillSpawnEnemy());
 
         projectiles = new Array<CombatProjectile>();
 
@@ -154,7 +154,7 @@ class CombatHandler
 
     public function isGameOver():Bool
     {
-        return !player.alive;
+        return (!player.alive || enemies.length==0);
     }
 
 }

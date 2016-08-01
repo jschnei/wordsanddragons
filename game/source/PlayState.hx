@@ -28,11 +28,13 @@ class PlayState extends FlxState
     public var speechUI:SpeechUI;
     public var inventoryHUD:InventoryHUD;
 
+    public var onCreate:Void->Void;
+
     public var loading:Bool = false;
 
 	override public function create():Void
 	{
-        trace("making a playstate");
+        trace("calling the create function");
 
         dialogueHUD = new DialogueHUD();
         speechUI = new SpeechUI();
@@ -54,6 +56,8 @@ class PlayState extends FlxState
         add(inventoryHUD);
 
         Registry.currPlayState = this;
+        if (onCreate!=null)
+            onCreate();
 
 		super.create();
 	}

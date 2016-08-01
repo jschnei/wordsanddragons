@@ -28,12 +28,22 @@ class NPCActions
         };
     }
 
-    public static function oneLiner(line:String, playState:PlayState, actionQueue:ActionQueue)
+    public static function oneLiner(line:String, actionQueue:ActionQueue)
     {
         return function(){
             trace("can anyone hear me?");
+            var playState:PlayState = Registry.currPlayState;
             playState.dialogueHUD.addLine(line);
             playState.startDialogue(actionQueue.next);
         }
+    }
+
+    public static function doCombat(sprite:FlxSprite, actionQueue:ActionQueue)
+    {
+        return function(){
+            Registry.currPlayState.startCombat(function(){ 
+                actionQueue.next();
+            });
+        };
     }
 }

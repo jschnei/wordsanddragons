@@ -15,4 +15,9 @@ class Registry
 
     //only use this variable for NPCScripts!!!
     public static var currPlayState:PlayState;
+
+    public static function playState():PlayState
+    {
+        return currPlayState;
+    }
 }

@@ -50,9 +50,12 @@ class CombatState extends FlxState
 
         if(handler.isGameOver())
         {
-            callback();
+            trace("making the playstate");
+            var ps:PlayState = new PlayState();
+            ps.onCreate = callback;
+            Registry.currPlayState = ps;
             trace("going back to playstate");
-            FlxG.switchState(new PlayState());
+            FlxG.switchState(ps);
         }
 
         var key = FlxG.keys.firstJustPressed();

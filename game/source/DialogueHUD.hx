@@ -65,8 +65,10 @@ class DialogueHUD extends FlxTypedGroup<FlxSprite>
         {
             kill();
             if(_callback!=null)
+            {
                 _callback();
                 setCallback(null);
+            }
             return false;
         }
     }
