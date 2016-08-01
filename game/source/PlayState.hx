@@ -162,6 +162,7 @@ class PlayState extends FlxState
         {
             if(FlxG.keys.justPressed.Z)
             {
+                // if there is no more dialogue to advance, return control to player
                 if(!dialogueHUD.advanceDialogue())
                 {
                     level.player.active = true;
@@ -182,6 +183,7 @@ class PlayState extends FlxState
 
         if(speechUI.alive)
         {
+            // note: speechUI.processKey returns false iff ENTER was just pressed
             if(!speechUI.processKey(FlxG.keys.firstJustPressed()))
             {
                 level.player.active = true;
