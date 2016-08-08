@@ -18,6 +18,7 @@ class CombatState extends FlxState
     var playerHUD:PlayerHUD;
     var enemyHUD:EnemyHUD;
 
+    //a more proper name would be "callbackGenerator" but oh well
     var callback:CombatHandler.CombatOutcome->(Void->Void);
 
 	override public function create():Void
@@ -29,7 +30,7 @@ class CombatState extends FlxState
         var attackWordSample = "HELLO";
         var poolSample = ["A", "E", "L", "L", "I", "O", "U", "H", "E", "H"];
         trace(CombatUtil.processAttack(attackWordSample, poolSample));*/
-        handler = new CombatHandler();
+        handler = new CombatHandler();  
 
         attackString = "";
         gameOver = false;
@@ -53,9 +54,11 @@ class CombatState extends FlxState
             var outcome:CombatHandler.CombatOutcome = handler.getOutcome();
 
             var ps:PlayState = new PlayState();
+            
+            //we are assuming that callback is CombatOutcome->Void->Void, so this is a Void->Void
             ps.onCreate = callback(outcome);
             Registry.currPlayState = ps;
-            //trace("going back to playstate");
+
             FlxG.switchState(ps);
         }
 

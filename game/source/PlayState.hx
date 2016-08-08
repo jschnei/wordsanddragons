@@ -29,6 +29,8 @@ class PlayState extends FlxState
     public var speechUI:SpeechUI;
     public var inventoryHUD:InventoryHUD;
 
+    //right now, the only purpose of this variable is to hold the combat callback
+    //but if we are switching to playstate from other things this could also be used
     public var onCreate:Void->Void;
 
     public var loading:Bool = false;
