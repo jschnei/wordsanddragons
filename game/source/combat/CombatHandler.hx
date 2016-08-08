@@ -43,16 +43,9 @@ class CombatHandler
             player.skills.push(new CombatSkill.SkillHealPlayer());
             player.addSkillBarSkill(FlxKey.ONE, new CombatSkill.SkillRecycle());
             enemies.push(new CombatEnemy.BombEnemy());
+            //uncomment this for an endless stream of enemies!
+            //handlerSkills.push(new CombatSkill.SkillSpawnEnemy());
         }
-
-        
-
-        
-        //handlerSkills.push(new CombatSkill.SkillSpawnEnemy());
-
-        
-
-
     }
 
     public function switchModes():Void
