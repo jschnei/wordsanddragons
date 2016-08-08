@@ -28,24 +28,31 @@ class CombatHandler
     public var combatMode:CombatMode;
     public var turn:Int;
 
-	public function new()
+	public function new(defaultCombat:Bool = false)
     {
         player = new CombatPlayer();
-        player.skills.push(new CombatSkill.SkillHealPlayer());
-        player.addSkillBarSkill(FlxKey.ONE, new CombatSkill.SkillRecycle());
-
         pool = CombatUtil.generatePool();
-
         enemies = new Array<CombatEnemy>();
-        enemies.push(new CombatEnemy.BombEnemy());
-
         handlerSkills = new Array<CombatSkill>();
-        //handlerSkills.push(new CombatSkill.SkillSpawnEnemy());
-
         projectiles = new Array<CombatProjectile>();
-
         combatMode = CombatMode.OFFENSE;
         turn = 0;
+        
+        if (defaultCombat)
+        {
+            player.skills.push(new CombatSkill.SkillHealPlayer());
+            player.addSkillBarSkill(FlxKey.ONE, new CombatSkill.SkillRecycle());
+            enemies.push(new CombatEnemy.BombEnemy());
+        }
+
+        
+
+        
+        //handlerSkills.push(new CombatSkill.SkillSpawnEnemy());
+
+        
+
+
     }
 
     public function switchModes():Void

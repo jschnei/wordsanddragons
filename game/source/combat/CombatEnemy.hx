@@ -31,6 +31,31 @@ class TriangleEnemy extends CombatEnemy
     }
 }
 
+class DoubleLetterEnemy extends CombatEnemy
+{
+    public function new(maxHP:Int=10,
+                        name:String='phillip',
+                        attackDamage:Int=1)
+    {
+        super(maxHP, name, attackDamage);
+        skills.push(new CombatSkill.SkillAttackPlayer());
+    }
+
+    public override function calculateDamageTaken(attackWord:String):Int
+    {
+        var hasDoubleLetter:Bool = false;
+        for (i in 0...attackWord.length-1)
+        {
+            if (attackWord.charAt(i)==attackWord.charAt(i+1))
+                hasDoubleLetter = true;
+        }
+        if (hasDoubleLetter)
+            return attackWord.length;
+        else
+            return 1;
+    }
+}
+
 class BombEnemy extends CombatEnemy
 {
     public function new(maxHP:Int=8,

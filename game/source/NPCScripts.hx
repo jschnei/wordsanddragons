@@ -1,5 +1,6 @@
 package;
 import combat.CombatHandler;
+import combat.CombatScripts;
 
 import flixel.FlxG;
 import flixel.FlxObject;
@@ -258,8 +259,9 @@ class NPCScripts
             else
                 return NPCActions.oneLiner("how did you get here", actionQueue);
         };
+        var combatHandler = CombatScripts.getBobHandler();
 
-        actionQueue.addAction(NPCActions.doCombat(npc, actionQueue, combatAction));
+        actionQueue.addAction(NPCActions.doCombat(npc, actionQueue, combatHandler, combatAction));
         actionQueue.addAction(
             function(){
                 var playState:PlayState = Registry.currPlayState;

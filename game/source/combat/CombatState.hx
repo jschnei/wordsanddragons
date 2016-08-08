@@ -11,7 +11,7 @@ import flixel.math.FlxMath;
 
 class CombatState extends FlxState
 {
-    var handler:CombatHandler;
+    public var handler:CombatHandler;
     var attackString:String;
     var gameOver:Bool;
 
@@ -30,7 +30,10 @@ class CombatState extends FlxState
         var attackWordSample = "HELLO";
         var poolSample = ["A", "E", "L", "L", "I", "O", "U", "H", "E", "H"];
         trace(CombatUtil.processAttack(attackWordSample, poolSample));*/
-        handler = new CombatHandler();  
+        if (handler == null)
+        {
+            handler = new CombatHandler(true);
+        }   
 
         attackString = "";
         gameOver = false;

@@ -41,7 +41,7 @@ class NPCActions
 
     //resultToAction should be a function whose input is the result of combat
     //and output is the next action to be added to the action queue
-    public static function doCombat(sprite:FlxSprite, actionQueue:ActionQueue, ?resultToAction:CombatOutcome->(Void->Void))
+    public static function doCombat(sprite:FlxSprite, actionQueue:ActionQueue, ?handler:CombatHandler, ?resultToAction:CombatOutcome->(Void->Void))
     {
         if (resultToAction==null)
         {
@@ -51,7 +51,7 @@ class NPCActions
         }
 
         return function(){
-            Registry.currPlayState.startCombat(resultToAction);
+            Registry.currPlayState.startCombat(handler, resultToAction);
         };
     }
 }

@@ -133,13 +133,16 @@ class PlayState extends FlxState
         loading = false;
     }
 
-    public function startCombat(?callback:CombatOutcome->(Void->Void)):Void
+    public function startCombat(?handler:CombatHandler, ?callback:CombatOutcome->(Void->Void)):Void
     {
         loading = true;
         trace("leaving playstate");
         savePlayState();
+
         var combatState = new CombatState();
+        //this is pretty silly (having a setter next to directly setting a public variable), oh well
         combatState.setCallback(callback);
+        combatState.handler = handler;
         FlxG.switchState(combatState);
     }
 
