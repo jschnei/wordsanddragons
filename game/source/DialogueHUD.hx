@@ -26,10 +26,10 @@ class DialogueHUD extends FlxTypedGroup<FlxSprite>
     {
         super();
 
-        _dialogueBox = new FlxSprite(0, FlxG.height-50).makeGraphic(FlxG.width, 50, FlxColor.BLACK);
+        _dialogueBox = new FlxSprite(0, FlxG.height-80).makeGraphic(FlxG.width, 80, FlxColor.BLACK);
         add(_dialogueBox);
 
-        _dialogueText = new FlxTypeText(_dialogueBox.x + 30, _dialogueBox.y + 15, 0, "", FONT_SIZE);
+        _dialogueText = new FlxTypeText(_dialogueBox.x + 30, _dialogueBox.y + 15, FlxG.width, "", FONT_SIZE);
         add(_dialogueText);
 
         _lines = new Array<String>();
