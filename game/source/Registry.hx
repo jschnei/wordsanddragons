@@ -12,6 +12,7 @@ import flixel.math.FlxMath;
 class Registry
 {
     public static var playStateData:Null<PlayState.PlayStateData>;
+    public static var globalDict:Map<String, String> = new Map<String, String>();
 
     //only use this variable for NPCScripts!!!
     public static var currPlayState:PlayState;
