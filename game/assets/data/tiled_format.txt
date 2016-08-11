@@ -18,3 +18,4 @@ npcs - type:npc, image: image file (e.g. "bob.png"), onInteract: name of script 
 
 Note: onInteract and onSpeak are kind of poorly named, in that onInteract is used for dialogue and onSpeak is used for other interactions
 Note 2: the npc type is probably going to be used for items and other things that are not necessarily characters oops
+Note 3: make sure the "Tile Layer Format" is Base64

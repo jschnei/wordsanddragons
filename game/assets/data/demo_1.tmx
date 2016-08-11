@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="15" height="15" tilewidth="64" tileheight="64" nextobjectid="7">
+ <tileset firstgid="1" name="tileset" tilewidth="64" tileheight="64" tilecount="204" columns="17">
+  <image source="../images/tileset.png" width="1088" height="768"/>
+ </tileset>
+ <layer name="background" width="15" height="15">
+  <properties>
+   <property name="tileset" value="tileset.png"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJw7zcDAcHoUj+JRPGAYABrlsmw=
+  </data>
+ </layer>
+ <layer name="surface" width="15" height="15">
+  <properties>
+   <property name="tileset" value="tileset.png"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjYEAAGSCWxYLlGAiDUb2jekf1kqcXADM/C+Y=
+  </data>
+ </layer>
+ <layer name="obstacles" width="15" height="15">
+  <properties>
+   <property name="tileset" value="tileset.png"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjYMAOtJFobRxqkIEOEiYVkKOHGvZSAqjhX3L1DpS95OqlBFAav5SmLXroBQDMuwTO
+  </data>
+ </layer>
+ <objectgroup name="actors">
+  <object id="1" name="start" type="spawn" x="443" y="875" width="83" height="77"/>
+  <object id="2" name="Bob the Goblin" type="npc" x="432" y="593" width="66" height="67">
+   <properties>
+    <property name="image" value="goblin.png"/>
+    <property name="onInteract" value="interactGoblin"/>
+    <property name="onSpeak" value="speakGoblin"/>
+   </properties>
+  </object>
+  <object id="3" name="Gob the Goblin" type="npc" x="431" y="318.5" width="66" height="67">
+   <properties>
+    <property name="image" value="goblin.png"/>
+    <property name="onInteract" value="interactGoblin"/>
+    <property name="onSpeak" value="speakGoblin"/>
+   </properties>
+  </object>
+  <object id="4" name="Final Goblin" type="npc" x="452" y="6" width="63" height="64">
+   <properties>
+    <property name="image" value="goblin.png"/>
+    <property name="onInteract" value="interactFinalGoblin"/>
+    <property name="onSpeak" value="speakFinalGoblin"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>

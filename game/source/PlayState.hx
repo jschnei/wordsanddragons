@@ -45,7 +45,7 @@ class PlayState extends FlxState
 
         if(Registry.playStateData==null)
         {
-            level = new Level("level_test");
+            level = new Level("demo_1");
             Registry.playStateData = new PlayStateData();
         }
         else
@@ -93,6 +93,8 @@ class PlayState extends FlxState
         {
             if (npc.exists)
                 psData.npcLocations.set(npc.name, npc.getPosition());
+            else
+                psData.npcLocations.remove(npc.name);
         }
     }
 

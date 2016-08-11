@@ -57,10 +57,11 @@ class CombatState extends FlxState
             var outcome:CombatHandler.CombatOutcome = handler.getOutcome();
 
             var ps:PlayState = new PlayState();
+            Registry.currPlayState = ps;
             
             //we are assuming that callback is CombatOutcome->Void->Void, so this is a Void->Void
             ps.onCreate = callback(outcome);
-            Registry.currPlayState = ps;
+            
 
             FlxG.switchState(ps);
         }

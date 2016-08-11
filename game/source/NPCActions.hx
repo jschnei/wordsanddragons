@@ -39,6 +39,17 @@ class NPCActions
         }
     }
 
+    public static function speakLines(lines:Array<String>, actionQueue:ActionQueue):Void->Void
+    {
+        return function(){
+            //trace("can anyone hear me?");
+            var playState:PlayState = Registry.currPlayState;
+            for (line in lines)
+                playState.dialogueHUD.addLine(line);
+            playState.startDialogue(actionQueue.next);
+        }
+    }
+
     //resultToAction should be a function whose input is the result of combat
     //and output is the next action to be added to the action queue
     public static function doCombat(sprite:FlxSprite, actionQueue:ActionQueue, ?handler:CombatHandler, ?resultToAction:CombatOutcome->(Void->Void))

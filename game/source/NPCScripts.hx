@@ -15,6 +15,77 @@ using Lambda;
 
 class NPCScripts
 {
+    public static function interactFinalGoblin(npcStr:String):Void
+    {
+        var actionQueue:ActionQueue = new ActionQueue();
+        if (Registry.globalDict.get("Bob the Goblin")!="defeated" ||
+            Registry.globalDict.get("Gob the Goblin")!="defeated")
+        {
+            var lines:Array<String> = ["You have not defeated my brothers, Rob and Gob.",
+                                        "Come back when you do."];       
+            actionQueue.addAction(NPCActions.speakLines(lines, actionQueue));
+        }
+        else
+        {
+            var lines:Array<String> = ["Now that you've mercilessly slain everyone, I have one last challenge:",
+            "What is the answer to the puzzle?"];
+            actionQueue.addAction(NPCActions.speakLines(lines, actionQueue));
+        }
+        actionQueue.next();
+    }
+
+    public static function speakFinalGoblin(npcStr:String, speech:String):Void
+    {
+        var actionQueue:ActionQueue = new ActionQueue();
+        if (Registry.globalDict.get("Bob the Goblin")!="defeated" ||
+            Registry.globalDict.get("Gob the Goblin")!="defeated")
+        {
+            var lines:Array<String> = ["You have not defeated my brothers, Rob and Gob.",
+                                        "Come back when you do."];       
+            actionQueue.addAction(NPCActions.speakLines(lines, actionQueue));
+        }
+        else
+        {
+            if (speech=="CAT")
+                actionQueue.addAction(NPCActions.oneLiner("That's right! I hope you feel good about yourself now. Not.", actionQueue));
+            else
+                actionQueue.addAction(NPCActions.oneLiner("Incorrect! Try taking another look around you.", actionQueue));
+        }
+        actionQueue.next();
+    }
+
+    public static function interactGoblin(npcStr:String):Void
+    {
+        var npc:NPCSprite = Registry.currPlayState.level.getNPCByName(npcStr);
+        var actionQueue:ActionQueue = new ActionQueue();
+
+        var dialogueLines:Array<String> = ["Hello, my name is "+npcStr+".", "You killed my father.", "Prepare to die!"];
+        actionQueue.addAction(NPCActions.speakLines(dialogueLines, actionQueue));
+        
+        var combatAction = function(outcome:CombatOutcome) {
+            if (outcome == CombatOutcome.WIN)
+            {
+                return function() {
+                    actionQueue.addAction(NPCActions.oneLiner("Ugh...goodbye world...", actionQueue));
+                    var npc:NPCSprite = Registry.currPlayState.level.getNPCByName(npcStr);
+                    actionQueue.addAction(NPCActions.killSprite(npc, actionQueue));
+                    Registry.globalDict.set(npcStr, "defeated");
+                    actionQueue.next();
+                };
+            }
+            else if (outcome == CombatOutcome.LOSS)
+                return NPCActions.oneLiner("You lost, but feel free to try again.", actionQueue);
+            else
+                return NPCActions.oneLiner("how did you get here", actionQueue);
+        };
+        var combatHandler = CombatScripts.getGoblinHandler(npcStr);
+
+        actionQueue.addAction(NPCActions.doCombat(npc, actionQueue, combatHandler, combatAction));
+        actionQueue.next();
+    }
+
+
+
     public static function interactItemGate(npc:NPCSprite, playState:PlayState):Void
     {
         var dialogueHUD:DialogueHUD = playState.dialogueHUD;
