@@ -9,7 +9,7 @@ import flixel.util.FlxColor;
 
 class PlayerHUD extends FlxTypedGroup<FlxSprite>
 {
-    private static inline var FONT_PATH:String = "assets/Inconsolata.otf";
+    private static inline var FONT_PATH:String = "assets/data/Inconsolata.otf";
     private static inline var FONT_SIZE:Int = 30;
 
     private var _player:CombatPlayer;

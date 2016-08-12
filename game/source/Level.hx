@@ -36,7 +36,7 @@ class Level extends TiledMap
 
 	public function new(levelName:String, ?spawnObj:String="start"):Void
 	{
-        super("assets/data/"+levelName+".tmx");
+        super("assets/data/levels/"+levelName+".tmx");
 
         this.levelName=levelName;
 
