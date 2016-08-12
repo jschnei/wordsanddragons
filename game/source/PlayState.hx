@@ -45,7 +45,7 @@ class PlayState extends FlxState
 
         if(Registry.playStateData==null)
         {
-            level = new Level("demo_1");
+            level = new Level("level_test");
             Registry.playStateData = new PlayStateData();
         }
         else
@@ -98,7 +98,7 @@ class PlayState extends FlxState
         }
     }
 
-    private function deinitializeLevel():Void
+    public function deinitializeLevel():Void
     {
         remove(level.mBG);
         remove(level.mSurface);
@@ -109,7 +109,7 @@ class PlayState extends FlxState
         level = null;
     }
 
-    private function initializeLevel():Void
+    public function initializeLevel():Void
     {
         add(level.mBG);
         add(level.mSurface);
@@ -125,14 +125,9 @@ class PlayState extends FlxState
         speechUI.setSpeaker(level.player);
     }
 
-    private function playerUseDoor(player:PlayerSprite, door:Door):Void
+    public function playerActivateTrigger(player:PlayerSprite, locationTrigger:LocationTrigger):Void
     {
-        loading = true;
-        deinitializeLevel();
-        trace(door.destMap + " " + door.destObject);
-        level = new Level(door.destMap, door.destObject);
-        initializeLevel();
-        loading = false;
+        locationTrigger.activate();
     }
 
     public function startCombat(?handler:CombatHandler, ?callback:CombatOutcome->(Void->Void)):Void
@@ -296,7 +291,8 @@ class PlayState extends FlxState
             FlxG.collide(level.mSurface, level.player);
             FlxG.collide(level.player, level.grpNPCs);
 
-            FlxG.overlap(level.player, level.grpDoors, playerUseDoor);
+            FlxG.overlap(level.player, level.grpTriggers, playerActivateTrigger);
+            /*FlxG.overlap(level.player, level.grpDoors, playerUseDoor);*/
         }
 
 	}

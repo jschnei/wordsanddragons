@@ -26,7 +26,8 @@ class Level extends TiledMap
     public var mSurface:FlxTilemap;
     public var mObstacles:FlxTilemap;
 
-    public var grpDoors:FlxTypedGroup<Door>;
+    /*public var grpDoors:FlxTypedGroup<Door>;*/
+    public var grpTriggers:FlxTypedGroup<LocationTrigger>;
     public var grpNPCs:FlxTypedGroup<NPCSprite>;
     public var grpSpawns:FlxTypedGroup<Spawn>;
 
@@ -43,7 +44,7 @@ class Level extends TiledMap
         var mapW = width;
         var mapH = height;
 
-        grpDoors = new FlxTypedGroup<Door>();
+        grpTriggers = new FlxTypedGroup<LocationTrigger>();
         grpNPCs = new FlxTypedGroup<NPCSprite>();
         grpSpawns = new FlxTypedGroup<Spawn>();
 
@@ -151,9 +152,8 @@ class Level extends TiledMap
                     var bounds = new FlxRect(x, y, o.width, o.height);
                     var destMap:String = o.properties.get("destMap");
                     var destObject:String = o.properties.get("destObject");
-                    var door = new Door(bounds, destMap, destObject);
-                    grpDoors.add(door);
-
+                    var door = new LocationTrigger.Door(bounds, destMap, destObject);
+                    grpTriggers.add(door);
             }
         }
     }
