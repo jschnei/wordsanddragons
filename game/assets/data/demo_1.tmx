@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="15" height="15" tilewidth="64" tileheight="64" nextobjectid="7">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="15" height="15" tilewidth="64" tileheight="64" nextobjectid="8">
  <tileset firstgid="1" name="tileset" tilewidth="64" tileheight="64" tilecount="204" columns="17">
   <image source="../images/tileset.png" width="1088" height="768"/>
  </tileset>
@@ -48,6 +48,11 @@
     <property name="image" value="goblin.png"/>
     <property name="onInteract" value="interactFinalGoblin"/>
     <property name="onSpeak" value="speakFinalGoblin"/>
+   </properties>
+  </object>
+  <object id="7" name="instructionTrigger" type="trigger" x="329" y="769" width="300" height="46">
+   <properties>
+    <property name="onTrigger" value="triggerInstructions"/>
    </properties>
   </object>
  </objectgroup>
