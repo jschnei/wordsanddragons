@@ -16,11 +16,18 @@ class PlayerSprite extends FlxSprite
     public function new(?X:Float=0, ?Y:Float=0)
     {
         super(X, Y);
-        makeGraphic(32, 32, FlxColor.BLUE);
+        /*makeGraphic(32, 32, FlxColor.BLUE);*/
+        loadGraphic("assets/images/player.png", true, 46, 64);
+        /*setFacingFlip(FlxObject.LEFT, false, false);
+        setFacingFlip(FlxObject.RIGHT, true, false);*/
+        animation.add("l", [12, 13, 14, 13], 6, false);
+        animation.add("r", [24, 25, 26, 25], 6, false);
+        animation.add("u", [36, 37, 38, 37], 6, false);
+        animation.add("d", [0, 1, 2, 1], 6, false);
         drag.x = 3000;
         drag.y = 3000;
-        setSize(30, 30);
-        offset.set(1, 1);
+        setSize(44, 42);
+        offset.set(1, 20);
     }
 
     public function interactBox():FlxObject
@@ -81,8 +88,10 @@ class PlayerSprite extends FlxSprite
 
             if ((velocity.x !=0 || velocity.y !=0) && touching == FlxObject.NONE) {
                 switch (facing) {
-                    case FlxObject.LEFT, FlxObject.RIGHT:
-                        animation.play("lr");
+                    case FlxObject.LEFT:
+                        animation.play("l");
+                    case FlxObject.RIGHT:
+                        animation.play("r");
                     case FlxObject.UP:
                         animation.play("u");
                     case FlxObject.DOWN:
