@@ -148,6 +148,14 @@ class Level extends TiledMap
                     var spawn = new Spawn(x, y, o.name);
                     grpSpawns.add(spawn);
 
+                case "trigger":
+                    var bounds = new FlxRect(x, y, o.width, o.height);
+                    var onlyOnce = (o.properties.get("onlyOnce")=="true");
+                    var triggerName = o.properties.get("onTrigger");
+                    var triggerFunc = Reflect.field(TriggerScripts, o.properties.get("onTrigger"));
+                    var trigger = new LocationTrigger(bounds, triggerFunc, onlyOnce);
+                    grpTriggers.add(trigger);
+
                 case "door":
                     var bounds = new FlxRect(x, y, o.width, o.height);
                     var destMap:String = o.properties.get("destMap");
