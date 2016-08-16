@@ -153,7 +153,7 @@ class Level extends TiledMap
                     var onlyOnce = (o.properties.get("onlyOnce")=="true");
                     var triggerName = o.properties.get("onTrigger");
                     var triggerFunc = Reflect.field(TriggerScripts, o.properties.get("onTrigger"));
-                    var trigger = new LocationTrigger(bounds, triggerFunc, onlyOnce);
+                    var trigger = new LocationTrigger(triggerName, bounds, triggerFunc, onlyOnce);
                     grpTriggers.add(trigger);
 
                 case "door":
