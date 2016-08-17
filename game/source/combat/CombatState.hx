@@ -11,6 +11,8 @@ import flixel.math.FlxMath;
 
 class CombatState extends FlxState
 {
+    public var combatBG:CombatBackground;
+
     public var handler:CombatHandler;
     var attackString:String;
     var gameOver:Bool;
@@ -38,6 +40,9 @@ class CombatState extends FlxState
         attackString = "";
         gameOver = false;
 
+        combatBG = new CombatBackground("combatscreen");
+        add(combatBG.mBG);
+
         playerHUD = new PlayerHUD(handler.player);
         add(playerHUD);
 
@@ -58,7 +63,7 @@ class CombatState extends FlxState
 
             var ps:PlayState = new PlayState();
             Registry.currPlayState = ps;
-            
+
             //we are assuming that callback is CombatOutcome->Void->Void, so this is a Void->Void
             ps.onCreate = callback(outcome);
             
