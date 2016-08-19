@@ -93,6 +93,14 @@ class CombatState extends FlxState
             attackString = "";
             handler.prettyPrint();
         }
+        else if ((key >= cast FlxKey.ONE) && (key <= cast FlxKey.NINE))
+        {
+            var skill:CombatSkill = handler.player.skillBar.get(key);
+            if (skill!=null)
+            {
+                skill.activate(handler);
+            }
+        }
         else if(key == FlxKey.TAB)
         {
             handler.switchModes();

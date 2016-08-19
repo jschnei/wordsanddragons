@@ -12,6 +12,7 @@ class CombatPlayer extends CombatEntity
     {
         super(maxHP, name, attack_damage);
         skillBar = new Map<FlxKey, CombatSkill>();
+        addSkillBarSkill(FlxKey.ONE, new CombatSkill.SkillRecycle());
     }
 
     public function addSkillBarSkill(key:FlxKey, skill:CombatSkill)
