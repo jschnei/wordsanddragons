@@ -22,7 +22,7 @@ class NPCScripts
             Registry.globalDict.get("Gob the Goblin")!="defeated")
         {
             var lines:Array<String> = ["You have not defeated my brothers, Rob and Gob.",
-                                        "Come back when you do."];       
+                                        "Come back when you do."];
             actionQueue.addAction(NPCActions.speakLines(lines, actionQueue));
         }
         else
@@ -41,7 +41,7 @@ class NPCScripts
             Registry.globalDict.get("Gob the Goblin")!="defeated")
         {
             var lines:Array<String> = ["You have not defeated my brothers, Rob and Gob.",
-                                        "Come back when you do."];       
+                                        "Come back when you do."];
             actionQueue.addAction(NPCActions.speakLines(lines, actionQueue));
         }
         else
@@ -61,7 +61,7 @@ class NPCScripts
 
         var dialogueLines:Array<String> = ["Hello, my name is "+npcStr+".", "You killed my father.", "Prepare to die!"];
         actionQueue.addAction(NPCActions.speakLines(dialogueLines, actionQueue));
-        
+
         var combatAction = function(outcome:CombatOutcome) {
             if (outcome == CombatOutcome.WIN)
             {
@@ -96,8 +96,10 @@ class NPCScripts
         playState.startDialogue();
     }
 
-    public static function speakItemGate(npc:NPCSprite, playState:PlayState, speech:String):Void
+    public static function speakItemGate(npcName:String, speech:String):Void
     {
+        var playState:PlayState = Registry.currPlayState;
+        var npc:NPCSprite = playState.level.getNPCByName(npcName);
         var actionQueue:ActionQueue = new ActionQueue();
         actionQueue.addAction(
             function()
@@ -119,10 +121,12 @@ class NPCScripts
         actionQueue.next();
     }
 
-    public static function interactItemNPC(npc:NPCSprite, playState:PlayState):Void
+    public static function interactItemNPC(npcName:String):Void
     {
+        var playState:PlayState = Registry.currPlayState;
+        var npc:NPCSprite = playState.level.getNPCByName(npcName);
         var dialogueHUD:DialogueHUD = playState.dialogueHUD;
-        dialogueHUD.addLine("Hello, my name is " + npc.name + "!");
+        dialogueHUD.addLine("Hello, my name is " + npcName + "!");
         dialogueHUD.addLine("I can open a gate, but you have to give me something I like.");
         switch(npc.name)
         {
@@ -143,8 +147,9 @@ class NPCScripts
         playState.startDialogue();
     }
 
-    public static function speakItemNPC(npc:NPCSprite, playState:PlayState, speech:String):Void
+    public static function speakItemNPC(npcName:String, speech:String):Void
     {
+        var playState:PlayState = Registry.currPlayState;
         var actionQueue:ActionQueue = new ActionQueue();
         actionQueue.addAction(
             function()
@@ -159,7 +164,7 @@ class NPCScripts
                 {
                     var npcLikes = false;
                     var npcNum = 0;
-                    switch(npc.name)
+                    switch(npcName)
                     {
                         case "bob1":
                             npcLikes = true;
@@ -186,7 +191,7 @@ class NPCScripts
                         inventory.remove(givenItem, true);
                         dialogueHUD.addLine("Thanks, I really like " + speech + "!");
                         dialogueHUD.addLine("I will open the gate now!");
-                        var gate:NPCSprite = playState.level.grpNPCs.members.find(function(npc) return npc.name==("gate"+npcNum));
+                        var gate:NPCSprite = playState.level.getNPCByName("gate"+npcNum);
                         actionQueue.addAction(NPCActions.killSprite(gate, actionQueue));
                     }
                     else
@@ -232,16 +237,18 @@ class NPCScripts
         return (vowelCounts.count(function(i) return i==0)>=4);
     }
 
-    public static function interactGate(npc:NPCSprite, playState:PlayState):Void
+    public static function interactGate(npcName:String):Void
     {
+        var playState:PlayState = Registry.currPlayState;
         var dialogueHUD:DialogueHUD = playState.dialogueHUD;
         dialogueHUD.addLine("It's a gate. You can't get past it.");
         dialogueHUD.addLine("I know it looks like a trashcan, but pretend it's a gate.");
         playState.startDialogue();
     }
 
-    public static function interactGuard(npc:NPCSprite, playState:PlayState):Void
+    public static function interactGuard(npc:NPCSprite):Void
     {
+        var playState:PlayState = Registry.currPlayState;
         var dialogueHUD:DialogueHUD = playState.dialogueHUD;
         dialogueHUD.addLine("I AM THE GUARD!");
         dialogueHUD.addLine("WHAT IS THE PASSWORD?");
@@ -249,8 +256,9 @@ class NPCScripts
         playState.startDialogue();
     }
 
-    public static function speakGuard(npc:NPCSprite, playState:PlayState, speech:String)
+    public static function speakGuard(npc:NPCSprite, speech:String)
     {
+        var playState:PlayState = Registry.currPlayState;
         var actionQueue:ActionQueue = new ActionQueue();
         actionQueue.addAction(
             function()
@@ -279,8 +287,9 @@ class NPCScripts
         actionQueue.next();
     }
 
-    public static function interactTeller(npc:NPCSprite, playState:PlayState):Void
+    public static function interactTeller(npc:NPCSprite):Void
     {
+        var playState:PlayState = Registry.currPlayState;
         var dialogueHUD:DialogueHUD = playState.dialogueHUD;
         dialogueHUD.addLine("psst.");
         dialogueHUD.addLine("the password is");
@@ -321,7 +330,7 @@ class NPCScripts
         var actionQueue:ActionQueue = new ActionQueue();
 
         actionQueue.addAction(NPCActions.oneLiner("Prepare to die!", actionQueue));
-        
+
         var combatAction = function(outcome:CombatOutcome) {
             if (outcome == CombatOutcome.WIN)
                 return NPCActions.oneLiner("You won! You're so strong!", actionQueue);

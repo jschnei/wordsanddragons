@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" renderorder="right-down" width="15" height="15" tilewidth="64" tileheight="64" nextobjectid="8">
- <tileset firstgid="1" name="tileset" tilewidth="64" tileheight="64">
-  <image source="../images/tileset.png" width="1088" height="768"/>
+ <tileset firstgid="1" name="tileset" tilewidth="64" tileheight="64" tilecount="204">
+  <image source="../../images/tileset.png" width="1088" height="768"/>
  </tileset>
- <layer name="background" width="15" height="15">
+ <layer name="background" width="15" height="15" visible="0">
   <properties>
    <property name="tileset" value="tileset.png"/>
   </properties>
@@ -11,7 +11,7 @@
    eJw7zcDAcHoUj+JRPGAYABrlsmw=
   </data>
  </layer>
- <layer name="surface" width="15" height="15">
+ <layer name="surface" width="15" height="15" visible="0">
   <properties>
    <property name="tileset" value="tileset.png"/>
   </properties>
@@ -24,10 +24,10 @@
    <property name="tileset" value="tileset.png"/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJxjYMAOtJFobRxqkIEOEiYVkKOHGvZSAqjhX3L1DpS95OqlBFAav5SmLXroBQDMuwTO
+   eJxjYMAOtJFobRxqkIEOEiYVkKOHGvZSCsi1UweNJlUvpeFMb72UAErjl9K0RQ+9AAP7BHY=
   </data>
  </layer>
- <objectgroup name="actors">
+ <objectgroup name="actors" visible="0">
   <object id="1" name="start" type="spawn" x="443" y="875" width="83" height="77"/>
   <object id="2" name="Bob the Goblin" type="npc" x="432" y="593" width="66" height="67">
    <properties>
