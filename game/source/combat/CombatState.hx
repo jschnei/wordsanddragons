@@ -20,6 +20,8 @@ class CombatState extends FlxState
     var playerHUD:PlayerHUD;
     var enemyHUD:EnemyHUD;
 
+    var lastPool:String="";
+
     //a more proper name would be "callbackGenerator" but oh well
     var callback:CombatHandler.CombatOutcome->(Void->Void);
 
@@ -35,7 +37,7 @@ class CombatState extends FlxState
         if (handler == null)
         {
             handler = new CombatHandler(true);
-        }   
+        }
 
         attackString = "";
         gameOver = false;
@@ -66,7 +68,7 @@ class CombatState extends FlxState
 
             //we are assuming that callback is CombatOutcome->Void->Void, so this is a Void->Void
             ps.onCreate = callback(outcome);
-            
+
 
             FlxG.switchState(ps);
         }
@@ -111,7 +113,14 @@ class CombatState extends FlxState
                 playerHUD.setPoolColor(FlxColor.GRAY);
         }
 
-        playerHUD.setPoolText(handler.pool.join(""));
+        // only update pool when it changes!
+        var curPool:String = handler.pool.join("");
+        if(curPool != lastPool)
+        {
+            playerHUD.setPool(handler.pool);
+            lastPool = curPool;
+        }
+
         playerHUD.setInputText(attackString);
 
         playerHUD.updateEntities();

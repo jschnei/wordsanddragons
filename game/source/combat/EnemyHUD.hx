@@ -120,16 +120,17 @@ class EnemyHUD extends FlxTypedGroup<FlxSprite>
 
             curX += enemySprite.getWidth() + ENEMY_MARGIN;
         }
+        curX -= ENEMY_MARGIN;
 
         var shift:Float = (_enemiesRight - curX)/2;
 
         //center enemies
-        forEach(function(spr:FlxSprite){
-            spr.x = spr.x + shift;
-        });
-        //this is kind of hacky, the above statement needs to come before we update projectiles
-        //otherwise the projectiles also get shifted oops
-        
+        for(enemy in _handler.enemies)
+        {
+            var enemySprite:CombatEntitySprite = _enemySprites.get(enemy);
+            enemySprite.forEach(function(spr){ spr.x += shift;});
+        }
+
         for(proj in _handler.projectiles)
         {
             if (!_projectiles.exists(proj))
