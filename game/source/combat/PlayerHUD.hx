@@ -56,7 +56,7 @@ class PlayerHUD extends FlxTypedGroup<FlxSprite>
                     add(_pool);
                 case "input":
                     _input = new FlxText(x, y, 0, "", FONT_SIZE);
-                    _input.setFormat(FONT_PATH, FONT_SIZE, FlxColor.WHITE);
+                    _input.setFormat(FONT_PATH, FONT_SIZE, FlxColor.RED);
                     add(_input);
                 case "skillbar":
                     //not implemented yet, probably want a skillbar class to make displays easier
@@ -110,6 +110,10 @@ class PlayerHUD extends FlxTypedGroup<FlxSprite>
         _input.text = inputText;
     }
 
+    public function setInputColor(color:FlxColor):Void
+    {
+        _input.setFormat(FONT_PATH, FONT_SIZE, color);
+    }
     public function setPoolColor(color:FlxColor):Void
     {
         //_pool.setFormat(FONT_PATH, FONT_SIZE, color);

@@ -108,9 +108,9 @@ class CombatState extends FlxState
             handler.switchModes();
             trace(callback);
             if (handler.combatMode==OFFENSE)
-                playerHUD.setPoolColor(FlxColor.WHITE);
+                playerHUD.setInputColor(FlxColor.RED);
             else if (handler.combatMode==DEFENSE)
-                playerHUD.setPoolColor(FlxColor.GRAY);
+                playerHUD.setInputColor(FlxColor.GREEN);
         }
 
         // only update pool when it changes!

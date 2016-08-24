@@ -22,7 +22,7 @@ class CombatScripts
         else if (name=="Bob the Goblin")
         {
             var triangleEnemy:CombatEnemy = new CombatEnemy.TriangleEnemy();
-            triangleEnemy.skills.push(new CombatSkill.SkillThrowRock(200));
+            triangleEnemy.skills.push(new CombatSkill.SkillThrowRock(300));
             handler.enemies.push(triangleEnemy);
         }
         return handler;
