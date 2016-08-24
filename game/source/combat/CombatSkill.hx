@@ -141,7 +141,8 @@ class SkillThrowRock extends CombatSkill
 
     public override function skill(handler:CombatHandler, ?params:Map<String, String>):Void
     {
-        handler.projectiles.push(new CombatProjectile.RockProjectile());
+        trace("making a rock!!");
+        handler.projectiles.push(new CombatProjectile.RockProjectile(owner));
     }
 }
 

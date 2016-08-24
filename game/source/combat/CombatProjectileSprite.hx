@@ -9,12 +9,20 @@ class CombatProjectileSprite extends CombatEntitySprite
 {
     private var _rockText:FlxText;
 
-    public function new(?X:Float=0,
-                        ?Y:Float=0,
+    //this startX, startY thing is still pretty silly
+    //TODO: have more flexible projectile paths
+    public var startX:Float;
+    public var startY:Float;
+
+    public function new(X:Float=0,
+                        Y:Float=0,
                         projectile:CombatProjectile,
                         imageFile:String)
     {
         super(X, Y, projectile, imageFile, false);
+
+        startX = X;
+        startY = Y;
 
         var rockProj:CombatProjectile.RockProjectile = cast projectile;
         trace("letters: " + rockProj.letters);
@@ -22,13 +30,11 @@ class CombatProjectileSprite extends CombatEntitySprite
         add(_rockText);
     }
 
-    public function updatePosition(startX:Float, startY:Float, endX:Float, ?endY:Float):Void
+    public function updatePosition(endX:Float, endY:Float):Void
     {
-        if (endY==null)
-            endY=startY;
-
         var rockProj:CombatProjectile.RockProjectile = cast entity;
         var frac:Float = 1-rockProj.timeToCollide/rockProj.maxTimeToCollide;
+        
         _sprite.x = startX + frac*(endX-startX);
         _sprite.y = startY + frac*(endY-startY);
 

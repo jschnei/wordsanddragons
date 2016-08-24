@@ -7,15 +7,18 @@ class CombatProjectile extends CombatEntity
 {
     public var maxTimeToCollide:Int;
     public var timeToCollide:Int;
+    public var owner:CombatEntity;
 
     public function new(maxHP:Int,
                         name:String,
                         attackDamage:Int,
-                        time:Int)
+                        time:Int,
+                        ?owner:CombatEntity)
     {
         super(maxHP, name, attackDamage);
         maxTimeToCollide = time;
         timeToCollide = time;
+        this.owner = owner;
     }
 
     public function getDefensePriority(defenseWord:String):Vector<Int>
@@ -68,9 +71,10 @@ class RockProjectile extends CombatProjectile
                         name:String="rock",
                         attackDamage:Int=6,
                         time:Int=900,
-                        length:Int=6)
+                        length:Int=6,
+                        ?owner:CombatEntity)
     {
-        super(maxHP, name, attackDamage, time);
+        super(maxHP, name, attackDamage, time, owner);
 
         var randomWord:String = CombatUtil.randomWord(length);
         letters = CombatUtil.shuffleLetters([for (i in 0...randomWord.length) randomWord.charAt(i)]);

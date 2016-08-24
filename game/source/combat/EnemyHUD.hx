@@ -21,10 +21,8 @@ class EnemyHUD extends FlxTypedGroup<FlxSprite>
     private var _enemiesRight:Float;
     private var _enemiesY:Float;
 
-    private var _projectileStartX:Float;
-    private var _projectileStartY:Float;
-    private var _projectileEndX:Float;
-
+    private var _projDestinationX:Float;
+    private var _projDestinationY:Float;
 
     public function new(handler:CombatHandler)
     {
@@ -56,10 +54,10 @@ class EnemyHUD extends FlxTypedGroup<FlxSprite>
                     _enemiesY = o.y;
                     _enemiesLeft = o.x;
                     _enemiesRight = o.x+o.width;
-                case "projectile":
-                    _projectileStartX = o.x;
-                    _projectileStartY = o.y;
-                    _projectileEndX = o.x+o.width;
+                case "projectileDestination":
+                    _projDestinationX = o.x;
+                    _projDestinationY = o.y;
+
             }
         }
 
@@ -85,9 +83,24 @@ class EnemyHUD extends FlxTypedGroup<FlxSprite>
         enemySprite.destroy();
     }
 
-    public function addProjSprite(proj:CombatProjectile):Void
+    public function addProjSprite(proj:CombatProjectile, ?owner:CombatEntity):Void
     {
-        var projSprite = new CombatProjectileSprite(proj, "assets/images/trashcan.png");
+        var startX:Float = 0;
+        var startY:Float = 0;
+        if (owner!=null)
+        {
+            //we're assuming that all owners are combat enemies here, otherwise we might need to use Std.is or something
+            var enemySprite:Null<CombatEntitySprite> = _enemySprites.get(cast owner);
+            if (enemySprite==null)
+                trace("oops this wasn't supposed to happen!");
+            else
+            {
+                startX = enemySprite.getCenterX();
+                startY = enemySprite.getCenterY();
+            }
+
+        }
+        var projSprite = new CombatProjectileSprite(startX, startY, proj, "assets/images/trashcan.png");
         _projectiles.set(proj, projSprite);
         for(sprite in projSprite)
             add(sprite);
@@ -135,11 +148,12 @@ class EnemyHUD extends FlxTypedGroup<FlxSprite>
         {
             if (!_projectiles.exists(proj))
             {
-                addProjSprite(proj);
+                var projOwner:CombatEntity = proj.owner;
+                addProjSprite(proj, projOwner);
             }
 
             var projSprite:CombatProjectileSprite = _projectiles.get(proj);
-            projSprite.updatePosition(_projectileStartX, _projectileStartY, _projectileEndX);
+            projSprite.updatePosition(_projDestinationX, _projDestinationY);
         }
 
         // garbage collection

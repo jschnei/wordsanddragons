@@ -78,4 +78,13 @@ class CombatEntitySprite extends FlxTypedGroup<FlxSprite>
         _healthText.y = _maxHealthBar.y + (_maxHealthBar.height - _healthText.height)/2;
     }
 
+    public function getCenterX():Float
+    {
+        return _sprite.x+(_sprite.width/2);
+    }
+
+    public function getCenterY():Float
+    {
+        return _sprite.y+(_sprite.height/2);
+    }
 }
