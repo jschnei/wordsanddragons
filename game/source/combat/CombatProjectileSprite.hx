@@ -42,3 +42,16 @@ class CombatProjectileSprite extends CombatEntitySprite
         _rockText.y = _sprite.y + _sprite.height;
     }
 }
+
+class ColorProjectileSprite extends CombatProjectileSprite
+{
+    public function new(X:Float=0,
+                        Y:Float=0,
+                        projectile:CombatProjectile,
+                        imageFile:String)
+    {
+        super(X, Y, projectile, imageFile);
+        //this 15 size probably shouldn't be hardcoded
+        _rockText.setFormat(15, (cast entity).color);
+    }
+}

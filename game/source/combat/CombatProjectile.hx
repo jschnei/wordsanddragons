@@ -1,5 +1,6 @@
 package combat;
 
+import flixel.util.FlxColor;
 import haxe.ds.Vector;
 using Lambda;
 
@@ -61,6 +62,12 @@ class CombatProjectile extends CombatEntity
 
         return false;
     }
+
+    public function createSprite(X:Float=0, Y:Float=0):CombatProjectileSprite
+    {
+        var sprite:CombatProjectileSprite = new CombatProjectileSprite(X, Y, this, "assets/images/trashcan.png");
+        return sprite;
+    }
 }
 
 class RockProjectile extends CombatProjectile
@@ -108,8 +115,61 @@ class RockProjectile extends CombatProjectile
         die();
     }
 
+    public override function createSprite(X:Float=0, Y:Float=0):CombatProjectileSprite
+    {
+        var sprite:CombatProjectileSprite = new CombatProjectileSprite(X, Y, this, "assets/images/trashcan.png");
+        return sprite;
+    }
+
     public function getLetterString():String
     {
         return letters.join("");
+    }
+}
+
+class ColorProjectile extends CombatProjectile
+{
+    public static var COLORS:Array<FlxColor> = [FlxColor.RED, FlxColor.BLUE, FlxColor.LIME, FlxColor.PURPLE, FlxColor.YELLOW, FlxColor.ORANGE, FlxColor.BROWN];
+    public static var COLORNAMES:Array<String> = ["RED", "BLUE", "GREEN", "PURPLE", "YELLOW", "ORANGE", "BROWN"];
+
+    public var colorIndex:Int;
+    public var letters:Array<String>;
+    public var color:FlxColor;
+
+    public function new(maxHP:Int=1,
+                        name:String="colorRock",
+                        attackDamage:Int=10,
+                        time:Int=900,
+                        ?owner:CombatEntity)
+    {
+        super(maxHP, name, attackDamage, time, owner);
+        colorIndex = Std.random(COLORS.length);
+        var textIndex:Int = Std.random(COLORNAMES.length);
+        color = COLORS[colorIndex];
+        letters = COLORNAMES[textIndex].split("");
+    }
+
+    public override function getDefensePriority(defenseWord:String):Vector<Int>
+    {
+        if (!COLORNAMES.has(defenseWord))
+            return new Vector<Int>(1);
+        var returnVec:Vector<Int> = new Vector<Int>(2);
+        returnVec.set(0, 1);
+        returnVec.set(1, -timeToCollide);
+        return returnVec;
+    }
+
+    public override function processDefense(defenseWord:String, handler:CombatHandler):Void
+    {
+        var chosenColorIndex:Int = COLORNAMES.indexOf(defenseWord);
+        if (chosenColorIndex!=colorIndex)
+            handler.player.takeDamage(attackDamage);
+        die();
+    }
+
+    public override function createSprite(X:Float=0, Y:Float=0):CombatProjectileSprite
+    {
+        var sprite = new CombatProjectileSprite.ColorProjectileSprite(X, Y, this, "assets/images/trashcan.png");
+        return sprite;
     }
 }

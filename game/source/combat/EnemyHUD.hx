@@ -100,7 +100,7 @@ class EnemyHUD extends FlxTypedGroup<FlxSprite>
             }
 
         }
-        var projSprite = new CombatProjectileSprite(startX, startY, proj, "assets/images/trashcan.png");
+        var projSprite = proj.createSprite(startX, startY);
         _projectiles.set(proj, projSprite);
         for(sprite in projSprite)
             add(sprite);

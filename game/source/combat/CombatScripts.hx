@@ -7,7 +7,9 @@ class CombatScripts
     {
         var handler:CombatHandler = new CombatHandler();
         handler.enemies.push(new CombatEnemy.DoubleLetterEnemy());
-        handler.enemies.push(new CombatEnemy.TriangleEnemy());
+        var triangleEnemy:CombatEnemy = new CombatEnemy.TriangleEnemy();
+        triangleEnemy.skills.push(new CombatSkill.SkillThrowColorRock(300));
+        handler.enemies.push(triangleEnemy);
 
         return handler;
     }

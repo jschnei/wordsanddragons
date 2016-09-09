@@ -146,6 +146,21 @@ class SkillThrowRock extends CombatSkill
     }
 }
 
+class SkillThrowColorRock extends CombatSkill
+{
+    public function new(trigger:String='tick',
+                        maxCooldown:Int=1400)
+    {
+        super(trigger, maxCooldown);
+    }
+
+    public override function skill(handler:CombatHandler, ?params:Map<String, String>):Void
+    {
+        trace("making a rock!!");
+        handler.projectiles.push(new CombatProjectile.ColorProjectile(owner));
+    }
+}
+
 class SkillMakeBomb extends CombatSkill
 {
     var bombDamage:Int;
