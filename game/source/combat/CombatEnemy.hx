@@ -72,3 +72,13 @@ class BombEnemy extends CombatEnemy
         return CombatUtil.getTriangleDamage(attackWord);
     }  
 }
+
+/*class ColorBossPhase1 extends CombatEnemy
+{
+    public function new(maxHP:100,
+                        name:String='bobs',
+                        attackDamage:Int=0)
+    {
+        super(maxHP, name, attackDamage);
+    }
+}*/

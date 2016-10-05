@@ -9,6 +9,9 @@ import flixel.ui.FlxButton;
 import flixel.util.FlxColor;
 import flixel.math.FlxMath;
 
+// Responsible for displaying the combat screen and handling user input
+// CombatHandler handles all combat logic, such as doing damage and storing enemies
+// playerHUD and enemyHUD contain the sprites and are responsible for updating them
 class CombatState extends FlxState
 {
     public var combatBG:CombatBackground;
@@ -23,6 +26,9 @@ class CombatState extends FlxState
     var lastPool:String="";
 
     //a more proper name would be "callbackGenerator" but oh well
+    //This is a function which takes in the combat outcome and generates
+    //a callback function that will be called in the returned playstate.
+    //This is used to, e.g., display dialogue after combat depending on the result
     var callback:CombatHandler.CombatOutcome->(Void->Void);
 
 	override public function create():Void
@@ -55,6 +61,9 @@ class CombatState extends FlxState
 		super.create();
 	}
 
+    //we are doing all updating in this function so we can have
+    //full control over the order in which updates happen
+    //(i.e. we're not overriding the update function in other combat classes)
 	override public function update(elapsed:Float):Void
 	{
 		super.update(elapsed);
@@ -68,7 +77,6 @@ class CombatState extends FlxState
 
             //we are assuming that callback is CombatOutcome->Void->Void, so this is a Void->Void
             ps.onCreate = callback(outcome);
-
 
             FlxG.switchState(ps);
         }
@@ -108,9 +116,15 @@ class CombatState extends FlxState
             handler.switchModes();
             trace(callback);
             if (handler.combatMode==OFFENSE)
+            {
                 playerHUD.setInputColor(FlxColor.RED);
+                playerHUD.setPoolColor(FlxColor.BLACK);
+            }
             else if (handler.combatMode==DEFENSE)
+            {
                 playerHUD.setInputColor(FlxColor.GREEN);
+                playerHUD.setPoolColor(FlxColor.GRAY);
+            }
         }
 
         // only update pool when it changes!

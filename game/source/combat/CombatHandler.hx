@@ -17,6 +17,7 @@ enum CombatOutcome
     LOSS;
 }
 
+
 class CombatHandler
 {
     public var player:CombatPlayer;
@@ -38,6 +39,8 @@ class CombatHandler
         combatMode = CombatMode.OFFENSE;
         turn = 0;
         
+        // default combat should be only used for testing
+        // all combat handlers should be generated in CombatScripts
         if (defaultCombat)
         {
             player.skills.push(new CombatSkill.SkillHealPlayer());

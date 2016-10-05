@@ -55,5 +55,8 @@ class LetterSprite extends FlxSpriteGroup
         _letterText.y = _tileSprite.y + (_tileSprite.height - _letterText.height)/2;
     }
 
-
+    public function setColor(color:FlxColor):Void
+    {
+        _letterText.setFormat(FONT_PATH, FONT_SIZE, color);
+    }
 }

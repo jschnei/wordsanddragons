@@ -114,9 +114,12 @@ class PlayerHUD extends FlxTypedGroup<FlxSprite>
     {
         _input.setFormat(FONT_PATH, FONT_SIZE, color);
     }
+
     public function setPoolColor(color:FlxColor):Void
     {
-        //_pool.setFormat(FONT_PATH, FONT_SIZE, color);
+        for(letter in _pool)
+        {
+            letter.setColor(color);
+        }
     }
-
 }

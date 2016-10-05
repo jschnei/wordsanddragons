@@ -5,6 +5,8 @@ import flixel.group.FlxGroup;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
 
+//this class is used to represent enemy sprites
+//extended by CombatProjectileSprite
 class CombatEntitySprite extends FlxTypedGroup<FlxSprite>
 {
     public static inline var HP_FONT_SIZE = 10;

@@ -45,7 +45,7 @@ class PlayState extends FlxState
 
         if(Registry.playStateData==null)
         {
-            level = new Level("level_test");
+            level = new Level("demo_1");
             Registry.playStateData = new PlayStateData();
         }
         else
